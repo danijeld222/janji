@@ -1,8 +1,9 @@
 -- premake5.lua
-workspace "New Project"
+workspace "JanjiProject"
    architecture "x64"
    configurations { "Debug", "Release", "Dist" }
-   startproject "App"
+   flags { "MultiProcessorCompile" }
+   startproject "AppTest"
 
    -- Workspace-wide build options for MSVC
    filter "system:windows"
@@ -15,3 +16,4 @@ group "Core"
 group ""
 
 include "App/Build-App.lua"
+include "AppTest/Build-AppTest.lua"

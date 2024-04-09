@@ -1,7 +1,5 @@
 #pragma once
 
-namespace Core {
+#include "Defines.h"
 
-	void PrintHelloWorld();
-
-}
+COREAPI void PrintHelloWorld();

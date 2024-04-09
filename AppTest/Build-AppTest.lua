@@ -1,5 +1,5 @@
-project "Core"
-   kind "SharedLib"
+project "AppTest"
+   kind "ConsoleApp"
    language "C++"
    cppdialect "C++20"
    targetdir "Binaries/%{cfg.buildcfg}"
@@ -7,36 +7,41 @@ project "Core"
 
    files { "Source/**.h", "Source/**.cpp" }
 
+   links
+   {
+      "Core"
+   }
+   
    includedirs
    {
-      "Source"
+      "../Core/Source"
    }
-
+   
+   libdirs
+   {
+      "../Core"
+   }
+   
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
    objdir ("../Binaries/Intermediates/" .. OutputDir .. "/%{prj.name}")
 
    filter "system:windows"
        systemversion "latest"
-       defines { "COREEXPORT" }
-       postbuildcommands
-       {
-          "{COPY} ../Binaries/" .. OutputDir .. "/%{prj.name}/*.dll ../Binaries/" .. OutputDir .. "/App",
-          "{COPY} ../Binaries/" .. OutputDir .. "/%{prj.name}/*.dll ../Binaries/" .. OutputDir .. "/AppTest"
-       }
+       defines { "WINDOWS", "COREIMPORT" }
 
    filter "configurations:Debug"
-       defines { "DEBUG", "COREEXPORT" }
+       defines { "DEBUG", "COREIMPORT" }
        runtime "Debug"
        symbols "On"
 
    filter "configurations:Release"
-       defines { "RELEASE", "COREEXPORT" }
+       defines { "RELEASE", "COREIMPORT" }
        runtime "Release"
        optimize "On"
        symbols "On"
 
    filter "configurations:Dist"
-       defines { "DIST", "COREEXPORT" }
+       defines { "DIST", "COREIMPORT" }
        runtime "Release"
        optimize "On"
        symbols "Off"

@@ -3,23 +3,25 @@ project "App"
    language "C++"
    cppdialect "C++20"
    targetdir "Binaries/%{cfg.buildcfg}"
-   staticruntime "off"
+   staticruntime "on"
 
    files { "Source/**.h", "Source/**.cpp" }
-
-   includedirs
-   {
-      "Source",
-
-	  -- Include Core
-	  "../Core/Source"
-   }
 
    links
    {
       "Core"
    }
-
+   
+   includedirs
+   {
+      "../Core/Source"
+   }
+   
+   libdirs
+   {
+      "../Core"
+   }
+   
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
    objdir ("../Binaries/Intermediates/" .. OutputDir .. "/%{prj.name}")
 
