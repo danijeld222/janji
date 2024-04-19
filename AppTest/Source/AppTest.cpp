@@ -2,5 +2,7 @@
 
 int main()
 {
-	PrintHelloWorld();
+	//PrintHelloWorld();
+
+	return SetupWindowWithImgui();
 }
