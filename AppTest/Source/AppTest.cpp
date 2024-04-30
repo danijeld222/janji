@@ -1,8 +1,18 @@
 #include <Core/Core.h>
+#include <Core/Logger.h>
 
-int main()
+#include <Core/Asserts.h>
+
+int main(void)
 {
-	//PrintHelloWorld();
+	COREFATAL("Testing message: %f", 555.0f);
+	COREERROR("Testing message: %f", 555.0f);
+	COREWARNING("Testing message: %f", 555.0f);
+	COREINFO("Testing message: %f", 555.0f);
+	COREDEBUG("Testing message: %f", 555.0f);
+	CORETRACE("Testing message: %f", 555.0f);
 
-	return SetupWindowWithImgui();
+	COREASSERT(1 == 0);
+
+	return 0;
 }
