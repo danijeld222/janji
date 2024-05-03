@@ -12,7 +12,7 @@ int main(void)
 	COREDEBUG("Testing message: %f", 555.0f);
 	CORETRACE("Testing message: %f", 555.0f);
 
-	COREASSERT(1 == 0);
+	//COREASSERT(1 == 0);
 
-	return 0;
+	return TestingRestructure();
 }
