@@ -1,13 +1,33 @@
 #include "Renderer.h"
 #include "Asserts.h"
-
-#include "imgui.h"
-#include "imgui_impl_sdlrenderer3.h"
+#include <vector>
+#include "SDL3/SDL_surface.h"
 
 Renderer::Renderer(SDL_Window* Window, u32 RendererFlags)
 {
     pRenderer = SDL_CreateRenderer(Window, nullptr, RendererFlags);
+    pSurface = SDL_GetWindowSurface(Window);
+
     COREASSERT_MESSAGE(pRenderer, SDL_GetError());
+    COREASSERT_MESSAGE(pSurface, SDL_GetError());
+
+    BitmapMemory = static_cast<u8*>(malloc(pSurface->w * pSurface->h * 4));
+    memset(BitmapMemory, 0, pSurface->w * pSurface->h * 4);
+
+    // Debug 
+    DebugPalette = SDL_CreatePalette(256);
+    std::vector<SDL_Color> Colors(256);
+    for (int i = 0; i < 256; i++)
+    {
+        Colors[i] = { (u8)i, (u8)i, (u8)i, 0xFF };
+    }
+    SDL_SetPaletteColors(DebugPalette, Colors.data(), 0, 256);
+
+    DebugTextureRect = new SDL_FRect();
+    DebugTextureRect->x = 0;
+    DebugTextureRect->y = 0;
+    DebugTextureRect->w = 1280;
+    DebugTextureRect->h = 720;
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -32,30 +52,30 @@ Renderer::Renderer(SDL_Window* Window, u32 RendererFlags)
 
 Renderer::~Renderer()
 {
+    // This is probably not necessary
+    SDL_DestroySurface(pSurface);
+    SDL_DestroySurface(pDebugSurface);
+    free(BitmapMemory);
+    
+    // This is how imgui SDL3 example is shuting down
     ImGui_ImplSDLRenderer3_Shutdown();
     SDL_DestroyRenderer(pRenderer);
 }
 
-void Renderer::ClearScreen(i32 r, i32 g, i32 b, i32 a)
+void Renderer::ClearScreen(u8 Red, u8 Green, u8 Blue, u8 Alpha)
 {
-    SDL_SetRenderDrawColor(pRenderer, r, g, b, a);
+    SDL_SetRenderDrawColor(pRenderer, Red, Green, Blue, Alpha);
     SDL_RenderClear(pRenderer);
 }
 
-void Renderer::Update()
-{
-    ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData());
-    SDL_RenderPresent(pRenderer);
-}
-
-void Renderer::Render()
+void Renderer::Update(SDL_Window* Window)
 {
     ImGuiIO& io = ImGui::GetIO();
 
     // Start the Dear ImGui frame
     ImGui_ImplSDLRenderer3_NewFrame();
     ImGui_ImplSDL3_NewFrame();
-    
+
     ImGui::NewFrame();
     ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x - 3.0f, 3.0f), 0, ImVec2(1.0f, 0.0f));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 5.0f);
@@ -74,6 +94,66 @@ void Renderer::Render()
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
     }
+
+    RenderDebugGradient(DebugXOffset, DebugYOffset);
+    
+    DebugXOffset++;
+    DebugYOffset++;
+    
+    SDL_DestroySurface(pDebugSurface);
+}
+
+void Renderer::SetPixel(SDL_Surface* Surface, int x, int y, u32 Pixel)
+{
+    u32* const target_pixel = (u32*)((u8*)Surface->pixels
+        + y * Surface->pitch
+        + x * Surface->format->bytes_per_pixel);
+    *target_pixel = Pixel;
+}
+
+void Renderer::RenderDebugGradient(i32 XOffset, i32 YOffset)
+{
+    i32 Pitch = pSurface->w * pSurface->format->bytes_per_pixel;
+    
+    u8* Row = (u8*)BitmapMemory;
+    for (i32 y = 0; y < pSurface->h; y++)
+    {
+        u8* Pixel = (u8*)Row;
+        for (i32 x = 0; x < pSurface->w; x++)
+        {
+            *Pixel = (u8)(x + XOffset);
+            ++Pixel;
+            
+            *Pixel = (u8)(y + YOffset);
+            ++Pixel;
+            
+            *Pixel = 0;
+            ++Pixel;
+            
+            *Pixel = 0;
+            ++Pixel;
+        }
+        
+        Row += Pitch;
+    }
+
+    pDebugSurface = SDL_CreateSurfaceFrom(BitmapMemory, pSurface->w, pSurface->h, pSurface->w * 4, SDL_PIXELFORMAT_INDEX8);
+    SDL_SetSurfacePalette(pDebugSurface, DebugPalette);
+    pDebugTexture = SDL_CreateTextureFromSurface(pRenderer, pDebugSurface);
+    
+    COREASSERT_MESSAGE(pDebugSurface, SDL_GetError());
+    COREASSERT_MESSAGE(pDebugTexture, SDL_GetError());
+}
+
+void Renderer::Render()
+{
+    SDL_RenderTexture(pRenderer, pDebugTexture, NULL, DebugTextureRect);
+
+    ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData());
+    
+    SDL_RenderPresent(pRenderer);
+
+    SDL_DestroyTexture(pDebugTexture);
 }
 
 SDL_Renderer* Renderer::GetRenderer()

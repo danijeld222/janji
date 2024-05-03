@@ -13,11 +13,6 @@
 #include "imgui_impl_sdlrenderer3.h"
 #include <stdio.h>
 #include <SDL3/SDL.h>
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-#include <SDL3/SDL_opengles2.h>
-#else
-#include <SDL3/SDL_opengl.h>
-#endif
 
 class Renderer
 {
@@ -25,12 +20,26 @@ public:
     Renderer(SDL_Window* Window, u32 RendererFlags);
     ~Renderer();
     
-    void ClearScreen(i32 r, i32 g, i32 b, i32 a);
-    void Update();
+    void ClearScreen(u8 Red, u8 Green, u8 Blue, u8 Alpha);
+    void Update(SDL_Window* Window);
     void Render();
+    
+    void SetPixel(SDL_Surface* Surface, int x, int y, u32 Pixel);
+    void RenderDebugGradient(i32 XOffset, i32 YOffset);
 
     SDL_Renderer* GetRenderer();
 
 private:
     SDL_Renderer* pRenderer;
+    SDL_Surface* pSurface;
+
+    SDL_Surface* pDebugSurface;
+    SDL_Texture* pDebugTexture;
+    SDL_Palette* DebugPalette;
+    SDL_FRect* DebugTextureRect;
+
+    i32 DebugXOffset = 0;
+    i32 DebugYOffset = 0;
+
+    u8* BitmapMemory;
 };

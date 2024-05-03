@@ -18,11 +18,20 @@ int TestingRestructure()
     Renderer* _Renderer = new Renderer(_Window->GetWindow(), SDL_RENDERER_PRESENTVSYNC);
     Events* _Events = new Events();
 
+    u8 RedChannel = 0;
+    u8 GreenChannel = 85;
+    u8 BlueChannel = 170;
+    u8 AlphaChannel = 255;
+
     while (_Events->HandleEvents(_Window->GetWindow()))
     {
-        _Renderer->ClearScreen(128, 128, 128, 255);
+        _Renderer->ClearScreen(RedChannel, GreenChannel, BlueChannel, AlphaChannel);
+        _Renderer->Update(_Window->GetWindow());
         _Renderer->Render();
-        _Renderer->Update();
+
+        RedChannel++;
+        GreenChannel++;
+        BlueChannel++;
     }
 
     return 0;

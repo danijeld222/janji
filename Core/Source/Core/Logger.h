@@ -27,6 +27,10 @@ void ShutdownLogging();
 
 COREAPI void LogOutput(LogLevel Level, const char* Message, ...);
 
+// Windows specific console output, won't work on any other OS
+void ConsoleWrite(const char* Message, u8 Color);
+void ConsoleWriteError(const char* Message, u8 Color);
+
 // Log defines
 #define COREFATAL(Message, ...) LogOutput(LOG_LEVEL_FATAL, Message, ##__VA_ARGS__);
 #define COREERROR(Message, ...) LogOutput(LOG_LEVEL_ERROR, Message, ##__VA_ARGS__);
