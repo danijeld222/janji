@@ -1,6 +1,8 @@
 #include <Core/Core.h>
 
-int main()
+int main(void)
 {
 	//PrintHelloWorld();
+
+	return 0;
 }

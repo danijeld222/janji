@@ -3,35 +3,41 @@
 
 #include "Core.h"
 #include "Defines.h"
-
+#include "Asserts.h"
 #include "Application.h"
-#include "Window.h"
-#include "Renderer.h"
-#include "Events.h"
 
-int TestingRestructure()
+int CoreMain()
 {
-    Application* _Application = new Application(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMEPAD);
-
-    u32 WindowFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN;
-    Window* _Window = new Window("Janji", 1280, 720, WindowFlags);
-    Renderer* _Renderer = new Renderer(_Window->GetWindow(), SDL_RENDERER_PRESENTVSYNC);
-    Events* _Events = new Events();
-
-    u8 RedChannel = 0;
-    u8 GreenChannel = 85;
-    u8 BlueChannel = 170;
-    u8 AlphaChannel = 255;
-
-    while (_Events->HandleEvents(_Window->GetWindow()))
+    if (!CreateGame)
     {
-        _Renderer->ClearScreen(RedChannel, GreenChannel, BlueChannel, AlphaChannel);
-        _Renderer->Update(_Window->GetWindow());
-        _Renderer->Render();
+        COREFATAL("Create Game function is not binded");
 
-        RedChannel++;
-        GreenChannel++;
-        BlueChannel++;
+        return -1;
+    }
+    
+    Game GameInstance;
+    if (!CreateGame(&GameInstance))
+    {
+        COREFATAL("Could not create game");
+
+        return -2;
+    }
+
+    // Check for Game Instance function pointer bindings
+    if (!GameInstance.Initialize || !GameInstance.Update || !GameInstance.Render || !GameInstance.OnResize)
+    {
+        COREFATAL("Game Instance function pointer binding failed");
+
+        return -3;
+    }
+
+    Application* _Application = new Application(&GameInstance, SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMEPAD);
+    COREASSERT_MESSAGE(_Application, "Application failed to initialize");
+    
+    // Start game loop
+    if (!_Application->ApplicationRun())
+    {
+        return 1;
     }
 
     return 0;

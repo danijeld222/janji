@@ -19,7 +19,7 @@ Renderer::Renderer(SDL_Window* Window, u32 RendererFlags)
     std::vector<SDL_Color> Colors(256);
     for (int i = 0; i < 256; i++)
     {
-        Colors[i] = { (u8)i, (u8)i, (u8)i, 0xFF };
+        Colors[i] = { (u8)(i*1.0f), (u8)(i*2.0f), (u8)(i*5.0f), 0xFF };
     }
     SDL_SetPaletteColors(DebugPalette, Colors.data(), 0, 256);
 
@@ -136,7 +136,7 @@ void Renderer::RenderDebugGradient(i32 XOffset, i32 YOffset)
         
         Row += Pitch;
     }
-
+    
     pDebugSurface = SDL_CreateSurfaceFrom(BitmapMemory, pSurface->w, pSurface->h, pSurface->w * 4, SDL_PIXELFORMAT_INDEX8);
     SDL_SetSurfacePalette(pDebugSurface, DebugPalette);
     pDebugTexture = SDL_CreateTextureFromSurface(pRenderer, pDebugSurface);

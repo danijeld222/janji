@@ -54,6 +54,9 @@ void ConsoleWrite(const char* Message, u8 Color)
 	u64 Length = strlen(Message);
 	LPDWORD NumberWritten = 0;
 	WriteConsoleA(GetStdHandle(STD_OUTPUT_HANDLE), Message, (DWORD)Length, NumberWritten, 0);
+
+	// Reset console text color to white
+	SetConsoleTextAttribute(ConsoleHandle, 7);
 }
 
 void ConsoleWriteError(const char* Message, u8 Color)
@@ -65,4 +68,7 @@ void ConsoleWriteError(const char* Message, u8 Color)
 	u64 Length = strlen(Message);
 	LPDWORD NumberWritten = 0;
 	WriteConsoleA(GetStdHandle(STD_ERROR_HANDLE), Message, (DWORD)Length, NumberWritten, 0);
+
+	// Reset console text color to white
+	SetConsoleTextAttribute(ConsoleHandle, 7);
 }
