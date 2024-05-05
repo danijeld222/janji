@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Defines.h"
-#include "Logger.h"
 #include "GameType.h"
 
 #include <functional>

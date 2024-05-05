@@ -2,6 +2,7 @@
 #include "Asserts.h"
 #include "Logger.h"
 #include "GameType.h"
+#include "CoreMemory.h"
 
 #include <SDL3/SDL.h>
 #include <stdio.h>
@@ -51,6 +52,8 @@ Application::~Application()
 
 b8 Application::ApplicationRun()
 {
+    COREINFO(GetMemoryUsage());
+    
     u8 RedChannel = 0;
     u8 GreenChannel = 85;
     u8 BlueChannel = 170;

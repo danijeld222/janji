@@ -3,6 +3,11 @@
 #include <Defines.h>
 #include <GameType.h>
 
+struct GameState
+{
+	f32 DeltaTime;
+};
+
 b8 CreateGameImplementation(Game* OutGame);
 
 b8 GameInitialize(Game* GameInstance);

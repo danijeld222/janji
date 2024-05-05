@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include <Core/Logger.h>
+#include <Core/CoreMemory.h>
 
 // Define the function to create a game
 b8 CreateGameImplementation(Game* OutGame) {
@@ -12,6 +13,8 @@ b8 CreateGameImplementation(Game* OutGame) {
     OutGame->Update = GameUpdate;
     OutGame->Render = GameRender;
     OutGame->OnResize = GameOnResize;
+    
+    OutGame->State = CoreAllocate(sizeof(GameState), MEMORY_TAG_GAME);
     
     return true;
 }

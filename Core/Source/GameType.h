@@ -20,5 +20,5 @@ struct Game
     std::function<b8(Game* GameInstance, f32 DeltaTime)> Render;
     std::function<void(Game* GameInstance, u32 Width, u32 Height)> OnResize;
     
-    f32 DeltaTime;
+    void* State;
 };
