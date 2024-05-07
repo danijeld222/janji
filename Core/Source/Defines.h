@@ -20,6 +20,8 @@ typedef double f64;
 typedef char b8;
 typedef int b32;
 
+#define BIT(x) (1 << x)
+
 #define STATIC_ASSERT static_assert
 
 // Ensure all types are of the correct size.

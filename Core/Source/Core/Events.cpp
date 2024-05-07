@@ -3,19 +3,19 @@
 
 #include "imgui_impl_sdl3.h"
 
-bool Events::HandleEvents(SDL_Window* Window)
+bool Events::HandleEvents(SDL_Window* window)
 {
-    COREASSERT_MESSAGE(Window, "Events - Window is not valid.");
+    COREASSERT_MESSAGE(window, "Events - Window is not valid.");
 
-    while (SDL_PollEvent(&Event))
+    while (SDL_PollEvent(&m_Event))
     {
-        ImGui_ImplSDL3_ProcessEvent(&Event);
+        ImGui_ImplSDL3_ProcessEvent(&m_Event);
 
-        if (Event.type == SDL_EVENT_QUIT)
+        if (m_Event.type == SDL_EVENT_QUIT)
         {
             return false;
         }
-        if (Event.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED && Event.window.windowID == SDL_GetWindowID(Window))
+        if (m_Event.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED && m_Event.window.windowID == SDL_GetWindowID(window))
         {
             return false;
         }

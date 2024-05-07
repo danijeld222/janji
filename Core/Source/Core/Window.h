@@ -7,11 +7,11 @@
 class Window
 {
 public:
-    Window(const char* Title, i32 Width, i32 Height, SDL_WindowFlags WindowFlags);
+    Window(const char* title, i32 width, i32 height, SDL_WindowFlags windowFlags);
     ~Window();
 
     SDL_Window* GetWindow();
 
 private:
-    SDL_Window* pWindow;
+    SDL_Window* m_Window;
 };

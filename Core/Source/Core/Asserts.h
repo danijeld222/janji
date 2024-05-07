@@ -12,50 +12,50 @@
 #define DebugBreak()
 #endif
 
-COREAPI void ReportAssertionFailure(const char* Expression, const char* Message, const char* File, i32 Line);
+COREAPI void ReportAssertionFailure(const char* expression, const char* message, const char* file, i32 line);
 
-#define COREASSERT(Expression)													\
+#define COREASSERT(expression)													\
 {																				\
-	if (Expression)																\
+	if (expression)																\
 	{																			\
 	}																			\
 	else																		\
 	{																			\
-		ReportAssertionFailure(#Expression, "", __FILE__, __LINE__);			\
+		ReportAssertionFailure(#expression, "", __FILE__, __LINE__);			\
 		DebugBreak();															\
 	}																			\
 }
 
-#define COREASSERT_MESSAGE(Expression, Message)									\
+#define COREASSERT_MESSAGE(expression, message)									\
 {																				\
-	if (Expression)																\
+	if (expression)																\
 	{																			\
 	}																			\
 	else																		\
 	{																			\
-		ReportAssertionFailure(#Expression, Message, __FILE__, __LINE__);		\
+		ReportAssertionFailure(#expression, message, __FILE__, __LINE__);		\
 		DebugBreak();															\
 	}																			\
 }
 
 #ifdef DEBUG
-#define COREASSERT_DEBUG(Expression)											\
+#define COREASSERT_DEBUG(expression)											\
 {																				\
-	if (Expression)																\
+	if (expression)																\
 	{																			\
 	}																			\
 	else																		\
 	{																			\
-		ReportAssertionFailure(#Expression, "", __FILE__, __LINE__);			\
+		ReportAssertionFailure(#expression, "", __FILE__, __LINE__);			\
 		DebugBreak();															\
 	}																			\
 }
 #else
-#define COREASSERT_DEBUG(Expression)
+#define COREASSERT_DEBUG(expression)
 #endif
 
 #else
-#define COREASSERT(Expression)
-#define COREASSERT_MESSAGE(Expression)
-#define COREASSERT_DEBUG(Expression)
+#define COREASSERT(expression)
+#define COREASSERT_MESSAGE(expression)
+#define COREASSERT_DEBUG(expression)
 #endif

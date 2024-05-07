@@ -5,15 +5,15 @@
 
 struct GameState
 {
-	f32 DeltaTime;
+	f32 deltaTime;
 };
 
-b8 CreateGameImplementation(Game* OutGame);
+b8 CreateGameImplementation(Game* outGame);
 
-b8 GameInitialize(Game* GameInstance);
+b8 GameInitialize(Game* gameInstance);
 
-b8 GameUpdate(Game* GameInstance, f32 DeltaTime);
+b8 GameUpdate(Game* gameInstance, f32 deltaTime);
 
-b8 GameRender(Game* GameInstance, f32 DeltaTime);
+b8 GameRender(Game* gameInstance, f32 deltaTime);
 
-void GameOnResize(Game* GameInstance, u32 Width, u32 Height);
+void GameOnResize(Game* gameInstance, u32 width, u32 height);

@@ -17,29 +17,29 @@
 class Renderer
 {
 public:
-    Renderer(SDL_Window* Window, u32 RendererFlags);
+    Renderer(SDL_Window* window, u32 rendererFlags);
     ~Renderer();
     
-    void ClearScreen(u8 Red, u8 Green, u8 Blue, u8 Alpha);
-    void Update(SDL_Window* Window);
+    void ClearScreen(u8 red, u8 green, u8 blue, u8 alpha);
+    void Update(SDL_Window* window);
     void Render();
     
-    void SetPixel(SDL_Surface* Surface, int x, int y, u32 Pixel);
-    void RenderDebugGradient(i32 XOffset, i32 YOffset);
+    void SetPixel(SDL_Surface* surface, int x, int y, u32 pixel);
+    void RenderDebugGradient(i32 xOffset, i32 yOffset);
 
     SDL_Renderer* GetRenderer();
 
 private:
-    SDL_Renderer* pRenderer;
-    SDL_Surface* pSurface;
+    SDL_Renderer* m_Renderer;
+    SDL_Surface* m_Surface;
 
-    SDL_Surface* pDebugSurface;
-    SDL_Texture* pDebugTexture;
-    SDL_Palette* DebugPalette;
-    SDL_FRect* DebugTextureRect;
+    SDL_Surface* m_DebugSurface;
+    SDL_Texture* m_DebugTexture;
+    SDL_Palette* m_DebugPalette;
+    SDL_FRect* m_DebugTextureRect;
 
-    i32 DebugXOffset = 0;
-    i32 DebugYOffset = 0;
+    i32 m_DebugXOffset = 0;
+    i32 m_DebugYOffset = 0;
 
-    u8* BitmapMemory;
+    u8* m_BitmapMemory;
 };

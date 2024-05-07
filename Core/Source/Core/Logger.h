@@ -25,36 +25,36 @@ enum LogLevel
 b8 InitializeLogging();
 void ShutdownLogging();
 
-COREAPI void LogOutput(LogLevel Level, const char* Message, ...);
+COREAPI void LogOutput(LogLevel level, const char* message, ...);
 
 // Windows specific console output, won't work on any other OS
-void ConsoleWrite(const char* Message, u8 Color);
-void ConsoleWriteError(const char* Message, u8 Color);
+void ConsoleWrite(const char* message, u8 color);
+void ConsoleWriteError(const char* message, u8 color);
 
 // Log defines
-#define COREFATAL(Message, ...) LogOutput(LOG_LEVEL_FATAL, Message, ##__VA_ARGS__);
-#define COREERROR(Message, ...) LogOutput(LOG_LEVEL_ERROR, Message, ##__VA_ARGS__);
+#define COREFATAL(message, ...) LogOutput(LOG_LEVEL_FATAL, message, ##__VA_ARGS__);
+#define COREERROR(message, ...) LogOutput(LOG_LEVEL_ERROR, message, ##__VA_ARGS__);
 
 #if LOG_WARNING_ENABLED == 1
-#define COREWARNING(Message, ...) LogOutput(LOG_LEVEL_WARNING, Message, ##__VA_ARGS__);
+#define COREWARNING(message, ...) LogOutput(LOG_LEVEL_WARNING, message, ##__VA_ARGS__);
 #else
-#define COREWARNING(Message,...)
+#define COREWARNING(message,...)
 #endif 
 
 #if LOG_INFO_ENABLED == 1
-#define COREINFO(Message, ...) LogOutput(LOG_LEVEL_INFO, Message, ##__VA_ARGS__);
+#define COREINFO(message, ...) LogOutput(LOG_LEVEL_INFO, message, ##__VA_ARGS__);
 #else
-#define COREINFO(Message,...)
+#define COREINFO(message,...)
 #endif 
 
 #if LOG_DEBUG_ENABLED == 1
-#define COREDEBUG(Message, ...) LogOutput(LOG_LEVEL_DEBUG, Message, ##__VA_ARGS__);
+#define COREDEBUG(message, ...) LogOutput(LOG_LEVEL_DEBUG, message, ##__VA_ARGS__);
 #else
-#define COREDEBUG(Message,...)
+#define COREDEBUG(message,...)
 #endif 
 
 #if LOG_TRACE_ENABLED == 1
-#define CORETRACE(Message, ...) LogOutput(LOG_LEVEL_TRACE, Message, ##__VA_ARGS__);
+#define CORETRACE(message, ...) LogOutput(LOG_LEVEL_TRACE, message, ##__VA_ARGS__);
 #else
-#define CORETRACE(Message,...)
+#define CORETRACE(message,...)
 #endif 

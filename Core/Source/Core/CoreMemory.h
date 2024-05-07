@@ -27,10 +27,10 @@ enum MemoryTag
 COREAPI void InitializeMemoryStats();
 COREAPI void ShutdownMemoryStats();
 
-COREAPI void* CoreAllocate(u64 Size, MemoryTag Tag);
-COREAPI void CoreFree(void* Block, u64 Size, MemoryTag Tag);
-COREAPI void* CoreZeroMemory(void* Block, u64 Size);
-COREAPI void* CoreCopyMemory(void* Destination, const void* Source, u64 Size);
-COREAPI void* CoreSetMemory(void* Destination, i32 Value, u64 Size);
+COREAPI void* CoreAllocate(u64 size, MemoryTag tag);
+COREAPI void CoreFree(void* block, u64 size, MemoryTag tag);
+COREAPI void* CoreZeroMemory(void* block, u64 size);
+COREAPI void* CoreCopyMemory(void* destination, const void* source, u64 size);
+COREAPI void* CoreSetMemory(void* destination, i32 value, u64 size);
 
 COREAPI char* GetMemoryUsage();

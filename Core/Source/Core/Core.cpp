@@ -14,15 +14,15 @@ int CoreMain()
     InitializeMemoryStats();
     InitializeLogging();
     
-    if (!CreateGame)
+    if (!createGame)
     {
         COREFATAL("Create Game function is not binded");
         
         return -1;
     }
     
-    Game GameInstance;
-    if (!CreateGame(&GameInstance))
+    Game gameInstance;
+    if (!createGame(&gameInstance))
     {
         COREFATAL("Could not create game");
         
@@ -30,18 +30,18 @@ int CoreMain()
     }
     
     // Check for Game Instance function pointer bindings
-    if (!GameInstance.Initialize || !GameInstance.Update || !GameInstance.Render || !GameInstance.OnResize)
+    if (!gameInstance.initialize || !gameInstance.update || !gameInstance.render || !gameInstance.onResize)
     {
         COREFATAL("Game Instance function pointer binding failed");
         
         return -3;
     }
     
-    Application* _Application = new Application(&GameInstance, SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMEPAD);
-    COREASSERT_MESSAGE(_Application, "Application failed to initialize");
+    Application* application = new Application(&gameInstance, SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMEPAD);
+    COREASSERT_MESSAGE(application, "Application failed to initialize");
     
     // Start game loop
-    if (!_Application->ApplicationRun())
+    if (!application->ApplicationRun())
     {
         return 1;
     }

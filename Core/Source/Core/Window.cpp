@@ -3,22 +3,22 @@
 
 #include <stdio.h>
 
-Window::Window(const char* Title, i32 Width, i32 Height, SDL_WindowFlags WindowFlags)
+Window::Window(const char* title, i32 width, i32 height, SDL_WindowFlags windowFlags)
 {
-    pWindow = SDL_CreateWindow(Title, Width, Height, WindowFlags);
+    m_Window = SDL_CreateWindow(title, width, height, windowFlags);
 
-    COREASSERT_MESSAGE(pWindow, SDL_GetError());
+    COREASSERT_MESSAGE(m_Window, SDL_GetError());
     
-    SDL_SetWindowPosition(pWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-    SDL_ShowWindow(pWindow);
+    SDL_SetWindowPosition(m_Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+    SDL_ShowWindow(m_Window);
 }
 
 Window::~Window()
 {
-    SDL_DestroyWindow(pWindow);
+    SDL_DestroyWindow(m_Window);
 }
 
 SDL_Window* Window::GetWindow()
 {
-    return pWindow;
+    return m_Window;
 }

@@ -6,19 +6,19 @@
 
 struct ApplicationConfig
 {
-    i16 Width;
-    i16 Height;
-    char* Name;
+    i16 width;
+    i16 height;
+    char* name;
 };
 
 struct Game
 {
-    ApplicationConfig AppConfig;
+    ApplicationConfig appConfig;
     
-    std::function<b8(Game* GameInstance)> Initialize;
-    std::function<b8(Game* GameInstance, f32 DeltaTime)> Update;
-    std::function<b8(Game* GameInstance, f32 DeltaTime)> Render;
-    std::function<void(Game* GameInstance, u32 Width, u32 Height)> OnResize;
+    std::function<b8(Game* gameInstance)> initialize;
+    std::function<b8(Game* gameInstance, f32 deltaTime)> update;
+    std::function<b8(Game* gameInstance, f32 deltaTime)> render;
+    std::function<void(Game* gameInstance, u32 width, u32 height)> onResize;
     
-    void* State;
+    void* state;
 };

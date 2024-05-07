@@ -1,33 +1,37 @@
 #include "Renderer.h"
 #include "Asserts.h"
+#include "CoreMemory.h"
+
 #include <vector>
 #include "SDL3/SDL_surface.h"
 
-Renderer::Renderer(SDL_Window* Window, u32 RendererFlags)
+Renderer::Renderer(SDL_Window* window, u32 rendererFlags)
 {
-    pRenderer = SDL_CreateRenderer(Window, nullptr, RendererFlags);
-    pSurface = SDL_GetWindowSurface(Window);
+    m_Renderer = SDL_CreateRenderer(window, nullptr, rendererFlags);
+    m_Surface = SDL_GetWindowSurface(window);
+    m_DebugSurface = nullptr;
+    m_DebugTexture = nullptr;
 
-    COREASSERT_MESSAGE(pRenderer, SDL_GetError());
-    COREASSERT_MESSAGE(pSurface, SDL_GetError());
+    COREASSERT_MESSAGE(m_Renderer, SDL_GetError());
+    COREASSERT_MESSAGE(m_Surface, SDL_GetError());
 
-    BitmapMemory = static_cast<u8*>(malloc(pSurface->w * pSurface->h * 4));
-    memset(BitmapMemory, 0, pSurface->w * pSurface->h * 4);
+    m_BitmapMemory = static_cast<u8*>(CoreAllocate(m_Surface->w * m_Surface->h * 4, MEMORY_TAG_RENDERER));
+    CoreZeroMemory(m_BitmapMemory, m_Surface->w * m_Surface->h * 4);
 
     // Debug 
-    DebugPalette = SDL_CreatePalette(256);
-    std::vector<SDL_Color> Colors(256);
+    m_DebugPalette = SDL_CreatePalette(256);
+    std::vector<SDL_Color> colors(256);
     for (int i = 0; i < 256; i++)
     {
-        Colors[i] = { (u8)(i*1.0f), (u8)(i*2.0f), (u8)(i*5.0f), 0xFF };
+        colors[i] = { (u8)(i*1.0f), (u8)(i*2.0f), (u8)(i*5.0f), 0xFF };
     }
-    SDL_SetPaletteColors(DebugPalette, Colors.data(), 0, 256);
+    SDL_SetPaletteColors(m_DebugPalette, colors.data(), 0, 256);
 
-    DebugTextureRect = new SDL_FRect();
-    DebugTextureRect->x = 0;
-    DebugTextureRect->y = 0;
-    DebugTextureRect->w = 1280;
-    DebugTextureRect->h = 720;
+    m_DebugTextureRect = new SDL_FRect();
+    m_DebugTextureRect->x = 0;
+    m_DebugTextureRect->y = 0;
+    m_DebugTextureRect->w = 1280;
+    m_DebugTextureRect->h = 720;
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -46,29 +50,30 @@ Renderer::Renderer(SDL_Window* Window, u32 RendererFlags)
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
 
-    ImGui_ImplSDL3_InitForSDLRenderer(Window, pRenderer);
-    ImGui_ImplSDLRenderer3_Init(pRenderer);
+    ImGui_ImplSDL3_InitForSDLRenderer(window, m_Renderer);
+    ImGui_ImplSDLRenderer3_Init(m_Renderer);
 }
 
 Renderer::~Renderer()
 {
     // This is probably not necessary
-    SDL_DestroySurface(pSurface);
-    SDL_DestroySurface(pDebugSurface);
-    free(BitmapMemory);
+    CoreFree(m_BitmapMemory, m_Surface->w * m_Surface->h * 4, MEMORY_TAG_RENDERER);
+
+    SDL_DestroySurface(m_Surface);
+    SDL_DestroySurface(m_DebugSurface);
     
     // This is how imgui SDL3 example is shuting down
     ImGui_ImplSDLRenderer3_Shutdown();
-    SDL_DestroyRenderer(pRenderer);
+    SDL_DestroyRenderer(m_Renderer);
 }
 
-void Renderer::ClearScreen(u8 Red, u8 Green, u8 Blue, u8 Alpha)
+void Renderer::ClearScreen(u8 red, u8 green, u8 blue, u8 alpha)
 {
-    SDL_SetRenderDrawColor(pRenderer, Red, Green, Blue, Alpha);
-    SDL_RenderClear(pRenderer);
+    SDL_SetRenderDrawColor(m_Renderer, red, green, blue, alpha);
+    SDL_RenderClear(m_Renderer);
 }
 
-void Renderer::Update(SDL_Window* Window)
+void Renderer::Update(SDL_Window* window)
 {
     ImGuiIO& io = ImGui::GetIO();
 
@@ -95,68 +100,68 @@ void Renderer::Update(SDL_Window* Window)
         ImGui::RenderPlatformWindowsDefault();
     }
 
-    RenderDebugGradient(DebugXOffset, DebugYOffset);
+    RenderDebugGradient(m_DebugXOffset, m_DebugYOffset);
     
-    DebugXOffset++;
-    DebugYOffset++;
+    m_DebugXOffset++;
+    m_DebugYOffset++;
     
-    SDL_DestroySurface(pDebugSurface);
+    SDL_DestroySurface(m_DebugSurface);
 }
 
-void Renderer::SetPixel(SDL_Surface* Surface, int x, int y, u32 Pixel)
+void Renderer::SetPixel(SDL_Surface* surface, int x, int y, u32 pixel)
 {
-    u32* const target_pixel = (u32*)((u8*)Surface->pixels
-        + y * Surface->pitch
-        + x * Surface->format->bytes_per_pixel);
-    *target_pixel = Pixel;
+    u32* const target_pixel = (u32*)((u8*)surface->pixels
+        + y * surface->pitch
+        + x * surface->format->bytes_per_pixel);
+    *target_pixel = pixel;
 }
 
-void Renderer::RenderDebugGradient(i32 XOffset, i32 YOffset)
+void Renderer::RenderDebugGradient(i32 xOffset, i32 yOffset)
 {
-    i32 Pitch = pSurface->w * pSurface->format->bytes_per_pixel;
+    i32 pitch = m_Surface->w * m_Surface->format->bytes_per_pixel;
     
-    u8* Row = (u8*)BitmapMemory;
-    for (i32 y = 0; y < pSurface->h; y++)
+    u8* row = (u8*)m_BitmapMemory;
+    for (i32 y = 0; y < m_Surface->h; y++)
     {
-        u8* Pixel = (u8*)Row;
-        for (i32 x = 0; x < pSurface->w; x++)
+        u8* pixel = (u8*)row;
+        for (i32 x = 0; x < m_Surface->w; x++)
         {
-            *Pixel = (u8)(x + XOffset);
-            ++Pixel;
+            *pixel = (u8)(x + xOffset);
+            ++pixel;
             
-            *Pixel = (u8)(y + YOffset);
-            ++Pixel;
+            *pixel = (u8)(y + yOffset);
+            ++pixel;
             
-            *Pixel = 0;
-            ++Pixel;
+            *pixel = 0;
+            ++pixel;
             
-            *Pixel = 0;
-            ++Pixel;
+            *pixel = 0;
+            ++pixel;
         }
         
-        Row += Pitch;
+        row += pitch;
     }
     
-    pDebugSurface = SDL_CreateSurfaceFrom(BitmapMemory, pSurface->w, pSurface->h, pSurface->w * 4, SDL_PIXELFORMAT_INDEX8);
-    SDL_SetSurfacePalette(pDebugSurface, DebugPalette);
-    pDebugTexture = SDL_CreateTextureFromSurface(pRenderer, pDebugSurface);
+    m_DebugSurface = SDL_CreateSurfaceFrom(m_BitmapMemory, m_Surface->w, m_Surface->h, m_Surface->w * 4, SDL_PIXELFORMAT_INDEX8);
+    SDL_SetSurfacePalette(m_DebugSurface, m_DebugPalette);
+    m_DebugTexture = SDL_CreateTextureFromSurface(m_Renderer, m_DebugSurface);
     
-    COREASSERT_MESSAGE(pDebugSurface, SDL_GetError());
-    COREASSERT_MESSAGE(pDebugTexture, SDL_GetError());
+    COREASSERT_MESSAGE(m_DebugSurface, SDL_GetError());
+    COREASSERT_MESSAGE(m_DebugTexture, SDL_GetError());
 }
 
 void Renderer::Render()
 {
-    SDL_RenderTexture(pRenderer, pDebugTexture, NULL, DebugTextureRect);
+    SDL_RenderTexture(m_Renderer, m_DebugTexture, NULL, m_DebugTextureRect);
 
     ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData());
     
-    SDL_RenderPresent(pRenderer);
+    SDL_RenderPresent(m_Renderer);
 
-    SDL_DestroyTexture(pDebugTexture);
+    SDL_DestroyTexture(m_DebugTexture);
 }
 
 SDL_Renderer* Renderer::GetRenderer()
 {
-    return pRenderer;
+    return m_Renderer;
 }

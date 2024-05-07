@@ -8,28 +8,28 @@
 
 struct ApplicationState 
 {
-    Game* GameInstance;
-    b8 IsRunning;
-    b8 IsSuspended;
-    i16 Width;
-    i16 Height;
-    f64 LastTime;
+    Game* gameInstance;
+    b8 isRunning;
+    b8 isSuspended;
+    i16 width;
+    i16 height;
+    f64 lastTime;
 };
 
 class Application 
 {
 public:
-    Application(Game* GameInstance, u32 SDLFlags);
+    Application(Game* gameInstance, u32 SDLFlags);
     ~Application();
     
-    COREAPI b8 ApplicationRun();
+    b8 ApplicationRun();
     
 private:
-    Window* _Window;
-    Renderer* _Renderer;
-    Events* _Events;
+    Window* m_Window;
+    Renderer* m_Renderer;
+    Events* m_Events;
     
 private:
-    b8 Initialized = false;
-    ApplicationState AppState;
+    b8 m_Initialized = false;
+    ApplicationState m_AppState;
 };

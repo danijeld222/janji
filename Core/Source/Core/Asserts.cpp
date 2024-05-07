@@ -1,7 +1,7 @@
 #include "Asserts.h"
 #include "Logger.h"
 
-void ReportAssertionFailure(const char* Expression, const char* Message, const char* File, i32 Line)
+void ReportAssertionFailure(const char* expression, const char* message, const char* file, i32 line)
 {
-	LogOutput(LOG_LEVEL_FATAL, "Assertion Failure: %s, Message: '%s', in File: %s, Line: %d\n", Expression, Message, File, Line);
+	LogOutput(LOG_LEVEL_FATAL, "Assertion Failure: %s, Message: '%s', in File: %s, Line: %d\n", expression, message, file, line);
 }

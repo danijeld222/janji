@@ -16,7 +16,7 @@ int main(void)
     // https://stackoverflow.com/questions/78431974/calling-extern-function-from-dll-declared-in-exe-error-lnk2019-unresolved
     //
 
-    CreateGame = CreateGameImplementation;
+    createGame = CreateGameImplementation;
 
     return CoreMain();
 }

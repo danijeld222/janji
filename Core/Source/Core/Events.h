@@ -6,8 +6,8 @@
 class Events
 {
 public:
-    bool HandleEvents(SDL_Window* Window);
+    bool HandleEvents(SDL_Window* window);
 
 private:
-    SDL_Event Event;
+    SDL_Event m_Event;
 };
