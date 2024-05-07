@@ -1,11 +1,10 @@
 #include "Application.h"
-#include "Asserts.h"
-#include "Logger.h"
-#include "GameType.h"
-#include "CoreMemory.h"
-#include "Events/ApplicationEvent.h"
+#include "Core/Asserts.h"
+#include "Core/Logger/Logger.h"
+#include "Core/CoreMemory.h"
+#include "Core/Events/ApplicationEvent.h"
 
-
+/*
 #include <SDL3/SDL.h>
 #include <stdio.h>
 #include "imgui_impl_sdl3.h"
@@ -79,4 +78,35 @@ b8 Application::ApplicationRun()
     }
 
     return true;
+}
+
+*/
+
+namespace Core {
+    
+    Application::Application()
+    {
+        InitializeMemoryStats();
+        Core::Logger::Initialize();
+        
+        m_Window = WindowBase::Create();
+        
+        m_Running = true;
+    }
+    
+    Application::~Application()
+    {
+        ShutdownMemoryStats();
+    }
+    
+    void Application::ApplicationRun()
+    {
+        COREINFO(GetMemoryUsage());
+        
+        while (m_Running)
+        {
+            m_Window->OnUpdate();
+        }
+    }
+    
 }

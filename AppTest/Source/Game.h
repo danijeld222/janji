@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Defines.h>
-#include <GameType.h>
+#include <Core/Defines.h>
+#include <Core/GameType.h>
 
 struct GameState
 {

@@ -1,6 +1,6 @@
 #include "Game.h"
 
-#include <Core/Logger.h>
+#include <Core/Logger/Logger.h>
 #include <Core/CoreMemory.h>
 
 // Define the function to create a game
