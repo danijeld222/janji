@@ -2,7 +2,8 @@
 #include "Core/Asserts.h"
 #include "Core/Logger/Logger.h"
 #include "Core/CoreMemory.h"
-#include "Core/Events/ApplicationEvent.h"
+
+#include <functional>
 
 /*
 #include <SDL3/SDL.h>
@@ -82,7 +83,10 @@ b8 Application::ApplicationRun()
 
 */
 
+
 namespace Core {
+    
+#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
     
     Application::Application()
     {
@@ -90,6 +94,7 @@ namespace Core {
         Core::Logger::Initialize();
         
         m_Window = WindowBase::Create();
+        m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
         
         m_Running = true;
     }
@@ -97,6 +102,14 @@ namespace Core {
     Application::~Application()
     {
         ShutdownMemoryStats();
+    }
+    
+    void Application::OnEvent(Event& e)
+    {
+        EventDispatcher dispatcher(e);
+        dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+        
+        CORETRACE(e.ToString().c_str());
     }
     
     void Application::ApplicationRun()
@@ -109,4 +122,9 @@ namespace Core {
         }
     }
     
+    bool Application::OnWindowClose(WindowCloseEvent& e)
+    {
+        m_Running = false;
+        return true;
+    }
 }

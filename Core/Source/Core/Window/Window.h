@@ -20,7 +20,14 @@ namespace Core
 		inline u32 GetHeight() const override { return m_Data.height; }
 		
 		inline void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.eventCallback = callback; }
-	
+		
+		static int HandleWindowResizeEvent(void* data, SDL_Event* e);
+		static int HandleWindowCloseEvent(void* data, SDL_Event* e);
+		static int HandleKeyboardEvent(void* data, SDL_Event* e);
+		static int HandleMouseButtonEvent(void* data, SDL_Event* e);
+		static int HandleMouseScrollEvent(void* data, SDL_Event* e);
+		static int HandleMouseMoveEvent(void* data, SDL_Event* e);
+		
 	private:
 		virtual void Initialize(const WindowSettings& props);
 		virtual void Shutdown();
@@ -30,13 +37,14 @@ namespace Core
 		
 		// Temporary
 		Renderer* m_Renderer;
-		//Events* m_Events;
-
+		
 		struct WindowData
 		{
 			const char* title;
 			u32 width;
 			u32 height;
+
+			u32 windowID;
 			u32 windowFlags;
 
 			EventCallbackFunction eventCallback;

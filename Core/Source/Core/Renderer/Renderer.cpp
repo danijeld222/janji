@@ -172,17 +172,10 @@ namespace Core
         u8 greenChannel = 85;
         u8 blueChannel = 170;
         u8 alphaChannel = 255;
-
-        //while (m_Events->HandleEvents(m_Window->GetWindow()))
-        //{
-            ClearScreen(redChannel, greenChannel, blueChannel, alphaChannel);
-            Update(window);
-            Render();
-
-            //redChannel++;
-            //greenChannel++;
-            //blueChannel++;
-        //}
+        
+        ClearScreen(redChannel, greenChannel, blueChannel, alphaChannel);
+        Update(window);
+        Render();
     }
 
     SDL_Renderer* Renderer::GetRenderer()

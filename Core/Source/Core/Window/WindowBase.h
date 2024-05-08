@@ -22,7 +22,7 @@ namespace Core
 	class WindowBase
 	{
 	public:
-		using EventCallbackFunction = std::is_function<void(Event&)>;
+		using EventCallbackFunction = std::function<void(Event&)>;
 
 		virtual ~WindowBase() {}
 		virtual void OnUpdate() = 0; // https://stackoverflow.com/questions/2652198/difference-between-a-virtual-function-and-a-pure-virtual-function
