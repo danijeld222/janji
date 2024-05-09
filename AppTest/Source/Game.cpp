@@ -21,8 +21,6 @@ b8 CreateGameImplementation(Game* outGame) {
 
 b8 GameInitialize(Game* gameInstance) 
 {
-    COREDEBUG("GameInitialize() called!");
-    
     return true;
 }
 

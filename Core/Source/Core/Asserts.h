@@ -7,9 +7,9 @@
 #if defined COREASSERTIONS_ENABLED
 #if defined _MSC_VER
 #include <intrin.h>
-#define DebugBreak() __debugbreak()
+#define COREDebugBreak() __debugbreak()
 #else
-#define DebugBreak()
+#define COREDebugBreak()
 #endif
 
 COREAPI void ReportAssertionFailure(const char* expression, const char* message, const char* file, i32 line);
@@ -22,7 +22,7 @@ COREAPI void ReportAssertionFailure(const char* expression, const char* message,
 	else																		\
 	{																			\
 		ReportAssertionFailure(#expression, "", __FILE__, __LINE__);			\
-		DebugBreak();															\
+		COREDebugBreak();														\
 	}																			\
 }
 
@@ -34,7 +34,7 @@ COREAPI void ReportAssertionFailure(const char* expression, const char* message,
 	else																		\
 	{																			\
 		ReportAssertionFailure(#expression, message, __FILE__, __LINE__);		\
-		DebugBreak();															\
+		COREDebugBreak();														\
 	}																			\
 }
 
@@ -47,7 +47,7 @@ COREAPI void ReportAssertionFailure(const char* expression, const char* message,
 	else																		\
 	{																			\
 		ReportAssertionFailure(#expression, "", __FILE__, __LINE__);			\
-		DebugBreak();															\
+		COREDebugBreak();														\
 	}																			\
 }
 #else

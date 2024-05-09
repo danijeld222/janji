@@ -15,7 +15,7 @@ public:
     
     void OnEvent(Core::Event& event) override
     {
-        //COREINFO(event.ToString().c_str());
+        //CORETRACE("TestingLayer {0}", event.ToString());
     }
 };
 

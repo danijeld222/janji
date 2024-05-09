@@ -3,7 +3,6 @@ project "AppTest"
    language "C++"
    cppdialect "C++20"
    targetdir "Binaries/%{cfg.buildcfg}"
-   staticruntime "on"
 
    files { "Source/**.h", "Source/**.cpp" }
 
@@ -14,7 +13,8 @@ project "AppTest"
    
    includedirs
    {
-      "../Core/Source"
+      "../Core/Source",
+      "../Core/Vendor/spdlog/include"
    }
    
    libdirs
@@ -32,16 +32,19 @@ project "AppTest"
    filter "configurations:Debug"
        defines { "DEBUG", "COREIMPORT" }
        runtime "Debug"
+       buildoptions "/MDd"
        symbols "On"
 
    filter "configurations:Release"
        defines { "RELEASE", "COREIMPORT" }
        runtime "Release"
        optimize "On"
+       buildoptions "/MD"
        symbols "On"
 
    filter "configurations:Dist"
        defines { "DIST", "COREIMPORT" }
        runtime "Release"
        optimize "On"
+       buildoptions "/MD"
        symbols "Off"

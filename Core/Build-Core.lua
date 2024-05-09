@@ -3,7 +3,6 @@ project "Core"
    language "C++"
    cppdialect "C++20"
    targetdir "Binaries/%{cfg.buildcfg}"
-   staticruntime "on"
    
    files
    {
@@ -30,7 +29,8 @@ project "Core"
    {
       "Source",
       "Vendor/imgui/",
-      "Vendor/imgui/backends"
+      "Vendor/imgui/backends",
+      "Vendor/spdlog/include"
    }
    
    externalincludedirs
@@ -79,16 +79,19 @@ project "Core"
    filter "configurations:Debug"
        defines { "DEBUG", "COREEXPORT" }
        runtime "Debug"
+       buildoptions "/MDd"
        symbols "On"
 
    filter "configurations:Release"
        defines { "RELEASE", "COREEXPORT" }
        runtime "Release"
        optimize "On"
+       buildoptions "/MD"
        symbols "On"
 
    filter "configurations:Dist"
        defines { "DIST", "COREEXPORT" }
        runtime "Release"
        optimize "On"
+       buildoptions "/MD"
        symbols "Off"
