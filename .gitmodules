@@ -3,3 +3,6 @@
 	url = https://github.com/ocornut/imgui.git
 	branch = docking
 	ignore = dirty
+[submodule "Core/Vendor/spdlog"]
+	path = Core/Vendor/spdlog
+	url = https://github.com/gabime/spdlog
