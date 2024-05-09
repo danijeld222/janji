@@ -4,6 +4,7 @@
 #include "Core/GameType.h"
 #include "Core/Window/WindowBase.h"
 #include "Core/Events/ApplicationEvent.h"
+#include "Core/Layer/LayerStack.h"
 
 namespace Core 
 {
@@ -16,13 +17,21 @@ namespace Core
         void ApplicationRun();
         void OnEvent(Event& e);
         
+        void PushLayer(Layer* layer);
+        void PushOverlay(Layer* layer);
+        
+        inline WindowBase& GetWindow() { return *m_Window; }
+        
+        inline static Application& Get() { return *s_Instance; }
+        
     private:
         bool OnWindowClose(WindowCloseEvent& e);
         
         b8 m_Running = false;
-        WindowBase* m_Window;
+        std::unique_ptr<WindowBase> m_Window;
+        LayerStack m_LayerStack;
         
-        //std::unique_ptr<WindowBase> m_Window;
+        static Application* s_Instance;
     };
     
     Application* CreateApplication();

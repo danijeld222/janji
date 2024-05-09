@@ -13,7 +13,12 @@ namespace Core
 	{
 		// Initialize
 	}
-
+	
+	void Logger::Shutdown()
+	{
+		// Shutdown
+	}
+	
 	void Logger::LogOutput(LogLevel level, const char* message, ...)
 	{
 		const char* levelStrings[6] = { "[FATAL]:  ", "[ERROR]:  ", "[WARNING]:", "[INFO]:   ", "[DEBUG]:  ", "[TRACE]:  " };

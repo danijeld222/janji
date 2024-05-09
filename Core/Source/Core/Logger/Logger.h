@@ -28,6 +28,7 @@ namespace Core
 	{
 	public:
 		static void Initialize();
+		static void Shutdown();
 		static void LogOutput(LogLevel level, const char* message, ...);
 
 	private:
