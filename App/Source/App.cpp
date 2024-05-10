@@ -1,8 +1,40 @@
-#include <Core/Core.h>
+#include <Core.h>
 
-int main(void)
+class TestingLayer : public Core::Layer
 {
-	//PrintHelloWorld();
+public:
+    TestingLayer() : Layer("Testing")
+    {
+        // Constructor
+    }
 
-	return 0;
+    void OnUpdate() override
+    {
+        //COREINFO("TestingLayer UPDATE");
+    }
+
+    void OnEvent(Core::Event& event) override
+    {
+        CORETRACE("TestingLayer {0}", event.ToString());
+    }
+};
+
+class Sandbox : public Core::Application
+{
+public:
+    Sandbox()
+    {
+        PushLayer(new TestingLayer());
+    }
+
+    ~Sandbox()
+    {
+
+    }
+
+};
+
+Core::Application* Core::CreateApplication()
+{
+    return new Sandbox();
 }

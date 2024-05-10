@@ -8,7 +8,11 @@ project "AppTest"
 
    links
    {
-      "Core"
+      "Core",
+      "SDL3",
+      "SDL3_Image",
+      "SDL3_Mixer",
+      "SDL3_TTF"
    }
    
    includedirs
@@ -17,9 +21,21 @@ project "AppTest"
       "../Core/Vendor/spdlog/include"
    }
    
+    externalincludedirs
+   {
+      "../Core/Vendor/SDL3/include",
+      "../Core/Vendor/SDL3_Image/include",
+      "../Core/Vendor/SDL3_Mixer/include",
+      "../Core/Vendor/SDL3_TTF/include"
+   }
+   
    libdirs
    {
-      "../Core"
+      "../Core",
+      "../Core/Vendor/SDL3/lib/%{cfg.architecture}",
+      "../Core/Vendor/SDL3_Image/lib/%{cfg.architecture}",
+      "../Core/Vendor/SDL3_Mixer/lib/%{cfg.architecture}",
+      "../Core/Vendor/SDL3_TTF/lib/%{cfg.architecture}"
    }
    
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")

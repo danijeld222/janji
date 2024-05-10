@@ -2,8 +2,6 @@
 
 #include "WindowBase.h"
 
-#include "Core/Renderer/Renderer.h"
-
 #include <SDL3/SDL.h>
 
 namespace Core 
@@ -18,6 +16,8 @@ namespace Core
 		
 		inline u32 GetWidth() const override { return m_Data.width; }
 		inline u32 GetHeight() const override { return m_Data.height; }
+
+		inline SDL_Window* GetSDLWindow() { return m_Window; }
 		
 		inline void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.eventCallback = callback; }
 		
@@ -36,7 +36,7 @@ namespace Core
 		SDL_Window* m_Window;
 		
 		// Temporary
-		Renderer* m_Renderer;
+		//Renderer* m_Renderer;
 		
 		struct WindowData
 		{

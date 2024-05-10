@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "Core/Asserts.h"
+#include "Core/Logger/Logger.h"
 
 #include "Core/Events/ApplicationEvent.h"
 #include "Core/Events/MouseEvent.h"
@@ -53,7 +54,7 @@ namespace Core
 		SDL_SetWindowPosition(m_Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 		SDL_ShowWindow(m_Window);
 
-		m_Renderer = new Renderer(m_Window, SDL_RENDERER_PRESENTVSYNC);
+		//m_Renderer = new Renderer(m_Window, SDL_RENDERER_PRESENTVSYNC);
 
 		SDL_AddEventWatch(HandleWindowResizeEvent, &m_Data);
 		SDL_AddEventWatch(HandleWindowCloseEvent, &m_Data);
@@ -73,15 +74,15 @@ namespace Core
 	{
 		SDL_Event m_Event;
 		SDL_PollEvent(&m_Event);
-		ImGui_ImplSDL3_ProcessEvent(&m_Event);
 
-		m_Renderer->Run(m_Window);
+		GenericSDL_Event event(&m_Event);
+		m_Data.eventCallback(event);
+
+		//m_Renderer->Run(m_Window);
 	}
 
 	int Window::HandleWindowResizeEvent(void* data, SDL_Event* e)
 	{
-		ImGui_ImplSDL3_ProcessEvent(e);
-		
 		if (e->type == SDL_EVENT_WINDOW_RESIZED || e->type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)
 		{
 			WindowData& windowData = *(WindowData*)data;
@@ -97,8 +98,6 @@ namespace Core
 
 	int Window::HandleWindowCloseEvent(void* data, SDL_Event* e)
 	{
-		ImGui_ImplSDL3_ProcessEvent(e);
-		
 		WindowData& windowData = *(WindowData*)data;
 		
 		if (e->type == SDL_EVENT_QUIT || (e->type == SDL_EVENT_WINDOW_CLOSE_REQUESTED && e->window.windowID == windowData.windowID))
@@ -114,8 +113,6 @@ namespace Core
 
 	int Window::HandleKeyboardEvent(void* data, SDL_Event* e)
 	{
-		ImGui_ImplSDL3_ProcessEvent(e);
-		
 		WindowData& windowData = *(WindowData*)data;
 		
 		if (e->type == SDL_EVENT_KEY_DOWN)
@@ -138,8 +135,6 @@ namespace Core
 
 	int Window::HandleMouseButtonEvent(void* data, SDL_Event* e)
 	{
-		ImGui_ImplSDL3_ProcessEvent(e);
-		
 		WindowData& windowData = *(WindowData*)data;
 		
 		if (e->type == SDL_EVENT_MOUSE_BUTTON_DOWN)
@@ -162,8 +157,6 @@ namespace Core
 
 	int Window::HandleMouseScrollEvent(void* data, SDL_Event* e)
 	{
-		ImGui_ImplSDL3_ProcessEvent(e);
-		
 		WindowData& windowData = *(WindowData*)data;
 		
 		if (e->type == SDL_EVENT_MOUSE_WHEEL)
@@ -179,8 +172,6 @@ namespace Core
 
 	int Window::HandleMouseMoveEvent(void* data, SDL_Event* e)
 	{
-		ImGui_ImplSDL3_ProcessEvent(e);
-		
 		if (e->type == SDL_EVENT_MOUSE_MOTION)
 		{
 			WindowData& windowData = *(WindowData*)data;

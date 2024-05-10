@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Defines.h"
+#include <SDL3/SDL_events.h>
 #include <functional>
 #include <string>
 #include <iostream>
@@ -13,7 +14,8 @@ namespace Core
 		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
 		AppTick, AppUpdate, AppRender,
 		KeyPressed, KeyReleased,
-		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
+		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled,
+		Test
 	};
 
 	enum EventCategory
@@ -23,7 +25,8 @@ namespace Core
 		EventCategoryInput = BIT(1),
 		EventCategoryKeyboard = BIT(2),
 		EventCategoryMouse = BIT(3),
-		EventCategoryMouseButton = BIT(4)
+		EventCategoryMouseButton = BIT(4),
+		EventCategoryTest = BIT(5)
 	};
 
 	class COREAPI Event
@@ -40,6 +43,30 @@ namespace Core
 		{
 			return GetCategoryFlags() & category;
 		}
+	};
+
+	class COREAPI GenericSDL_Event : public Event
+	{
+	public:
+		GenericSDL_Event(SDL_Event* _event)
+			: event(_event) {}
+
+		inline SDL_Event* GetSDLEvent() const { return event; }
+
+		std::string ToString() const override
+		{
+			std::string genericString = "GenericSDL_Event: !";
+			return genericString;
+		}
+
+		static EventType GetStaticType() { return EventType::Test; }
+		virtual EventType GetEventType() const override { return GetStaticType(); }
+		virtual const char* GetName() const override { return "Test"; }
+
+		virtual int GetCategoryFlags() const override { return EventCategoryTest; }
+
+	private:
+		SDL_Event* event;
 	};
 
 	class EventDispatcher

@@ -11,6 +11,8 @@ workspace "JanjiProject"
 
 OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
 
+-- include "Core/Vendor/imgui/backends"
+
 group "Core"
 	include "Core/Build-Core.lua"
 group ""

@@ -21,7 +21,7 @@ typedef char b8;
 typedef int b32;
 
 #define BIT(x) (1 << x)
-
+#define BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 #define STATIC_ASSERT static_assert
 
 // Ensure all types are of the correct size.
