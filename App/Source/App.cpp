@@ -15,7 +15,7 @@ public:
 
     void OnEvent(Core::Event& event) override
     {
-        CORETRACE("TestingLayer {0}", event.ToString());
+        //CORETRACE("TestingLayer {0}", event.ToString());
     }
 };
 

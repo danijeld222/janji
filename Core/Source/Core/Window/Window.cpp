@@ -73,11 +73,12 @@ namespace Core
 	void Window::OnUpdate()
 	{
 		SDL_Event m_Event;
-		SDL_PollEvent(&m_Event);
-
-		GenericSDL_Event event(&m_Event);
-		m_Data.eventCallback(event);
-
+		while (SDL_PollEvent(&m_Event))
+		{
+			GenericSDL_Event event(&m_Event);
+			m_Data.eventCallback(event);
+		}
+		
 		//m_Renderer->Run(m_Window);
 	}
 
@@ -120,14 +121,14 @@ namespace Core
 			KeyPressedEvent event(e->key.keysym.sym, e->key.repeat);
 			windowData.eventCallback(event);
 			
-			return 1;
+			return 0;
 		}
 		else if (e->type == SDL_EVENT_KEY_UP)
 		{
 			KeyReleasedEvent event(e->key.keysym.sym);
 			windowData.eventCallback(event);
 			
-			return 1;
+			return 0;
 		}
 		
 		return 0;
@@ -179,7 +180,7 @@ namespace Core
 			MouseMovedEvent event(e->motion.x, e->motion.y);
 			windowData.eventCallback(event);
 			
-			return 1;
+			return 0;
 		}
 		
 		return 0;

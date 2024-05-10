@@ -17,7 +17,7 @@ namespace Core
 		inline u32 GetWidth() const override { return m_Data.width; }
 		inline u32 GetHeight() const override { return m_Data.height; }
 
-		inline SDL_Window* GetSDLWindow() { return m_Window; }
+		inline virtual void* GetNativeWindow() const override { return m_Window; }
 		
 		inline void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.eventCallback = callback; }
 		
