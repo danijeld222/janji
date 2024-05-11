@@ -21,7 +21,7 @@ typedef char b8;
 typedef int b32;
 
 #define BIT(x) (1 << x)
-#define BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+#define CORE_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 #define STATIC_ASSERT static_assert
 
 // Ensure all types are of the correct size.
@@ -37,19 +37,3 @@ STATIC_ASSERT(sizeof(i64) == 8, "Expected i64 to be 8 bytes.");
 
 STATIC_ASSERT(sizeof(f32) == 4, "Expected f32 to be 4 bytes.");
 STATIC_ASSERT(sizeof(f64) == 8, "Expected f64 to be 8 bytes.");
-
-#ifdef COREEXPORT
-// Exports
-#ifdef _MSC_VER
-#define COREAPI __declspec(dllexport)
-#else
-#define COREAPI __attribute__((visibility("default")))
-#endif
-#else
-// Imports
-#ifdef _MSC_VER
-#define COREAPI __declspec(dllimport)
-#else
-#define COREAPI
-#endif
-#endif

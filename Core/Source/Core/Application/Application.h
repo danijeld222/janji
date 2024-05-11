@@ -5,10 +5,11 @@
 #include "Core/Window/WindowBase.h"
 #include "Core/Events/ApplicationEvent.h"
 #include "Core/Layer/LayerStack.h"
+#include "Core/ImGui/ImGuiLayer.h"
 
 namespace Core 
 {
-    class COREAPI Application
+    class Application
     {
     public:
         Application();
@@ -30,6 +31,7 @@ namespace Core
         b8 m_Running = false;
         std::unique_ptr<WindowBase> m_Window;
         LayerStack m_LayerStack;
+        ImGuiLayer* m_ImGuiLayer;
         
         static Application* s_Instance;
     };

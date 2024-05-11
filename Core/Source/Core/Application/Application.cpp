@@ -23,6 +23,9 @@ namespace Core {
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
         
         m_Running = true;
+        
+        m_ImGuiLayer = new ImGuiLayer();
+        PushOverlay(m_ImGuiLayer);
     }
     
     Application::~Application()
@@ -56,8 +59,6 @@ namespace Core {
                 break;
             }
         }
-        
-        //CORETRACE(e.ToString().c_str());
     }
     
     void Application::ApplicationRun()
@@ -70,6 +71,13 @@ namespace Core {
             {
                 layer->OnUpdate();
             }
+            
+            m_ImGuiLayer->Begin();
+            for (Layer* layer : m_LayerStack)
+            {
+                layer->OnImGuiRender();
+            }
+            m_ImGuiLayer->End();
             
             m_Window->OnUpdate();
         }

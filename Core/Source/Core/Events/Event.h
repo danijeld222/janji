@@ -30,7 +30,7 @@ namespace Core
 		EventCategoryTest = BIT(5)
 	};
 
-	class COREAPI Event
+	class Event
 	{
 	public:
 		b8 Handled = false;
@@ -47,7 +47,7 @@ namespace Core
 		}
 	};
 
-	class COREAPI GenericSDL_Event : public Event
+	class GenericSDL_Event : public Event
 	{
 	public:
 		GenericSDL_Event(SDL_Event* _event)
@@ -285,6 +285,7 @@ namespace Core
             default:
                 break;
             }
+            return "UNDEFINED";
 		}
 
 	private:

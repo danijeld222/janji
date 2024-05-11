@@ -24,13 +24,13 @@ enum MemoryTag
     MEMORY_TAG_MAX
 };
 
-COREAPI void InitializeMemoryStats();
-COREAPI void ShutdownMemoryStats();
+void InitializeMemoryStats();
+void ShutdownMemoryStats();
 
-COREAPI void* CoreAllocate(u64 size, MemoryTag tag);
-COREAPI void CoreFree(void* block, u64 size, MemoryTag tag);
-COREAPI void* CoreZeroMemory(void* block, u64 size);
-COREAPI void* CoreCopyMemory(void* destination, const void* source, u64 size);
-COREAPI void* CoreSetMemory(void* destination, i32 value, u64 size);
+void* CoreAllocate(u64 size, MemoryTag tag);
+void CoreFree(void* block, u64 size, MemoryTag tag);
+void* CoreZeroMemory(void* block, u64 size);
+void* CoreCopyMemory(void* destination, const void* source, u64 size);
+void* CoreSetMemory(void* destination, i32 value, u64 size);
 
-COREAPI char* GetMemoryUsage();
+char* GetMemoryUsage();

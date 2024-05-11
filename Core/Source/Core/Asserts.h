@@ -12,7 +12,7 @@
 #define COREDebugBreak()
 #endif
 
-COREAPI void ReportAssertionFailure(const char* expression, const char* message, const char* file, i32 line);
+void ReportAssertionFailure(const char* expression, const char* message, const char* file, i32 line);
 
 #define COREASSERT(expression)													\
 {																				\

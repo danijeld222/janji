@@ -15,7 +15,7 @@
 
 namespace Core
 {
-	class COREAPI Logger
+	class Logger
 	{
 	public:
 		static void Initialize();

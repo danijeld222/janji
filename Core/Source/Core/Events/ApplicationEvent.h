@@ -6,7 +6,7 @@
 
 namespace Core
 {
-	class COREAPI WindowResizeEvent : public Event
+	class WindowResizeEvent : public Event
 	{
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height)
@@ -32,7 +32,7 @@ namespace Core
 		unsigned int m_Width, m_Height;
 	};
 
-	class COREAPI WindowCloseEvent : public Event
+	class WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() {}
@@ -44,7 +44,7 @@ namespace Core
 		virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
 	};
 
-	class COREAPI AppTickEvent : public Event
+	class AppTickEvent : public Event
 	{
 	public:
 		AppTickEvent() {}
@@ -56,7 +56,7 @@ namespace Core
 		virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
 	};
 
-	class COREAPI AppUpdateEvent : public Event
+	class AppUpdateEvent : public Event
 	{
 	public:
 		AppUpdateEvent() {}
@@ -68,7 +68,7 @@ namespace Core
 		virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
 	};
 
-	class COREAPI AppRenderEvent : public Event
+	class AppRenderEvent : public Event
 	{
 	public:
 		AppRenderEvent() {}

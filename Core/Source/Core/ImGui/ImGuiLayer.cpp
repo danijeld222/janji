@@ -60,7 +60,33 @@ namespace Core
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::OnUpdate()
+	void ImGuiLayer::Begin()
+	{
+		ImGui_ImplSDLRenderer3_NewFrame();
+		ImGui_ImplSDL3_NewFrame();
+		ImGui::NewFrame();
+	}
+
+	void ImGuiLayer::End()
+	{
+		ImGuiIO& io = ImGui::GetIO();
+
+		// Rendering
+		ImGui::Render();
+
+		// Update and Render additional Platform Windows
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+		}
+
+		ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData());
+
+		SDL_RenderPresent(m_Renderer);
+	}
+
+	void ImGuiLayer::OnImGuiRender()
 	{
 		u8 redChannel = 0;
 		u8 greenChannel = 85;
@@ -71,12 +97,7 @@ namespace Core
 		SDL_RenderClear(m_Renderer);
 		
 		ImGuiIO& io = ImGui::GetIO();
-		
-		// Start the Dear ImGui frame
-		ImGui_ImplSDLRenderer3_NewFrame();
-		ImGui_ImplSDL3_NewFrame();
-		
-		ImGui::NewFrame();
+
 		ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x - 3.0f, 3.0f), 0, ImVec2(1.0f, 0.0f));
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 5.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(0, 0));
@@ -84,26 +105,12 @@ namespace Core
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 		ImGui::End();
 		ImGui::PopStyleVar(2);
-		
-		// Rendering
-		ImGui::Render();
-		
-		// Update and Render additional Platform Windows
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-		}
-		
-		ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData());
-		
-		SDL_RenderPresent(m_Renderer);
 	}
 
 	void ImGuiLayer::OnEvent(Event& event)
 	{
 		EventDispatcher dispatcher(event);
-		dispatcher.Dispatch<GenericSDL_Event>(BIND_EVENT_FN(ImGuiLayer::OnGenericSDLEvent));
+		dispatcher.Dispatch<GenericSDL_Event>(CORE_BIND_EVENT_FN(ImGuiLayer::OnGenericSDLEvent));
 	}
 
 	bool ImGuiLayer::OnGenericSDLEvent(GenericSDL_Event& e)

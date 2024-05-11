@@ -6,7 +6,7 @@
 
 namespace Core
 {
-	class COREAPI MouseMovedEvent : public Event
+	class MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(float x, float y)
@@ -32,7 +32,7 @@ namespace Core
 		float m_MouseX, m_MouseY;
 	};
 
-	class COREAPI MouseScrolledEvent : public Event
+	class MouseScrolledEvent : public Event
 	{
 	public:
 		MouseScrolledEvent(float xOffset, float yOffset)
@@ -58,7 +58,7 @@ namespace Core
 		float m_XOffset, m_YOffset;
 	};
 
-	class COREAPI MouseButtonEvent : public Event
+	class MouseButtonEvent : public Event
 	{
 	public:
 		inline int GetMouseButton() const { return m_Button; }
@@ -72,7 +72,7 @@ namespace Core
 		int m_Button;
 	};
 
-	class COREAPI MouseButtonPressedEvent : public MouseButtonEvent
+	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(int button)
@@ -90,7 +90,7 @@ namespace Core
 		virtual const char* GetName() const override { return "MouseButtonPressed"; }
 	};
 
-	class COREAPI MouseButtonReleasedEvent : public MouseButtonEvent
+	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(int button)

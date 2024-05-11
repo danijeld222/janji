@@ -6,7 +6,7 @@
 
 namespace Core
 {
-	class COREAPI InputBase
+	class InputBase
 	{
 	public:
 		inline static bool IsKeyPressed(int keycode) { return s_Instance->IsKeyPressedImpl(keycode); }

@@ -1,5 +1,7 @@
 #include <Core.h>
 
+#include "imgui.h"
+
 class TestingLayer : public Core::Layer
 {
 public:
@@ -23,6 +25,13 @@ public:
         //CORETRACE("SDL MOUSE X {0}", Core::InputBase::GetMouseX());
         //CORETRACE("SDL MOUSE Y {0}", Core::InputBase::GetMouseY());
     }
+
+    void OnImGuiRender() override
+    {
+        ImGui::Begin("Test");
+        ImGui::Text("Testing Test");
+        ImGui::End();
+    }
     
     void OnEvent(Core::Event& event) override
     {
@@ -39,7 +48,6 @@ public:
     Sandbox()
     {
         PushLayer(new TestingLayer());
-        PushLayer(new Core::ImGuiLayer());
     }
 
     ~Sandbox()
