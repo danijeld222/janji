@@ -8,6 +8,8 @@ Binaries/
 *.vcxproj.filters
 *.sln
 *.log
+imgui.ini
+hint.cpp
 Makefile
 
 # Exclude
