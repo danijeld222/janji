@@ -20,6 +20,8 @@ typedef double f64;
 typedef char b8;
 typedef int b32;
 
+#pragma warning(disable : 5105)
+
 #define BIT(x) (1 << x)
 #define CORE_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 #define STATIC_ASSERT static_assert

@@ -5,6 +5,8 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 
+#pragma warning(disable : 5105)
+
 #define LOG_WARNING_ENABLED 1
 #define LOG_INFO_ENABLED 1
 #define LOG_TRACE_ENABLED 1

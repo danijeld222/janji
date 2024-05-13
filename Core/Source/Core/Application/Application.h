@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core/Defines.h"
-#include "Core/GameType.h"
 #include "Core/Window/WindowBase.h"
 #include "Core/Events/ApplicationEvent.h"
 #include "Core/Layer/LayerStack.h"

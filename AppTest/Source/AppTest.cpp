@@ -28,9 +28,11 @@ public:
 
     void OnImGuiRender() override
     {
-        ImGui::Begin("Test");
-        ImGui::Text("Testing Test");
-        ImGui::End();
+        //ImGui::Begin("Test");
+        //ImGui::Text("Testing Test");
+        //ImGui::Text("Testing Test");
+        //ImGui::Text("Testing Test");
+        //ImGui::End();
     }
     
     void OnEvent(Core::Event& event) override

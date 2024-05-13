@@ -2,6 +2,8 @@
 
 #include "Defines.h"
 
+#pragma warning(disable : 5105)
+
 #define COREASSERTIONS_ENABLED 1
 
 #if defined COREASSERTIONS_ENABLED
