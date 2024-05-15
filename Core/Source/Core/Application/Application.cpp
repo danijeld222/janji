@@ -22,6 +22,8 @@ namespace Core {
         m_Window = std::unique_ptr<WindowBase>(WindowBase::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
         
+        m_Window->InitRenderer();
+
         m_Running = true;
         
         m_ImGuiLayer = new ImGuiLayer();
@@ -67,11 +69,14 @@ namespace Core {
         
         while (m_Running)
         {
+            m_Window->RendererBegin();
+            
             for (Layer* layer : m_LayerStack)
             {
                 layer->OnUpdate();
             }
-            
+            m_Window->RendererUpdate();
+
             m_ImGuiLayer->Begin();
             for (Layer* layer : m_LayerStack)
             {
@@ -80,6 +85,8 @@ namespace Core {
             m_ImGuiLayer->End();
             
             m_Window->OnUpdate();
+            
+            m_Window->RendererSwapBuffers();
         }
     }
     

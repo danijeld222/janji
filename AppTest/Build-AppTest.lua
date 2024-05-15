@@ -43,7 +43,12 @@ project "AppTest"
     
     targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
     objdir ("../Binaries/Intermediates/" .. OutputDir .. "/%{prj.name}")
-   
+    
+    postbuildcommands
+    {
+        "{COPYDIR} $(SolutionDir)%{prj.name}/DebugGraphics/*.* ../Binaries/" .. OutputDir .. "/%{prj.name}/DebugGraphics",
+    }
+    
     filter "system:windows"
         systemversion "latest"
         defines { "WINDOWS", "COREIMPORT" }

@@ -30,6 +30,12 @@ namespace Core
 		virtual u32 GetWidth() const = 0;
 		virtual u32 GetHeight() const = 0;
 		
+		virtual void InitRenderer() = 0;
+		virtual void* GetRenderer() const = 0;
+		virtual void RendererBegin() const = 0;
+		virtual void RendererUpdate() const = 0;
+		virtual void RendererSwapBuffers() const = 0;
+		
 		virtual void* GetNativeWindow() const = 0;
 		
 		virtual void SetEventCallback(const EventCallbackFunction& callback) = 0;

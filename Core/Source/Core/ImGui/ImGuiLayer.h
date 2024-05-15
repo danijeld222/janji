@@ -24,7 +24,5 @@ namespace Core
 		
 	private:
 		bool OnGenericSDLEvent(GenericSDL_Event& e);
-		
-		SDL_Renderer* m_Renderer;
 	};
 }

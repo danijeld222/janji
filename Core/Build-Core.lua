@@ -61,20 +61,21 @@ project "Core"
     targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
     objdir ("../Binaries/Intermediates/" .. OutputDir .. "/%{prj.name}")
     
+    postbuildcommands
+    {
+        "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3/lib/%{cfg.architecture}/SDL3.dll ../Binaries/" .. OutputDir .. "/App",
+        "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3/lib/%{cfg.architecture}/SDL3.dll ../Binaries/" .. OutputDir .. "/AppTest",
+        "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_Image/lib/%{cfg.architecture}/SDL3_image.dll ../Binaries/" .. OutputDir .. "/App",
+        "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_Image/lib/%{cfg.architecture}/SDL3_image.dll ../Binaries/" .. OutputDir .. "/AppTest",
+        "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_Mixer/lib/%{cfg.architecture}/SDL3_mixer.dll ../Binaries/" .. OutputDir .. "/App",
+        "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_Mixer/lib/%{cfg.architecture}/SDL3_mixer.dll ../Binaries/" .. OutputDir .. "/AppTest",
+        "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_TTF/lib/%{cfg.architecture}/SDL3_ttf.dll ../Binaries/" .. OutputDir .. "/App",
+        "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_TTF/lib/%{cfg.architecture}/SDL3_ttf.dll ../Binaries/" .. OutputDir .. "/AppTest"
+    }
+    
     filter "system:windows"
         systemversion "latest"
         defines { "COREEXPORT" }
-        postbuildcommands
-        {
-            "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3/lib/%{cfg.architecture}/SDL3.dll ../Binaries/" .. OutputDir .. "/App",
-            "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3/lib/%{cfg.architecture}/SDL3.dll ../Binaries/" .. OutputDir .. "/AppTest",
-            "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_Image/lib/%{cfg.architecture}/SDL3_image.dll ../Binaries/" .. OutputDir .. "/App",
-            "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_Image/lib/%{cfg.architecture}/SDL3_image.dll ../Binaries/" .. OutputDir .. "/AppTest",
-            "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_Mixer/lib/%{cfg.architecture}/SDL3_mixer.dll ../Binaries/" .. OutputDir .. "/App",
-            "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_Mixer/lib/%{cfg.architecture}/SDL3_mixer.dll ../Binaries/" .. OutputDir .. "/AppTest",
-            "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_TTF/lib/%{cfg.architecture}/SDL3_ttf.dll ../Binaries/" .. OutputDir .. "/App",
-            "{COPY} $(SolutionDir)%{prj.name}/Vendor/SDL3_TTF/lib/%{cfg.architecture}/SDL3_ttf.dll ../Binaries/" .. OutputDir .. "/AppTest"
-        }
     
     filter "configurations:Debug"
         defines { "DEBUG", "COREEXPORT" }

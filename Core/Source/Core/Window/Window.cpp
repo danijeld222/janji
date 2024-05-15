@@ -54,8 +54,6 @@ namespace Core
 		SDL_SetWindowPosition(m_Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 		SDL_ShowWindow(m_Window);
 
-		//m_Renderer = new Renderer(m_Window, SDL_RENDERER_PRESENTVSYNC);
-
 		SDL_AddEventWatch(HandleWindowResizeEvent, &m_Data);
 		SDL_AddEventWatch(HandleWindowCloseEvent, &m_Data);
 		SDL_AddEventWatch(HandleKeyboardEvent, &m_Data);
@@ -78,8 +76,26 @@ namespace Core
 			GenericSDL_Event event(&m_Event);
 			m_Data.eventCallback(event);
 		}
-		
-		//m_Renderer->Run(m_Window);
+	}
+
+	void Window::RendererBegin() const
+	{
+		m_Renderer->ClearScreen();
+	}
+
+	void Window::RendererUpdate() const
+	{
+		m_Renderer->Update(m_Window);
+	}
+
+	void Window::RendererSwapBuffers() const
+	{
+		m_Renderer->SwapBuffers();
+	}
+
+	void Window::InitRenderer()
+	{
+		m_Renderer = new Renderer(m_Window, SDL_RENDERER_PRESENTVSYNC);
 	}
 
 	int Window::HandleWindowResizeEvent(void* data, SDL_Event* e)

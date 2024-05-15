@@ -1,6 +1,7 @@
 #pragma once
 
 #include "WindowBase.h"
+#include "Core/Renderer/Renderer.h"
 
 #include <SDL3/SDL.h>
 
@@ -16,7 +17,13 @@ namespace Core
 		
 		inline u32 GetWidth() const override { return m_Data.width; }
 		inline u32 GetHeight() const override { return m_Data.height; }
-
+		
+		virtual void InitRenderer() override;
+		virtual void* GetRenderer()	const override { return m_Renderer; };
+		virtual void RendererBegin() const override;
+		virtual void RendererUpdate() const override;
+		virtual void RendererSwapBuffers() const override;
+		
 		inline virtual void* GetNativeWindow() const override { return m_Window; }
 		
 		inline void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.eventCallback = callback; }
@@ -34,9 +41,7 @@ namespace Core
 		
 	private:
 		SDL_Window* m_Window;
-		
-		// Temporary
-		//Renderer* m_Renderer;
+		Renderer* m_Renderer;
 		
 		struct WindowData
 		{
