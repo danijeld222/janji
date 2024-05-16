@@ -4,6 +4,8 @@
 
 #include <vector>
 #include <cmath>
+#include <glad/gl.h>
+
 #include "SDL3/SDL_surface.h"
 
 #include "SDL_image.h"
@@ -13,14 +15,22 @@ namespace Core
     Renderer::Renderer(SDL_Window* window, u32 rendererFlags)
     {
         COREASSERT_MESSAGE(IMG_Init(IMG_INIT_PNG), "SDL Image faled to initialize");
+        m_Context = SDL_GL_CreateContext(window);
         
-        m_Renderer = SDL_CreateRenderer(window, nullptr, rendererFlags);
+        int version = gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress);
+        printf("GL %d.%d\n", GLAD_VERSION_MAJOR(version), GLAD_VERSION_MINOR(version));
+        
+        SDL_GL_MakeCurrent(window, m_Context);
+        SDL_GL_SetSwapInterval(1);
+        
+        // TODO: Dani - think about should this be moved to window class, because its showing window
+        SDL_ShowWindow(window);
+        
         m_Surface = SDL_GetWindowSurface(window);
         m_DebugSurface = nullptr;
         m_DebugTexture = nullptr;
         m_DebugSpriteSheetTexture = nullptr;
         
-        COREASSERT_MESSAGE(m_Renderer, SDL_GetError());
         COREASSERT_MESSAGE(m_Surface, SDL_GetError());
         
         m_BitmapMemory = static_cast<u8*>(CoreAllocate(m_Surface->w * m_Surface->h * 4, MEMORY_TAG_RENDERER));
@@ -41,27 +51,27 @@ namespace Core
         m_DebugTextureRect->w = 1280;
         m_DebugTextureRect->h = 720;
         
-        std::string texturePath = "DebugGraphics/Spritesheet/DebugSpritesheet.png";
-        SDL_Surface* loadedSurface = IMG_Load(texturePath.c_str());
-        if (loadedSurface == NULL)
-        {
-            printf("Unable to load image %s! SDL_image Error: %s\n", texturePath.c_str(), IMG_GetError());
-        }
-        else
-        {
-            //Color key image
-            SDL_SetSurfaceColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
-            
-            //Create texture from surface pixels
-            m_DebugSpriteSheetTexture = SDL_CreateTextureFromSurface(m_Renderer, loadedSurface);
-            if (m_DebugSpriteSheetTexture == NULL)
-            {
-                printf("Unable to create texture from %s! SDL Error: %s\n", texturePath.c_str(), SDL_GetError());
-            }
-            
-            //Get rid of old loaded surface
-            SDL_DestroySurface(loadedSurface);
-        }
+        //std::string texturePath = "DebugGraphics/Spritesheet/DebugSpritesheet.png";
+        //SDL_Surface* loadedSurface = IMG_Load(texturePath.c_str());
+        //if (loadedSurface == NULL)
+        //{
+        //    printf("Unable to load image %s! SDL_image Error: %s\n", texturePath.c_str(), IMG_GetError());
+        //}
+        //else
+        //{
+        //    //Color key image
+        //    SDL_SetSurfaceColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
+        //    
+        //    //Create texture from surface pixels
+        //    m_DebugSpriteSheetTexture = SDL_CreateTextureFromSurface(m_Renderer, loadedSurface);
+        //    if (m_DebugSpriteSheetTexture == NULL)
+        //    {
+        //        printf("Unable to create texture from %s! SDL Error: %s\n", texturePath.c_str(), SDL_GetError());
+        //    }
+        //    
+        //    //Get rid of old loaded surface
+        //    SDL_DestroySurface(loadedSurface);
+        //}
     }
 
     Renderer::~Renderer()
@@ -72,14 +82,14 @@ namespace Core
         SDL_DestroySurface(m_Surface);
         SDL_DestroySurface(m_DebugSurface);
         
-        SDL_DestroyRenderer(m_Renderer);
+        SDL_GL_DeleteContext(m_Context);
         
         IMG_Quit();
     }
     
     void Renderer::SwapBuffers()
     {
-        SDL_RenderPresent(m_Renderer);
+        SDL_GL_SwapWindow(SDL_GL_GetCurrentWindow());
     }
     
     void Renderer::ClearScreen()
@@ -88,15 +98,19 @@ namespace Core
         u8 greenChannel = 85;
         u8 blueChannel = 170;
         u8 alphaChannel = 255;
-
-        SDL_SetRenderDrawColor(m_Renderer, redChannel, greenChannel, blueChannel, alphaChannel);
-        SDL_RenderClear(m_Renderer);
+        
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+        glClearColor(redChannel, greenChannel, blueChannel, alphaChannel);
+        glClear(GL_COLOR_BUFFER_BIT);
     }
     
     void Renderer::ClearScreen(u8 red, u8 green, u8 blue, u8 alpha)
     {
-        SDL_SetRenderDrawColor(m_Renderer, red, green, blue, alpha);
-        SDL_RenderClear(m_Renderer);
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+        glClearColor(red, green, blue, alpha);
+        glClear(GL_COLOR_BUFFER_BIT);
     }
 
     void Renderer::Update(SDL_Window* window)
@@ -108,7 +122,7 @@ namespace Core
         
         SDL_DestroySurface(m_DebugSurface);
         
-        SDL_RenderTexture(m_Renderer, m_DebugTexture, NULL, m_DebugTextureRect);
+        //SDL_RenderTexture(m_Renderer, m_DebugTexture, NULL, m_DebugTextureRect);
         SDL_DestroyTexture(m_DebugTexture);
         
         if (m_DebugSpriteSheetTexture)
@@ -124,7 +138,7 @@ namespace Core
             SDL_FRect renderQuad = { 200, 200, 300, 200 };
             SDL_FRect spriteClip = { CurrentSpriteSheetFrame * 300, 0, 300, 200 };
             
-            SDL_RenderTexture(m_Renderer, m_DebugSpriteSheetTexture, &spriteClip, &renderQuad);
+            //SDL_RenderTexture(m_Renderer, m_DebugSpriteSheetTexture, &spriteClip, &renderQuad);
             
             m_DebugSpriteSheetCurrentFrame++;
         }
@@ -166,14 +180,14 @@ namespace Core
         
         m_DebugSurface = SDL_CreateSurfaceFrom(m_BitmapMemory, m_Surface->w, m_Surface->h, m_Surface->w * 4, SDL_PIXELFORMAT_INDEX8);
         SDL_SetSurfacePalette(m_DebugSurface, m_DebugPalette);
-        m_DebugTexture = SDL_CreateTextureFromSurface(m_Renderer, m_DebugSurface);
+        //m_DebugTexture = SDL_CreateTextureFromSurface(m_Renderer, m_DebugSurface);
         
         COREASSERT_MESSAGE(m_DebugSurface, SDL_GetError());
-        COREASSERT_MESSAGE(m_DebugTexture, SDL_GetError());
+        //COREASSERT_MESSAGE(m_DebugTexture, SDL_GetError());
     }
-
-    SDL_Renderer* Renderer::GetSDLRenderer()
+    
+    SDL_GLContext Renderer::GetOpenGLContext()
     {
-        return m_Renderer;
+        return m_Context;
     }
 }

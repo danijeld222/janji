@@ -26,14 +26,14 @@ namespace Core
         void ClearScreen(u8 red, u8 green, u8 blue, u8 alpha);
         void SwapBuffers();
         void Update(SDL_Window* window);
-        SDL_Renderer* GetSDLRenderer();
+        SDL_GLContext GetOpenGLContext();
         
     private:
         void SetPixel(SDL_Surface* surface, i32 x, i32 y, u32 pixel);
         void RenderDebugGradient(i32 xOffset, i32 yOffset);
     
     private:
-        SDL_Renderer* m_Renderer;
+        SDL_GLContext m_Context;
         SDL_Surface* m_Surface;
         
         SDL_Surface* m_DebugSurface;

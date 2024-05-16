@@ -24,6 +24,8 @@ project "Core"
         "Vendor/imgui/backends/imgui_impl_sdl3.h",
         "Vendor/imgui/backends/imgui_impl_sdlrenderer3.cpp",
         "Vendor/imgui/backends/imgui_impl_sdlrenderer3.h",
+        "Vendor/imgui/backends/imgui_impl_opengl3.cpp",
+        "Vendor/imgui/backends/imgui_impl_opengl3.h",
     }
     
     includedirs
@@ -31,7 +33,8 @@ project "Core"
         "Source",
         "Vendor/imgui/",
         "Vendor/imgui/backends",
-        "Vendor/spdlog/include"
+        "Vendor/spdlog/include",
+        "Vendor/glad/include"
     }
     
     externalincludedirs
@@ -55,7 +58,8 @@ project "Core"
         "SDL3",
         "SDL3_Image",
         "SDL3_Mixer",
-        "SDL3_TTF"
+        "SDL3_TTF",
+        "glad"
     }
     
     targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")

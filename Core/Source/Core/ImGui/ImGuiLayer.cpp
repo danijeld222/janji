@@ -8,7 +8,7 @@
 
 #include "imgui.h"
 #include "imgui_impl_sdl3.h"
-#include "imgui_impl_sdlrenderer3.h"
+#include "imgui_impl_opengl3.h"
 #include <stdio.h>
 #include <sstream>
 
@@ -33,6 +33,7 @@ namespace Core
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 		
 		ImGui::StyleColorsDark();
 		ImGuiStyle& style = ImGui::GetStyle();
@@ -41,25 +42,26 @@ namespace Core
 			style.WindowRounding = 0.0f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
-
+		
 		Application& app = Application::Get();
 		SDL_Window* SDLWindow = static_cast<SDL_Window*>(app.GetWindow().GetNativeWindow());
 		Renderer* _Renderer = static_cast<Renderer*>(app.GetWindow().GetRenderer());
-
-		ImGui_ImplSDL3_InitForSDLRenderer(SDLWindow, _Renderer->GetSDLRenderer());
-		ImGui_ImplSDLRenderer3_Init(_Renderer->GetSDLRenderer());
+		
+		const char* glsl_version = "#version 150";
+		ImGui_ImplSDL3_InitForOpenGL(SDLWindow, _Renderer->GetOpenGLContext());
+		ImGui_ImplOpenGL3_Init(glsl_version);
 	}
 
 	void ImGuiLayer::OnDetach()
 	{
-		ImGui_ImplSDLRenderer3_Shutdown();
+		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplSDL3_Shutdown();
 		ImGui::DestroyContext();
 	}
 
 	void ImGuiLayer::Begin()
 	{
-		ImGui_ImplSDLRenderer3_NewFrame();
+		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplSDL3_NewFrame();
 		ImGui::NewFrame();
 	}
@@ -67,18 +69,20 @@ namespace Core
 	void ImGuiLayer::End()
 	{
 		ImGuiIO& io = ImGui::GetIO();
-
+		
 		// Rendering
 		ImGui::Render();
-
-		// Update and Render additional Platform Windows
+		
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
+			SDL_Window* backupCurrentWindow = SDL_GL_GetCurrentWindow();
+			SDL_GLContext backupCurrentContext = SDL_GL_GetCurrentContext();
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
+			SDL_GL_MakeCurrent(backupCurrentWindow, backupCurrentContext);
 		}
-
-		ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData());
+		
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
 	void ImGuiLayer::OnImGuiRender()
