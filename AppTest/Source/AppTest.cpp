@@ -12,35 +12,35 @@ public:
     
     void OnUpdate() override
     {
-        //if (Core::InputBase::IsKeyPressed(SDL_SCANCODE_TAB))
-        //{
-        //    CORETRACE("SDL_SCANCODE_TAB");
-        //}
-        //
-        //if (Core::InputBase::IsMouseButtonPressed(SDL_BUTTON_LEFT))
-        //{
-        //    CORETRACE("SDL_BUTTON_LEFT");
-        //}
-
-        //CORETRACE("SDL MOUSE X {0}", Core::InputBase::GetMouseX());
-        //CORETRACE("SDL MOUSE Y {0}", Core::InputBase::GetMouseY());
+        /*if (Core::InputBase::IsKeyPressed(SDL_SCANCODE_TAB))
+        {
+            CORETRACE("SDL_SCANCODE_TAB");
+        }
+        
+        if (Core::InputBase::IsMouseButtonPressed(SDL_BUTTON_LEFT) && Core::InputBase::IsMouseButtonPressed(SDL_BUTTON_RIGHT))
+        {
+            CORETRACE("Pressed left and right");
+        }*/
+        
+        /*CORETRACE("SDL MOUSE X {0}", Core::InputBase::GetMouseX());
+        CORETRACE("SDL MOUSE Y {0}", Core::InputBase::GetMouseY());*/
     }
 
     void OnImGuiRender() override
     {
-        //ImGui::Begin("Test");
-        //ImGui::Text("Testing Test");
-        //ImGui::Text("Testing Test");
-        //ImGui::Text("Testing Test");
-        //ImGui::End();
+       /* ImGui::Begin("Test");
+        ImGui::Text("Testing Test");
+        ImGui::Text("Testing Test");
+        ImGui::Text("Testing Test");
+        ImGui::End();*/
     }
     
     void OnEvent(Core::Event& event) override
     {
-        //if (event.ShouldLog())
-        //{
-            //CORETRACE("TestingLayer {0}", event.ToString());
-        //}
+        /*if (event.ShouldLog())
+        {
+            CORETRACE("TestingLayer {0}", event.ToString());
+        }*/
     }
 };
 
