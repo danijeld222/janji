@@ -26,6 +26,8 @@ project "Core"
         "Vendor/imgui/backends/imgui_impl_sdlrenderer3.h",
         "Vendor/imgui/backends/imgui_impl_opengl3.cpp",
         "Vendor/imgui/backends/imgui_impl_opengl3.h",
+        "Vendor/glm/glm/**.hhp",
+        "Vendor/glm/glm/**.inl"
     }
     
     includedirs
@@ -34,7 +36,8 @@ project "Core"
         "Vendor/imgui/",
         "Vendor/imgui/backends",
         "Vendor/spdlog/include",
-        "Vendor/glad/include"
+        "Vendor/glad/include",
+        "Vendor/glm/"
     }
     
     externalincludedirs
@@ -42,7 +45,8 @@ project "Core"
         "Vendor/SDL3/include",
         "Vendor/SDL3_Image/include",
         "Vendor/SDL3_Mixer/include",
-        "Vendor/SDL3_TTF/include"
+        "Vendor/SDL3_TTF/include",
+        "Vendor/glm/"
     }
     
     libdirs
