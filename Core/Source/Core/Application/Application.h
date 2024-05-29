@@ -5,6 +5,7 @@
 #include "Core/Events/ApplicationEvent.h"
 #include "Core/Layer/LayerStack.h"
 #include "Core/ImGui/ImGuiLayer.h"
+#include "Core/Renderer/Shader.h"
 
 namespace Core 
 {
@@ -25,7 +26,7 @@ namespace Core
         inline static Application& Get() { return *s_Instance; }
         
     private:
-        bool OnWindowClose(WindowCloseEvent& e);
+        b8 OnWindowClose(WindowCloseEvent& e);
         
         b8 m_Running = false;
         std::unique_ptr<WindowBase> m_Window;
@@ -33,6 +34,9 @@ namespace Core
         ImGuiLayer* m_ImGuiLayer;
         
         static Application* s_Instance;
+        
+        u32 m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+        std::unique_ptr<Shader> m_Shader;
     };
     
     Application* CreateApplication();
