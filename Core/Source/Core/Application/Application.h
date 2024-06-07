@@ -6,6 +6,8 @@
 #include "Core/Layer/LayerStack.h"
 #include "Core/ImGui/ImGuiLayer.h"
 #include "Core/Renderer/Shader.h"
+#include "Core/Renderer/Buffer.h"
+#include "Core/Renderer/VertexArray.h"
 
 namespace Core 
 {
@@ -35,8 +37,11 @@ namespace Core
         
         static Application* s_Instance;
         
-        u32 m_VertexArray, m_VertexBuffer, m_IndexBuffer;
-        std::unique_ptr<Shader> m_Shader;
+        std::shared_ptr<Shader> m_Shader;
+        std::shared_ptr<VertexArray> m_VertexArray;
+        
+        std::shared_ptr<Shader> m_BlueShader;
+        std::shared_ptr<VertexArray> m_SquareVA;
     };
     
     Application* CreateApplication();
