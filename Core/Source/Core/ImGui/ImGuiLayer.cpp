@@ -2,7 +2,7 @@
 
 #include "Core/Application/Application.h"
 #include "Core/Window/Window.h"
-#include "Core/Renderer/Renderer.h"
+#include "Core/Renderer/RendererContext.h"
 #include "Core/Defines.h"
 #include "Core/Logger/Logger.h"
 
@@ -45,10 +45,10 @@ namespace Core
 		
 		Application& app = Application::Get();
 		SDL_Window* SDLWindow = static_cast<SDL_Window*>(app.GetWindow().GetNativeWindow());
-		Renderer* _Renderer = static_cast<Renderer*>(app.GetWindow().GetRenderer());
+		RendererContext* _RendererContext = static_cast<RendererContext*>(app.GetWindow().GetRendererContext());
 		
 		const char* glsl_version = "#version 150";
-		ImGui_ImplSDL3_InitForOpenGL(SDLWindow, _Renderer->GetOpenGLContext());
+		ImGui_ImplSDL3_InitForOpenGL(SDLWindow, _RendererContext->GetOpenGLContext());
 		ImGui_ImplOpenGL3_Init(glsl_version);
 	}
 

@@ -3,6 +3,9 @@
 #include "Core/Logger/Logger.h"
 #include "Core/CoreMemory.h"
 
+#include "Core/Renderer/Renderer.h"
+#include "Core/Renderer/RendererCommands.h"
+
 #include <glad/gl.h>
 
 #include <functional>
@@ -23,8 +26,6 @@ namespace Core {
         
         m_Window = std::unique_ptr<WindowBase>(WindowBase::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
-        
-        m_Window->InitRenderer();
         
         m_Running = true;
         
@@ -169,22 +170,23 @@ namespace Core {
         
         while (m_Running)
         {
-            m_Window->RendererBegin();
+            RendererCommands::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+            RendererCommands::Clear();
+            
+            Renderer::BeginScene();
             
             m_BlueShader->Bind();
-            m_SquareVA->Bind();
-            glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::Submit(m_SquareVA);
             
             m_Shader->Bind();
-            m_VertexArray->Bind();
-            glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::Submit(m_VertexArray);
+            
+            Renderer::EndScene();
             
             for (Layer* layer : m_LayerStack)
             {
                 layer->OnUpdate();
             }
-            m_Window->RendererUpdate();
-
             m_ImGuiLayer->Begin();
             for (Layer* layer : m_LayerStack)
             {
@@ -193,8 +195,6 @@ namespace Core {
             m_ImGuiLayer->End();
             
             m_Window->OnUpdate();
-            
-            m_Window->RendererSwapBuffers();
         }
     }
     

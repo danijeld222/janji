@@ -54,12 +54,14 @@ namespace Core
 			
 			s_SDLInitialized = true;
 		}
-
+		
 		m_Window = SDL_CreateWindow(m_Data.title, m_Data.width, m_Data.height, m_Data.windowFlags);
-
+		
 		COREASSERT_MESSAGE(m_Window, SDL_GetError());
 		
 		m_Data.windowID = SDL_GetWindowID(m_Window);
+		
+		m_RendererContext = new RendererContext(m_Window, SDL_RENDERER_PRESENTVSYNC);
 		
 		SDL_SetWindowPosition(m_Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 		//SDL_ShowWindow(m_Window);
@@ -86,28 +88,10 @@ namespace Core
 			GenericSDL_Event event(&m_Event);
 			m_Data.eventCallback(event);
 		}
-	}
 
-	void Window::RendererBegin() const
-	{
-		m_Renderer->ClearScreen();
+		m_RendererContext->SwapBuffers();
 	}
-
-	void Window::RendererUpdate() const
-	{
-		m_Renderer->Update(m_Window);
-	}
-
-	void Window::RendererSwapBuffers() const
-	{
-		m_Renderer->SwapBuffers();
-	}
-
-	void Window::InitRenderer()
-	{
-		m_Renderer = new Renderer(m_Window, SDL_RENDERER_PRESENTVSYNC);
-	}
-
+	
 	int Window::HandleWindowResizeEvent(void* data, SDL_Event* e)
 	{
 		if (e->type == SDL_EVENT_WINDOW_RESIZED || e->type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)
