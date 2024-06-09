@@ -17,8 +17,8 @@ namespace Core
 		f32 GetRotation() const;
 		void SetRotation(f32 rotation);
 		
-		f32 GetScale() const;
-		void SetScale(f32 scale);
+		f32 GetZoom() const;
+		void SetZoom(f32 zoom);
 		
 		const glm::mat4& GetProjectionMatrix() const;
 		const glm::mat4& GetViewMatrix() const;
@@ -34,6 +34,6 @@ namespace Core
 		
 		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		f32 m_Rotation = 0.0f;
-		f32 m_Scale = 1.0f;
+		f32 m_Zoom = 1.0f;
 	};
 }

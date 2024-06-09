@@ -158,7 +158,7 @@ public:
         
         m_Camera.SetPosition(m_CameraPosition);
         m_Camera.SetRotation(m_CameraRotation);
-        m_Camera.SetScale(m_CameraScale);
+        m_Camera.SetZoom(m_CameraZoom);
         
         Core::Renderer::BeginScene(m_Camera);
         
@@ -177,7 +177,7 @@ public:
         if (event.GetEventType() == Core::EventType::MouseScrolled)
         {
             Core::MouseScrolledEvent& scrollEvent = dynamic_cast<Core::MouseScrolledEvent&>(event);
-            m_CameraScale += m_CameraScaleAmount * scrollEvent.GetYOffset() * -1.0f;
+            m_CameraZoom += m_CameraZoomAmount * scrollEvent.GetYOffset() * -1.0f;
         }
     }
 
@@ -191,13 +191,13 @@ private:
     Core::OrthographicCamera m_Camera;
     
     glm::vec3 m_CameraPosition;
-    f32 m_CameraMoveSpeed = 5.0f;
+    f32 m_CameraMoveSpeed = 2.0f;
     
     f32 m_CameraRotation = 0.0f;
     f32 m_CameraRotationSpeed = 180.0f;
     
-    f32 m_CameraScale = 1.0f;
-    f32 m_CameraScaleAmount = 0.1f;
+    f32 m_CameraZoom = 1.0f;
+    f32 m_CameraZoomAmount = 0.1f;
 };
 
 class Sandbox : public Core::Application

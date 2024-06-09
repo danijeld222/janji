@@ -35,14 +35,14 @@ namespace Core
 		RecalculateViewMatrix();
 	}
 	
-	f32 OrthographicCamera::GetScale() const
+	f32 OrthographicCamera::GetZoom() const
 	{
-		return m_Scale;
+		return m_Zoom;
 	}
 	
-	void OrthographicCamera::SetScale(f32 scale)
+	void OrthographicCamera::SetZoom(f32 zoom)
 	{
-		m_Scale = scale;
+		m_Zoom = zoom;
 		
 		RecalculateViewMatrix();
 	}
@@ -66,7 +66,7 @@ namespace Core
 	{
 		glm::mat4 translate = glm::translate(glm::mat4{ 1.0f }, m_Position);
 		glm::mat4 rotate = glm::rotate(glm::mat4{ 1.0f }, glm::radians(m_Rotation), glm::vec3{ 0.0f,0.0f,1.0f });
-		glm::mat4 scale = glm::scale(glm::mat4{ 1.0f }, glm::vec3{ m_Scale, m_Scale, 1.0f });
+		glm::mat4 scale = glm::scale(glm::mat4{ 1.0f }, glm::vec3{ m_Zoom, m_Zoom, 1.0f });
 		
 		glm::mat4 transform = scale * rotate * translate;
 		
