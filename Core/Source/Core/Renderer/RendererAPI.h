@@ -12,6 +12,6 @@ namespace Core
 		void SetClearColor(const glm::vec4& color);
 		void Clear();
 		
-		void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray);
+		void DrawIndexed(const Ref<VertexArray>& vertexArray);
 	};
 }

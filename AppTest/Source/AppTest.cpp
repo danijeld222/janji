@@ -1,5 +1,9 @@
 #include <Core.h>
 #include <Core/Events/MouseEvent.h>
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "imgui.h"
 
 class TestingLayer : public Core::Layer
@@ -18,7 +22,7 @@ public:
              0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f
         };
 
-        std::shared_ptr<Core::VertexBuffer> vertexBuffer;
+        Core::Ref<Core::VertexBuffer> vertexBuffer;
         vertexBuffer.reset(new Core::VertexBuffer(vertices, sizeof(vertices)));
         Core::BufferLayout layout = {
             { Core::ShaderDataType::Float3, "a_Position" },
@@ -28,30 +32,30 @@ public:
         m_VertexArray->AddVertexBuffer(vertexBuffer);
         
         u32 indices[3] = { 0, 1, 2 };
-        std::shared_ptr<Core::IndexBuffer> indexBuffer;
+        Core::Ref<Core::IndexBuffer> indexBuffer;
         indexBuffer.reset(new Core::IndexBuffer(indices, sizeof(indices) / sizeof(u32)));
         m_VertexArray->SetIndexBuffer(indexBuffer);
         
-        m_SquareVA.reset(new Core::VertexArray());
+        m_SquareVertexArray.reset(new Core::VertexArray());
         
         f32 squareVertices[3 * 4] = {
-             -0.75f, -0.75f, 0.0f,
-              0.75f, -0.75f, 0.0f,
-              0.75f,  0.75f, 0.0f,
-             -0.75f,  0.75f, 0.0f
+             -0.5f, -0.5f, 0.0f,
+              0.5f, -0.5f, 0.0f,
+              0.5f,  0.5f, 0.0f,
+             -0.5f,  0.5f, 0.0f
         };
         
-        std::shared_ptr<Core::VertexBuffer> squareVB;
+        Core::Ref<Core::VertexBuffer> squareVB;
         squareVB.reset(new Core::VertexBuffer(squareVertices, sizeof(squareVertices)));
         squareVB->SetLayout({
             { Core::ShaderDataType::Float3, "a_Position" }
             });
-        m_SquareVA->AddVertexBuffer(squareVB);
+        m_SquareVertexArray->AddVertexBuffer(squareVB);
         
         u32 squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-        std::shared_ptr<Core::IndexBuffer> squareIB;
+        Core::Ref<Core::IndexBuffer> squareIB;
         squareIB.reset(new Core::IndexBuffer(squareIndices, sizeof(squareIndices) / sizeof(u32)));
-        m_SquareVA->SetIndexBuffer(squareIB);
+        m_SquareVertexArray->SetIndexBuffer(squareIB);
         
         std::string vertexSrc = R"(
             #version 330 core
@@ -60,6 +64,7 @@ public:
             layout(location = 1) in vec4 a_Color;
             
             uniform mat4 u_ViewProjection;
+            uniform mat4 u_Transform;
             
             out vec3 v_Position;
             out vec4 v_Color;
@@ -67,7 +72,7 @@ public:
             {
                 v_Position = a_Position;
                 v_Color = a_Color;
-                gl_Position = u_ViewProjection * vec4(a_Position, 1.0);	
+                gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);	
             }
         )";
         
@@ -86,33 +91,39 @@ public:
         
         m_Shader.reset(new Core::Shader(vertexSrc, fragmentSrc));
         
-        std::string blueShaderVertexSrc = R"(
+        std::string solidColorShaderVertexSrc = R"(
             #version 330 core
             
             layout(location = 0) in vec3 a_Position;
             
             uniform mat4 u_ViewProjection;
+            uniform mat4 u_Transform;
             
             out vec3 v_Position;
+            
             void main()
             {
                 v_Position = a_Position;
-                gl_Position = u_ViewProjection * vec4(a_Position, 1.0);	
+                gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);	
             }
         )";
         
-        std::string blueShaderFragmentSrc = R"(
+        std::string solidColorShaderFragmentSrc = R"(
             #version 330 core
             
             layout(location = 0) out vec4 color;
+            
             in vec3 v_Position;
+            
+            uniform vec3 u_Color;
+            
             void main()
             {
-                color = vec4(0.2, 0.3, 0.8, 1.0);
+                color = vec4(u_Color, 1.0);
             }
         )";
         
-        m_BlueShader.reset(new Core::Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
+        m_SolidColorShader.reset(new Core::Shader(solidColorShaderVertexSrc, solidColorShaderFragmentSrc));
     }
     
     void OnUpdate(Core::Timestep timestep) override
@@ -162,7 +173,21 @@ public:
         
         Core::Renderer::BeginScene(m_Camera);
         
-        Core::Renderer::Submit(m_BlueShader, m_SquareVA);
+        glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+        
+        m_SolidColorShader->Bind();
+        m_SolidColorShader->UploadUniformFloat3("u_Color", m_SolidColor);
+        
+        for (int y = -10; y < 10; y++)
+        {
+            for (int x = -10; x < 10; x++)
+            {
+                glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+                glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+                Core::Renderer::Submit(m_SolidColorShader, m_SquareVertexArray, transform);
+            }
+        }
+        
         Core::Renderer::Submit(m_Shader, m_VertexArray);
         
         Core::Renderer::EndScene();
@@ -170,6 +195,9 @@ public:
 
     void OnImGuiRender() override
     {
+        ImGui::Begin("Settings");
+        ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SolidColor));
+        ImGui::End();
     }
     
     void OnEvent(Core::Event& event) override
@@ -182,13 +210,15 @@ public:
     }
 
 private:
-    std::shared_ptr<Core::Shader> m_Shader;
-    std::shared_ptr<Core::VertexArray> m_VertexArray;
+    Core::Ref<Core::Shader> m_Shader;
+    Core::Ref<Core::VertexArray> m_VertexArray;
     
-    std::shared_ptr<Core::Shader> m_BlueShader;
-    std::shared_ptr<Core::VertexArray> m_SquareVA;
+    Core::Ref<Core::Shader> m_SolidColorShader;
+    Core::Ref<Core::VertexArray> m_SquareVertexArray;
     
     Core::OrthographicCamera m_Camera;
+    
+    glm::vec3 m_SolidColor = { 0.2f, 0.3f, 0.8f };
     
     glm::vec3 m_CameraPosition;
     f32 m_CameraMoveSpeed = 2.0f;

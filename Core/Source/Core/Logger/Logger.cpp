@@ -4,7 +4,7 @@
 
 namespace Core
 {
-	std::shared_ptr<spdlog::logger> Logger::s_CoreLogger;
+	Ref<spdlog::logger> Logger::s_CoreLogger;
 
 	void Logger::Initialize()
 	{

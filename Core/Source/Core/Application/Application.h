@@ -29,7 +29,7 @@ namespace Core
         b8 OnWindowClose(WindowCloseEvent& e);
         
         b8 m_Running = false;
-        std::unique_ptr<WindowBase> m_Window;
+        Scope<WindowBase> m_Window;
         LayerStack m_LayerStack;
         ImGuiLayer* m_ImGuiLayer;
         

@@ -8,8 +8,8 @@
 
 #include <functional>
 
-namespace Core {
-    
+namespace Core 
+{
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
     
     Application* Application::s_Instance = nullptr;
@@ -22,7 +22,7 @@ namespace Core {
         InitializeMemoryStats();
         Core::Logger::Initialize();
         
-        m_Window = std::unique_ptr<WindowBase>(WindowBase::Create());
+        m_Window = Scope<WindowBase>(WindowBase::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
         
         m_Running = true;

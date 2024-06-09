@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 // Unsigned int types.
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -39,3 +41,12 @@ STATIC_ASSERT(sizeof(i64) == 8, "Expected i64 to be 8 bytes.");
 
 STATIC_ASSERT(sizeof(f32) == 4, "Expected f32 to be 4 bytes.");
 STATIC_ASSERT(sizeof(f64) == 8, "Expected f64 to be 8 bytes.");
+
+namespace Core
+{
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+}
