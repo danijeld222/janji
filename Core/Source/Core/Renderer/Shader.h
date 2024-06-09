@@ -3,6 +3,7 @@
 #include "Core/Defines.h"
 
 #include <string>
+#include <glm/glm.hpp>
 
 namespace Core 
 {
@@ -14,6 +15,8 @@ namespace Core
 		
 		void Bind() const;
 		void Unbind() const;
+		
+		void UploadUniformMat4(const std::string& name, const glm::mat4& matrix);
 		
 	private:
 		u32 m_RendererID;

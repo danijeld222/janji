@@ -92,7 +92,7 @@ namespace Core
 		m_RendererContext->SwapBuffers();
 	}
 	
-	int Window::HandleWindowResizeEvent(void* data, SDL_Event* e)
+	i32 Window::HandleWindowResizeEvent(void* data, SDL_Event* e)
 	{
 		if (e->type == SDL_EVENT_WINDOW_RESIZED || e->type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)
 		{
@@ -107,7 +107,7 @@ namespace Core
 		return 0;
 	}
 
-	int Window::HandleWindowCloseEvent(void* data, SDL_Event* e)
+	i32 Window::HandleWindowCloseEvent(void* data, SDL_Event* e)
 	{
 		WindowData& windowData = *(WindowData*)data;
 		
@@ -122,7 +122,7 @@ namespace Core
 		return 0;
 	}
 
-	int Window::HandleKeyboardEvent(void* data, SDL_Event* e)
+	i32 Window::HandleKeyboardEvent(void* data, SDL_Event* e)
 	{
 		WindowData& windowData = *(WindowData*)data;
 		
@@ -144,7 +144,7 @@ namespace Core
 		return 0;
 	}
 
-	int Window::HandleMouseButtonEvent(void* data, SDL_Event* e)
+	i32 Window::HandleMouseButtonEvent(void* data, SDL_Event* e)
 	{
 		WindowData& windowData = *(WindowData*)data;
 		
@@ -166,7 +166,7 @@ namespace Core
 		return 0;
 	}
 
-	int Window::HandleMouseScrollEvent(void* data, SDL_Event* e)
+	i32 Window::HandleMouseScrollEvent(void* data, SDL_Event* e)
 	{
 		WindowData& windowData = *(WindowData*)data;
 		
@@ -181,7 +181,7 @@ namespace Core
 		return 0;
 	}
 
-	int Window::HandleMouseMoveEvent(void* data, SDL_Event* e)
+	i32 Window::HandleMouseMoveEvent(void* data, SDL_Event* e)
 	{
 		if (e->type == SDL_EVENT_MOUSE_MOTION)
 		{

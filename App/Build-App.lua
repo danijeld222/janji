@@ -21,7 +21,8 @@ project "App"
         "../Core/Source",
         "../Core/Vendor/spdlog/include",
         "../Core/Vendor/imgui",
-        "../Core/Vendor/imgui/backends"
+        "../Core/Vendor/imgui/backends",
+        "../Core/Vendor/glm/"
     }
     
      externalincludedirs

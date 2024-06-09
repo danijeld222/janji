@@ -37,7 +37,7 @@ namespace Core
 		
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;
-		virtual int GetCategoryFlags() const = 0;
+		virtual i32 GetCategoryFlags() const = 0;
 		virtual std::string ToString() const { return GetName(); }
 		virtual b8 ShouldLog() const { return true; }
 		
@@ -70,7 +70,7 @@ namespace Core
 			return (event->type != SDL_EVENT_POLL_SENTINEL);
 		}
 
-		virtual int GetCategoryFlags() const override { return EventCategoryTest; }
+		virtual i32 GetCategoryFlags() const override { return EventCategoryTest; }
 
         std::string GetEventTypeName() const
 		{

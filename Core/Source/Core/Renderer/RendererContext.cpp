@@ -21,7 +21,7 @@ namespace Core
         COREASSERT_MESSAGE(IMG_Init(IMG_INIT_PNG), "SDL Image faled to initialize");
         m_Context = SDL_GL_CreateContext(m_Window);
         
-        int version = gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress);
+        i32 version = gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress);
         COREINFO("GL {0}.{1}", GLAD_VERSION_MAJOR(version), GLAD_VERSION_MINOR(version));
         
         COREINFO("OpenGL Info:");

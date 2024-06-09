@@ -25,12 +25,12 @@ namespace Core
 		
 		inline void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.eventCallback = callback; }
 		
-		static int HandleWindowResizeEvent(void* data, SDL_Event* e);
-		static int HandleWindowCloseEvent(void* data, SDL_Event* e);
-		static int HandleKeyboardEvent(void* data, SDL_Event* e);
-		static int HandleMouseButtonEvent(void* data, SDL_Event* e);
-		static int HandleMouseScrollEvent(void* data, SDL_Event* e);
-		static int HandleMouseMoveEvent(void* data, SDL_Event* e);
+		static i32 HandleWindowResizeEvent(void* data, SDL_Event* e);
+		static i32 HandleWindowCloseEvent(void* data, SDL_Event* e);
+		static i32 HandleKeyboardEvent(void* data, SDL_Event* e);
+		static i32 HandleMouseButtonEvent(void* data, SDL_Event* e);
+		static i32 HandleMouseScrollEvent(void* data, SDL_Event* e);
+		static i32 HandleMouseMoveEvent(void* data, SDL_Event* e);
 		
 	private:
 		virtual void Initialize(const WindowSettings& props);

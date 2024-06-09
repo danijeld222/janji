@@ -9,11 +9,11 @@ namespace Core
 	class WindowResizeEvent : public Event
 	{
 	public:
-		WindowResizeEvent(unsigned int width, unsigned int height)
+		WindowResizeEvent(u32 width, u32 height)
 			: m_Width(width), m_Height(height) {}
 	
-		inline unsigned int GetWidth() const { return m_Width; }
-		inline unsigned int GetHeight() const { return m_Height; }
+		inline u32 GetWidth() const { return m_Width; }
+		inline u32 GetHeight() const { return m_Height; }
 	
 		std::string ToString() const override
 		{
@@ -26,10 +26,10 @@ namespace Core
 		virtual EventType GetEventType() const override { return GetStaticType(); }
 		virtual const char* GetName() const override { return "WindowResize"; }
 	
-		virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
+		virtual i32 GetCategoryFlags() const override { return EventCategoryApplication; }
 	
 	private:
-		unsigned int m_Width, m_Height;
+		u32 m_Width, m_Height;
 	};
 
 	class WindowCloseEvent : public Event
@@ -41,7 +41,7 @@ namespace Core
 		virtual EventType GetEventType() const override { return GetStaticType(); }
 		virtual const char* GetName() const override { return "WindowClose"; }
 	
-		virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
+		virtual i32 GetCategoryFlags() const override { return EventCategoryApplication; }
 	};
 
 	class AppTickEvent : public Event
@@ -53,7 +53,7 @@ namespace Core
 		virtual EventType GetEventType() const override { return GetStaticType(); }
 		virtual const char* GetName() const override { return "AppTick"; }
 	
-		virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
+		virtual i32 GetCategoryFlags() const override { return EventCategoryApplication; }
 	};
 
 	class AppUpdateEvent : public Event
@@ -65,7 +65,7 @@ namespace Core
 		virtual EventType GetEventType() const override { return GetStaticType(); }
 		virtual const char* GetName() const override { return "AppUpdate"; }
 	
-		virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
+		virtual i32 GetCategoryFlags() const override { return EventCategoryApplication; }
 	};
 
 	class AppRenderEvent : public Event
@@ -77,6 +77,6 @@ namespace Core
 		virtual EventType GetEventType() const override { return GetStaticType(); }
 		virtual const char* GetName() const override { return "AppRender"; }
 	
-		virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
+		virtual i32 GetCategoryFlags() const override { return EventCategoryApplication; }
 	};
 }

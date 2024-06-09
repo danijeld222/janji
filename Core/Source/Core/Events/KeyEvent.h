@@ -9,24 +9,24 @@ namespace Core
 	class KeyEvent : public Event
 	{
 	public:
-		inline int GetKeyCode() const { return m_KeyCode; }
+		inline i32 GetKeyCode() const { return m_KeyCode; }
 
-		virtual int GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
+		virtual i32 GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
 
 	protected:
-		KeyEvent(int keycode)
+		KeyEvent(i32 keycode)
 			: m_KeyCode(keycode) {}
 
-		int m_KeyCode;
+		i32 m_KeyCode;
 	};
 
 	class KeyPressedEvent : public KeyEvent
 	{
 	public:
-		KeyPressedEvent(int keycode, int repeatCount)
+		KeyPressedEvent(i32 keycode, i32 repeatCount)
 			: KeyEvent(keycode), m_RepeatCount(repeatCount) {}
 
-		inline int GetRepeatCount() const { return m_RepeatCount; }
+		inline i32 GetRepeatCount() const { return m_RepeatCount; }
 
 		std::string ToString() const override
 		{
@@ -40,13 +40,13 @@ namespace Core
 		virtual const char* GetName() const override { return "KeyPressed"; }
 
 	private:
-		int m_RepeatCount;
+		i32 m_RepeatCount;
 	};
 
 	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
-		KeyReleasedEvent(int keycode)
+		KeyReleasedEvent(i32 keycode)
 			: KeyEvent(keycode) {}
 
 		std::string ToString() const override

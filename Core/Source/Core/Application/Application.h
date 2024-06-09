@@ -5,9 +5,7 @@
 #include "Core/Events/ApplicationEvent.h"
 #include "Core/Layer/LayerStack.h"
 #include "Core/ImGui/ImGuiLayer.h"
-#include "Core/Renderer/Shader.h"
-#include "Core/Renderer/Buffer.h"
-#include "Core/Renderer/VertexArray.h"
+#include "Core/Time/Timestep.h"
 
 namespace Core 
 {
@@ -35,13 +33,9 @@ namespace Core
         LayerStack m_LayerStack;
         ImGuiLayer* m_ImGuiLayer;
         
+        f32 m_LastFrameTime = 0.0f;
+        
         static Application* s_Instance;
-        
-        std::shared_ptr<Shader> m_Shader;
-        std::shared_ptr<VertexArray> m_VertexArray;
-        
-        std::shared_ptr<Shader> m_BlueShader;
-        std::shared_ptr<VertexArray> m_SquareVA;
     };
     
     Application* CreateApplication();

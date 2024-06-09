@@ -100,27 +100,27 @@ char* GetMemoryUsage()
     for (u32 i = 0; i < MEMORY_TAG_MAX; ++i)
     {
         char unit[4] = "XiB";
-        float amount = 1.0f;
+        f32 amount = 1.0f;
         if (memoryStats.taggedAllocations[i] >= gib)
         {
             unit[0] = 'G';
-            amount = memoryStats.taggedAllocations[i] / (float)gib;
+            amount = memoryStats.taggedAllocations[i] / (f32)gib;
         }
         else if (memoryStats.taggedAllocations[i] >= mib)
         {
             unit[0] = 'M';
-            amount = memoryStats.taggedAllocations[i] / (float)mib;
+            amount = memoryStats.taggedAllocations[i] / (f32)mib;
         }
         else if (memoryStats.taggedAllocations[i] >= kib)
         {
             unit[0] = 'K';
-            amount = memoryStats.taggedAllocations[i] / (float)kib;
+            amount = memoryStats.taggedAllocations[i] / (f32)kib;
         }
         else
         {
             unit[0] = 'B';
             unit[1] = 0;
-            amount = (float)memoryStats.taggedAllocations[i];
+            amount = (f32)memoryStats.taggedAllocations[i];
         }
         
         i32 length = snprintf(buffer + offset, 8000, "  %s: %.2f%s\n", memoryTagStrings[i], amount, unit);

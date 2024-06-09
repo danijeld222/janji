@@ -7,33 +7,33 @@ namespace Core
 {
 	InputBase* InputBase::s_Instance = new Input();
 
-	bool Input::IsKeyPressedImpl(int keycode)
+	bool Input::IsKeyPressedImpl(i32 keycode)
 	{
 		const u8* state = SDL_GetKeyboardState(NULL);
 		b8 keystate = state[keycode];
 		return keystate;
 	}
 
-	bool Input::IsMouseButtonPressedImpl(int button)
+	bool Input::IsMouseButtonPressedImpl(i32 button)
 	{
 		return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(button);
 	}
 
-	std::pair<float, float> Input::GetMousePositionImpl()
+	std::pair<f32, f32> Input::GetMousePositionImpl()
 	{
-		float xPos, yPos;
+		f32 xPos, yPos;
 		SDL_GetMouseState(&xPos, &yPos);
 
 		return { xPos, yPos };
 	}
 
-	float Input::GetMouseXImpl()
+	f32 Input::GetMouseXImpl()
 	{
 		auto [x, y] = GetMousePositionImpl();
 		return x;
 	}
 
-	float Input::GetMouseYImpl()
+	f32 Input::GetMouseYImpl()
 	{
 		auto [x, y] = GetMousePositionImpl();
 		return y;
