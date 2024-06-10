@@ -162,6 +162,7 @@ public:
         m_TextureShader.reset(new Core::Shader(textureShaderVertexSrc, textureShaderFragmentSrc));
         
         m_Texture = std::make_shared<Core::Texture2D>("DebugGraphics/Texture/WhatHappened.png");
+        m_TextureWolf = std::make_shared<Core::Texture2D>("DebugGraphics/Texture/Wolf.png");
         
         m_TextureShader->Bind();
         m_TextureShader->UploadUniformInt("u_Texture", 0);
@@ -232,6 +233,9 @@ public:
         m_Texture->Bind();
         Core::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.0f)));
         
+        m_TextureWolf->Bind();
+        Core::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.0f)));
+        
         //Core::Renderer::Submit(m_Shader, m_VertexArray);
         
         Core::Renderer::EndScene();
@@ -262,6 +266,7 @@ private:
     
     Core::Ref<Core::Shader> m_TextureShader;
     Core::Ref<Core::Texture2D> m_Texture;
+    Core::Ref<Core::Texture2D> m_TextureWolf;
     
     Core::OrthographicCamera m_Camera;
     

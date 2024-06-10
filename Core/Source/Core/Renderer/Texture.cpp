@@ -44,12 +44,9 @@ namespace Core
 		
 		SDL_UnlockSurface(loadedSurface);
 		
-		SDL_Surface* img_rgba8888 = SDL_CreateSurface(loadedSurface->w, loadedSurface->h, SDL_PIXELFORMAT_ABGR8888);
+		SDL_Surface* formatedSurface = SDL_CreateSurface(loadedSurface->w, loadedSurface->h, SDL_PIXELFORMAT_ABGR8888);
 		
-		//SDL_SetSurfaceAlphaMod(img_rgba8888, 0xFF);
-		//SDL_SetSurfaceBlendMode(img_rgba8888, SDL_BLENDMODE_NONE);
-		
-		SDL_BlitSurface(loadedSurface, NULL, img_rgba8888, NULL);
+		SDL_BlitSurface(loadedSurface, NULL, formatedSurface, NULL);
 		
 		glGenTextures(1, &m_RendererID);
 		glBindTexture(GL_TEXTURE_2D, m_RendererID);
@@ -57,9 +54,9 @@ namespace Core
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_rgba8888->pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, formatedSurface->pixels);
 		
-		SDL_DestroySurface(img_rgba8888);
+		SDL_DestroySurface(formatedSurface);
 		SDL_DestroySurface(loadedSurface);
 	}
 	

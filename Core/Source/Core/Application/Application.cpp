@@ -25,6 +25,8 @@ namespace Core
         m_Window = Scope<WindowBase>(WindowBase::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
         
+        Renderer::Init();
+        
         m_Running = true;
         
         m_ImGuiLayer = new ImGuiLayer();

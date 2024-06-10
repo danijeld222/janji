@@ -9,6 +9,8 @@ namespace Core
 	class RendererAPI
 	{
 	public:
+		void Init();
+		
 		void SetClearColor(const glm::vec4& color);
 		void Clear();
 		
