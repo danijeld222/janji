@@ -47,7 +47,7 @@ project "AppTest"
     
     postbuildcommands
     {
-        "{COPYDIR} $(SolutionDir)%{prj.name}/DebugGraphics/*.* ../Binaries/" .. OutputDir .. "/%{prj.name}/DebugGraphics",
+        "{COPYDIR} $(SolutionDir)%{prj.name}/Assets/*.* ../Binaries/" .. OutputDir .. "/%{prj.name}/Assets"
     }
     
     filter "system:windows"
