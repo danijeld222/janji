@@ -90,7 +90,7 @@ public:
             }
         )";
         
-        m_Shader.reset(new Core::Shader(vertexSrc, fragmentSrc));
+        m_Shader = Core::Shader::CreateWithSource("VertexPosColor", vertexSrc, fragmentSrc);
         
         std::string solidColorShaderVertexSrc = R"(
             #version 330 core
@@ -124,16 +124,16 @@ public:
             }
         )";
         
-        m_SolidColorShader.reset(new Core::Shader(solidColorShaderVertexSrc, solidColorShaderFragmentSrc));
+        m_SolidColorShader = Core::Shader::CreateWithSource("SolidColor", solidColorShaderVertexSrc, solidColorShaderFragmentSrc);
         
-        m_TextureShader.reset(new Core::Shader("Assets/Shaders/Texture.glsl"));
-        //m_TextureShader.reset(new Core::Shader("Assets/Shaders/TextureVertex.glsl", "Assets/Shaders/TextureFragment.glsl", true));
+        m_ShaderLibrary.Load("Texture", "Assets/Shaders/Texture.glsl");
+        //m_ShaderLibrary.Load("Texture", "Assets/Shaders/TextureVertex.glsl", "Assets/Shaders/TextureFragment.glsl");
         
         m_Texture = std::make_shared<Core::Texture2D>("Assets/Texture/WhatHappened.png");
         m_TextureWolf = std::make_shared<Core::Texture2D>("Assets/Texture/Wolf.png");
         
-        m_TextureShader->Bind();
-        m_TextureShader->UploadUniformInt("u_Texture", 0);
+        m_ShaderLibrary.Get("Texture")->Bind();
+        m_ShaderLibrary.Get("Texture")->UploadUniformInt("u_Texture", 0);
     }
     
     void OnUpdate(Core::Timestep timestep) override
@@ -199,10 +199,10 @@ public:
         }
         
         m_Texture->Bind();
-        Core::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.0f)));
+        Core::Renderer::Submit(m_ShaderLibrary.Get("Texture"), m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.0f)));
         
         m_TextureWolf->Bind();
-        Core::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.0f)));
+        Core::Renderer::Submit(m_ShaderLibrary.Get("Texture"), m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.0f)));
         
         //Core::Renderer::Submit(m_Shader, m_VertexArray);
         
@@ -226,13 +226,14 @@ public:
     }
 
 private:
+    Core::ShaderLibrary m_ShaderLibrary;
+    
     Core::Ref<Core::Shader> m_Shader;
     Core::Ref<Core::VertexArray> m_VertexArray;
     
     Core::Ref<Core::Shader> m_SolidColorShader;
     Core::Ref<Core::VertexArray> m_SquareVertexArray;
     
-    Core::Ref<Core::Shader> m_TextureShader;
     Core::Ref<Core::Texture2D> m_Texture;
     Core::Ref<Core::Texture2D> m_TextureWolf;
     

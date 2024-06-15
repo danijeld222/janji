@@ -4,6 +4,7 @@
 #include "Core/Asserts.h"
 
 #include <vector>
+#include <array>
 
 #include "glad/gl.h"
 #include <glm/gtc/type_ptr.hpp>
@@ -25,14 +26,31 @@ namespace Core
 		return 0;
 	}
 	
-	Shader::Shader(const std::string& filepath)
+	Ref<Shader> Shader::Create(const std::string& name, const std::string& filepath)
+	{
+		return std::make_shared<Shader>(name, filepath);
+	}
+	
+	Ref<Shader> Shader::Create(const std::string& name, const std::string& vertexFilepath, const std::string& fragmentFilepath)
+	{
+		return std::make_shared<Shader>(name, vertexFilepath, fragmentFilepath, true);
+	}
+	
+	Ref<Shader> Shader::CreateWithSource(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+	{
+		return std::make_shared<Shader>(name, vertexSrc, fragmentSrc);
+	}
+	
+	Shader::Shader(const std::string& name, const std::string& filepath)
+		: m_Name(name)
 	{
 		std::string source = ReadFile(filepath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
 	}
 	
-	Shader::Shader(const std::string& vertexFilepath, const std::string& fragmentFilepath, b8 findByPath)
+	Shader::Shader(const std::string& name, const std::string& vertexFilepath, const std::string& fragmentFilepath, b8 _)
+		: m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = ReadFile(vertexFilepath);
@@ -40,7 +58,8 @@ namespace Core
 		Compile(sources);
 	}
 	
-	Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc)
+	Shader::Shader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+		: m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
@@ -56,7 +75,7 @@ namespace Core
 	std::string Shader::ReadFile(const std::string& filepath)
 	{
 		std::string result;
-		std::ifstream in(filepath, std::ios::in, std::ios::binary);
+		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		if (in)
 		{
 			in.seekg(0, std::ios::end);
@@ -69,8 +88,8 @@ namespace Core
 		{
 			char result[200];
 			const char* one = "Could not open file ";
-			strcpy(result, one);
-			strcat(result, filepath.c_str());
+			strcpy_s(result, one);
+			strcat_s(result, filepath.c_str());
 			COREASSERT_MESSAGE(false, result);
 		}
 		
@@ -104,7 +123,9 @@ namespace Core
 	void Shader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIDs(shaderSources.size());
+		COREASSERT_MESSAGE(shaderSources.size() <= 2, "We only support two shaders for now");
+		std::array<GLenum, 2> glShaderIDs;
+		int glShaderIDIndex = 0;
 		for (auto& kv : shaderSources)
 		{
 			GLenum type = kv.first;
@@ -135,7 +156,9 @@ namespace Core
 			}
 			
 			glAttachShader(program, shader);
-			glShaderIDs.push_back(shader);
+			
+			glShaderIDs[glShaderIDIndex] = shader;
+			glShaderIDIndex++;
 		}
 		
 		m_RendererID = program;
@@ -184,6 +207,11 @@ namespace Core
 		glUseProgram(0);
 	}
 	
+	const std::string& Shader::GetName() const
+	{ 
+		return m_Name; 
+	}
+	
 	void Shader::UploadUniformInt(const std::string& name, int value)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
@@ -224,5 +252,36 @@ namespace Core
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+	}
+	
+	void ShaderLibrary::Add(const Ref<Shader>& shader)
+	{
+		COREASSERT_MESSAGE(!Exists(shader->GetName()), "Shader already exists!");
+		m_Shaders[shader->GetName()] = shader;
+	}
+	
+	Ref<Shader> ShaderLibrary::Load(const std::string& name, const std::string& filepath)
+	{
+		Ref<Shader> shader = Shader::Create(name, filepath);
+		Add(shader);
+		return shader;
+	}
+	
+	Ref<Shader> ShaderLibrary::Load(const std::string& name, const std::string& vertexFilepath, const std::string& fragmentFilepath)
+	{
+		Ref<Shader> shader = Shader::Create(name, vertexFilepath, fragmentFilepath);
+		Add(shader);
+		return shader;
+	}
+	
+	Ref<Shader> ShaderLibrary::Get(const std::string& name)
+	{
+		COREASSERT_MESSAGE(Exists(name), "Shader not found!");
+		return m_Shaders[name];
+	}
+	
+	bool ShaderLibrary::Exists(const std::string& name) const
+	{
+		return m_Shaders.find(name) != m_Shaders.end();
 	}
 }
