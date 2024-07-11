@@ -20,6 +20,8 @@ namespace Core
 		f32 GetZoom() const;
 		void SetZoom(f32 zoom);
 		
+		void SetProjection(f32 left, f32 right, f32 bottom, f32 top);
+
 		const glm::mat4& GetProjectionMatrix() const;
 		const glm::mat4& GetViewMatrix() const;
 		const glm::mat4& GetViewProjectionMatrix() const;

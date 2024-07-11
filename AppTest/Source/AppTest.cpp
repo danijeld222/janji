@@ -11,8 +11,7 @@ class TestingLayer : public Core::Layer
 public:
     TestingLayer()
         : Layer("Testing"),
-          m_Camera(-1.28f, 1.28f, -0.72f, 0.72f),
-          m_CameraPosition(0.0f)
+        m_CameraController(1280.0f / 720.0f)
     {
         m_VertexArray.reset(new Core::VertexArray());
         
@@ -138,50 +137,12 @@ public:
     
     void OnUpdate(Core::Timestep timestep) override
     {
-        if (Core::InputBase::IsKeyPressed(SDL_SCANCODE_LEFT) || Core::InputBase::IsKeyPressed(SDL_SCANCODE_A))
-        {
-            m_CameraPosition.x -= m_CameraMoveSpeed * timestep;
-        }
-        else if (Core::InputBase::IsKeyPressed(SDL_SCANCODE_RIGHT) || Core::InputBase::IsKeyPressed(SDL_SCANCODE_D))
-        {
-            m_CameraPosition.x += m_CameraMoveSpeed * timestep;
-        }
-        
-        if (Core::InputBase::IsKeyPressed(SDL_SCANCODE_UP) || Core::InputBase::IsKeyPressed(SDL_SCANCODE_W))
-        {
-            m_CameraPosition.y += m_CameraMoveSpeed * timestep;
-        }
-        else if (Core::InputBase::IsKeyPressed(SDL_SCANCODE_DOWN) || Core::InputBase::IsKeyPressed(SDL_SCANCODE_S))
-        {
-            m_CameraPosition.y -= m_CameraMoveSpeed * timestep;
-        }
-        
-        if (Core::InputBase::IsKeyPressed(SDL_SCANCODE_UP) || Core::InputBase::IsKeyPressed(SDL_SCANCODE_W))
-        {
-            m_CameraPosition.y += m_CameraMoveSpeed * timestep;
-        }
-        else if (Core::InputBase::IsKeyPressed(SDL_SCANCODE_DOWN) || Core::InputBase::IsKeyPressed(SDL_SCANCODE_S))
-        {
-            m_CameraPosition.y -= m_CameraMoveSpeed * timestep;
-        }
-        
-        if (Core::InputBase::IsKeyPressed(SDL_SCANCODE_Q))
-        {
-            m_CameraRotation += m_CameraRotationSpeed * timestep;
-        }
-        if (Core::InputBase::IsKeyPressed(SDL_SCANCODE_E))
-        {
-            m_CameraRotation -= m_CameraRotationSpeed * timestep;
-        }
+        m_CameraController.OnUpdate(timestep);
         
         Core::RendererCommands::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
         Core::RendererCommands::Clear();
         
-        m_Camera.SetPosition(m_CameraPosition);
-        m_Camera.SetRotation(m_CameraRotation);
-        m_Camera.SetZoom(m_CameraZoom);
-        
-        Core::Renderer::BeginScene(m_Camera);
+        Core::Renderer::BeginScene(m_CameraController.GetCamera());
         
         glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
         
@@ -218,11 +179,7 @@ public:
     
     void OnEvent(Core::Event& event) override
     {
-        if (event.GetEventType() == Core::EventType::MouseScrolled)
-        {
-            Core::MouseScrolledEvent& scrollEvent = dynamic_cast<Core::MouseScrolledEvent&>(event);
-            m_CameraZoom += m_CameraZoomAmount * scrollEvent.GetYOffset() * -1.0f;
-        }
+        m_CameraController.OnEvent(event);
     }
 
 private:
@@ -237,18 +194,9 @@ private:
     Core::Ref<Core::Texture2D> m_Texture;
     Core::Ref<Core::Texture2D> m_TextureWolf;
     
-    Core::OrthographicCamera m_Camera;
+    Core::OrthographicCameraController m_CameraController;
     
     glm::vec3 m_SolidColor = { 0.2f, 0.3f, 0.8f };
-    
-    glm::vec3 m_CameraPosition;
-    f32 m_CameraMoveSpeed = 2.0f;
-    
-    f32 m_CameraRotation = 0.0f;
-    f32 m_CameraRotationSpeed = 180.0f;
-    
-    f32 m_CameraZoom = 1.0f;
-    f32 m_CameraZoomAmount = 0.1f;
 };
 
 class Sandbox : public Core::Application
