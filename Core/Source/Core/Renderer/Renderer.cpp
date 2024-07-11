@@ -9,6 +9,11 @@ namespace Core
 		RendererCommands::Init();
 	}
 	
+	void Renderer::OnWindowResize(u32 width, u32 height)
+	{
+		RendererCommands::SetViewport(0, 0, width, height);
+	}
+	
 	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
 		m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();

@@ -26,6 +26,7 @@ namespace Core
 		inline void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.eventCallback = callback; }
 		
 		static i32 HandleWindowResizeEvent(void* data, SDL_Event* e);
+		static i32 HandleWindowMinimizedEvent(void* data, SDL_Event* e);
 		static i32 HandleWindowCloseEvent(void* data, SDL_Event* e);
 		static i32 HandleKeyboardEvent(void* data, SDL_Event* e);
 		static i32 HandleMouseButtonEvent(void* data, SDL_Event* e);

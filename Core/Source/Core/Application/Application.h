@@ -27,8 +27,11 @@ namespace Core
         
     private:
         b8 OnWindowClose(WindowCloseEvent& e);
+        b8 OnWindowResize(WindowResizeEvent& e);
+        b8 OnWindowMinimized(WindowMinimizedEvent& e);
         
         b8 m_Running = false;
+        b8 m_Minimized = false;
         Scope<WindowBase> m_Window;
         LayerStack m_LayerStack;
         ImGuiLayer* m_ImGuiLayer;

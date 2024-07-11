@@ -10,6 +10,7 @@ namespace Core
 	{
 	public:
 		void Init();
+		void SetViewport(u32 x, u32 y, u32 width, u32 height);
 		
 		void SetClearColor(const glm::vec4& color);
 		void Clear();

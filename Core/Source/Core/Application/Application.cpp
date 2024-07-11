@@ -55,6 +55,8 @@ namespace Core
     {
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+        dispatcher.Dispatch<WindowMinimizedEvent>(BIND_EVENT_FN(OnWindowMinimized));
         
         for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
         {
@@ -77,10 +79,14 @@ namespace Core
             Timestep timestep = time - m_LastFrameTime;
             m_LastFrameTime = time;
             
-            for (Layer* layer : m_LayerStack)
+            if (!m_Minimized)
             {
-                layer->OnUpdate(timestep);
+                for (Layer* layer : m_LayerStack)
+                {
+                    layer->OnUpdate(timestep);
+                }
             }
+            
             m_ImGuiLayer->Begin();
             for (Layer* layer : m_LayerStack)
             {
@@ -88,6 +94,7 @@ namespace Core
             }
             m_ImGuiLayer->End();
             
+            // NOTE: Dani - We should probably not swap buffer if window is minimized
             m_Window->OnUpdate();
         }
     }
@@ -95,6 +102,21 @@ namespace Core
     b8 Application::OnWindowClose(WindowCloseEvent& e)
     {
         m_Running = false;
+        
         return true;
+    }
+    
+    b8 Application::OnWindowResize(WindowResizeEvent& e)
+    {
+        Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+        
+        return false;
+    }
+    
+    b8 Application::OnWindowMinimized(WindowMinimizedEvent& e)
+    {
+        m_Minimized = e.GetIsMinimized();
+        
+        return false;
     }
 }

@@ -11,6 +11,7 @@ namespace Core
     {
     public:
         static void Init();
+        static void OnWindowResize(u32 width, u32 height);
         
         static void BeginScene(OrthographicCamera& camera);
         static void EndScene();

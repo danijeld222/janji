@@ -31,6 +31,31 @@ namespace Core
 	private:
 		u32 m_Width, m_Height;
 	};
+	
+	class WindowMinimizedEvent : public Event
+	{
+	public:
+		WindowMinimizedEvent(b8 minimized)
+			: m_Minimized(minimized) {}
+		
+		inline b8 GetIsMinimized() const { return m_Minimized; }
+		
+		std::string ToString() const override
+		{
+			std::stringstream stringOutput;
+			stringOutput << "WindowMinimizedEvent: " << m_Minimized;
+			return stringOutput.str();
+		}
+		
+		static EventType GetStaticType() { return EventType::WindowMinimized; }
+		virtual EventType GetEventType() const override { return GetStaticType(); }
+		virtual const char* GetName() const override { return "WindowMinimized"; }
+		
+		virtual i32 GetCategoryFlags() const override { return EventCategoryApplication; }
+		
+	private:
+		b8 m_Minimized;
+	};
 
 	class WindowCloseEvent : public Event
 	{

@@ -67,6 +67,7 @@ namespace Core
 		//SDL_ShowWindow(m_Window);
 
 		SDL_AddEventWatch(HandleWindowResizeEvent, &m_Data);
+		SDL_AddEventWatch(HandleWindowMinimizedEvent, &m_Data);
 		SDL_AddEventWatch(HandleWindowCloseEvent, &m_Data);
 		SDL_AddEventWatch(HandleKeyboardEvent, &m_Data);
 		SDL_AddEventWatch(HandleMouseButtonEvent, &m_Data);
@@ -106,7 +107,22 @@ namespace Core
 		
 		return 0;
 	}
-
+	
+	i32 Window::HandleWindowMinimizedEvent(void* data, SDL_Event* e)
+	{
+		if (e->type == SDL_EVENT_WINDOW_MINIMIZED || e->type == SDL_EVENT_WINDOW_RESTORED)
+		{
+			WindowData& windowData = *(WindowData*)data;
+			
+			WindowMinimizedEvent event((e->type == SDL_EVENT_WINDOW_MINIMIZED));
+			windowData.eventCallback(event);
+			
+			return 1;
+		}
+		
+		return 0;
+	}
+	
 	i32 Window::HandleWindowCloseEvent(void* data, SDL_Event* e)
 	{
 		WindowData& windowData = *(WindowData*)data;
