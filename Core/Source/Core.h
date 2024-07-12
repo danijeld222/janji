@@ -16,5 +16,3 @@
 #include "Core/Renderer/Texture.h"
 
 #include "SDL3/SDL_scancode.h"
-
-#include "Core/EntryPoint.h"

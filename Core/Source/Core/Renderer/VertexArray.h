@@ -14,6 +14,8 @@ namespace Core
 		VertexArray();
 		~VertexArray();
 		
+		static Ref<VertexArray> Create();
+		
 		void Bind() const;
 		void Unbind() const;
 		

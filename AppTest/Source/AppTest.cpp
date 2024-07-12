@@ -1,10 +1,12 @@
 #include <Core.h>
-#include <Core/Events/MouseEvent.h>
+#include <Core/EntryPoint.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 #include "imgui.h"
+
+#include "AppTest2D.h"
 
 class TestingLayer : public Core::Layer
 {
@@ -13,7 +15,7 @@ public:
         : Layer("Testing"),
         m_CameraController(1280.0f / 720.0f)
     {
-        m_VertexArray.reset(new Core::VertexArray());
+        m_VertexArray = Core::VertexArray::Create();
         
         f32 vertices[3 * 7] = {
             -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
@@ -23,11 +25,10 @@ public:
 
         Core::Ref<Core::VertexBuffer> vertexBuffer;
         vertexBuffer.reset(new Core::VertexBuffer(vertices, sizeof(vertices)));
-        Core::BufferLayout layout = {
+        vertexBuffer->SetLayout({
             { Core::ShaderDataType::Float3, "a_Position" },
             { Core::ShaderDataType::Float4, "a_Color" }
-        };
-        vertexBuffer->SetLayout(layout);
+        });
         m_VertexArray->AddVertexBuffer(vertexBuffer);
         
         u32 indices[3] = { 0, 1, 2 };
@@ -35,7 +36,7 @@ public:
         indexBuffer.reset(new Core::IndexBuffer(indices, sizeof(indices) / sizeof(u32)));
         m_VertexArray->SetIndexBuffer(indexBuffer);
         
-        m_SquareVertexArray.reset(new Core::VertexArray());
+        m_SquareVertexArray = Core::VertexArray::Create();
         
         f32 squareVertices[5 * 4] = {
              -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -204,7 +205,8 @@ class Sandbox : public Core::Application
 public:
     Sandbox()
     {
-        PushLayer(new TestingLayer());
+        //PushLayer(new TestingLayer());
+        PushLayer(new AppTest2D());
     }
     
     ~Sandbox()

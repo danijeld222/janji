@@ -51,6 +51,11 @@ namespace Core
 		glDeleteVertexArrays(1, &m_RendererID);
 	}
 	
+	Ref<VertexArray> VertexArray::Create()
+	{
+		return std::make_shared<VertexArray>();
+	}
+	
 	void VertexArray::Bind() const
 	{
 		glBindVertexArray(m_RendererID);
