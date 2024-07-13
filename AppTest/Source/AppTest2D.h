@@ -20,5 +20,7 @@ private:
 	Core::Ref<Core::VertexArray> m_SquareVA;
 	Core::Ref<Core::Shader> m_FlatColorShader;
 	
+	Core::Ref<Core::Texture2D> m_CheckerboardTexture;
+	
 	glm::vec4 m_SolidColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 };

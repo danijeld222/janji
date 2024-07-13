@@ -9,6 +9,8 @@ namespace Core
 	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
+		glEnable(GL_DEPTH_TEST);
 	}
 	
 	void RendererAPI::SetViewport(u32 x, u32 y, u32 width, u32 height)
@@ -29,5 +31,6 @@ namespace Core
 	void RendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
 	{
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }

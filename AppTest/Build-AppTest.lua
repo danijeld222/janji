@@ -13,7 +13,8 @@ project "AppTest"
         "SDL3",
         "SDL3_Image",
         "SDL3_Mixer",
-        "SDL3_TTF"
+        "SDL3_TTF",
+        "glad"
     }
     
     includedirs
@@ -22,7 +23,8 @@ project "AppTest"
         "../Core/Vendor/spdlog/include",
         "../Core/Vendor/imgui",
         "../Core/Vendor/imgui/backends",
-        "../Core/Vendor/glm/"
+        "../Core/Vendor/glm/",
+        "../Core/Vendor/glad/include"
     }
     
      externalincludedirs

@@ -212,13 +212,33 @@ namespace Core
 		return m_Name; 
 	}
 	
-	void Shader::UploadUniformInt(const std::string& name, int value)
+	void Shader::SetInt(const std::string& name, i32 value)
+	{
+		UploadUniformInt(name, value);
+	}
+	
+	void Shader::SetFloat3(const std::string& name, const glm::vec3& value)
+	{
+		UploadUniformFloat3(name, value);
+	}
+	
+	void Shader::SetFloat4(const std::string& name, const glm::vec4& value)
+	{
+		UploadUniformFloat4(name, value);
+	}
+	
+	void Shader::SetMat4(const std::string& name, const glm::mat4& value)
+	{
+		UploadUniformMat4(name, value);
+	}
+	
+	void Shader::UploadUniformInt(const std::string& name, i32 value)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1i(location, value);
 	}
 	
-	void Shader::UploadUniformFloat(const std::string& name, float value)
+	void Shader::UploadUniformFloat(const std::string& name, f32 value)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1f(location, value);
