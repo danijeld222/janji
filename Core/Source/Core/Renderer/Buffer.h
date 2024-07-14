@@ -114,7 +114,7 @@ namespace Core
 		BufferLayout(const std::initializer_list<BufferElement>& elements) // https://en.cppreference.com/w/cpp/utility/initializer_list
 			: m_Elements(elements)
 		{
-			CalctulateOffsetAndStride();
+			CalculateOffsetAndStride();
 		}
 		
 		inline u32 GetStride() const { return m_Stride; }
@@ -126,7 +126,7 @@ namespace Core
 		std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
 	
 	private:
-		void CalctulateOffsetAndStride();
+		void CalculateOffsetAndStride();
 	
 	private:
 		std::vector<BufferElement> m_Elements;
@@ -138,6 +138,8 @@ namespace Core
 	public:
 		VertexBuffer(f32* vertices, u32 size);
 		virtual ~VertexBuffer();
+		
+		static Ref<VertexBuffer> Create(f32* vertices, u32 size);
 		
 		void Bind() const;
 		void Unbind() const;
@@ -155,6 +157,8 @@ namespace Core
 	public:
 		IndexBuffer(u32* indices, u32 count);
 		virtual ~IndexBuffer();
+		
+		static Ref<IndexBuffer> Create(u32* indices, u32 count);
 		
 		void Bind() const;
 		void Unbind() const;

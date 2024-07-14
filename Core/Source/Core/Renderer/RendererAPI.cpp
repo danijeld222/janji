@@ -5,6 +5,11 @@
 
 namespace Core 
 {
+	Scope<RendererAPI> RendererAPI::Create()
+	{
+		return MakeScope<RendererAPI>();
+	}
+	
 	void RendererAPI::Init()
 	{
 		glEnable(GL_BLEND);

@@ -10,8 +10,6 @@
 
 namespace Core 
 {
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-    
     Application* Application::s_Instance = nullptr;
     
     Application::Application()
@@ -23,7 +21,7 @@ namespace Core
         Core::Logger::Initialize();
         
         m_Window = Scope<WindowBase>(WindowBase::Create());
-        m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+        m_Window->SetEventCallback(CORE_BIND_EVENT_FN(Application::OnEvent));
         
         Renderer::Init();
         
@@ -35,6 +33,8 @@ namespace Core
     
     Application::~Application()
     {
+        Renderer::Shutdown();
+        
         ShutdownMemoryStats();
         Core::Logger::Shutdown();
     }
@@ -42,21 +42,19 @@ namespace Core
     void Application::PushLayer(Layer* layer)
     {
         m_LayerStack.PushLayer(layer);
-        layer->OnAttach();
     }
     
     void Application::PushOverlay(Layer* layer)
     {
         m_LayerStack.PushOverlay(layer);
-        layer->OnAttach();
     }
     
     void Application::OnEvent(Event& e)
     {
         EventDispatcher dispatcher(e);
-        dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
-        dispatcher.Dispatch<WindowMinimizedEvent>(BIND_EVENT_FN(OnWindowMinimized));
+        dispatcher.Dispatch<WindowCloseEvent>(CORE_BIND_EVENT_FN(Application::OnWindowClose));
+        dispatcher.Dispatch<WindowResizeEvent>(CORE_BIND_EVENT_FN(Application::OnWindowResize));
+        dispatcher.Dispatch<WindowMinimizedEvent>(CORE_BIND_EVENT_FN(Application::OnWindowMinimized));
         
         for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
         {

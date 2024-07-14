@@ -20,6 +20,8 @@ namespace Core
 		RendererContext(SDL_Window* window, u32 rendererFlags);
 		~RendererContext();
 		
+		static Scope<RendererContext> Create(SDL_Window* window, u32 rendererFlags);
+		
 		void SwapBuffers();
 		SDL_GLContext GetOpenGLContext();
 		

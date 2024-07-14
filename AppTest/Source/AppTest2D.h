@@ -21,7 +21,15 @@ private:
 	Core::Ref<Core::Shader> m_FlatColorShader;
 	
 	Core::Ref<Core::Texture2D> m_CheckerboardTexture;
-	//Core::Ref<Core::Texture2D> m_WhatHappenedTexture;
+	Core::Ref<Core::Texture2D> m_WhatHappenedTexture;
 	
+	struct ProfileResult
+	{
+		const char* Name;
+		float Time;
+	};
+
+	std::vector<ProfileResult> m_ProfileResults;
+
 	glm::vec4 m_SolidColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 };

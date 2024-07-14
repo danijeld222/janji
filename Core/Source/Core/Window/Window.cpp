@@ -12,23 +12,24 @@
 
 namespace Core 
 {
-	static bool s_SDLInitialized = false;
+	static u32 s_SDLWindowCount = 0;
 	
-	WindowBase* WindowBase::Create(const WindowSettings& settings)
+	// TODO: Dani - Remove window base and merge it into one class if possible
+	Scope<WindowBase> WindowBase::Create(const WindowSettings& settings)
 	{
-		return new Window(settings);
+		return MakeScope<Window>(settings);
 	}
-
+	
 	Window::Window(const WindowSettings& settings)
 	{
 		Initialize(settings);
 	}
-
+	
 	Window::~Window()
 	{
 		Shutdown();
 	}
-
+	
 	void Window::Initialize(const WindowSettings& settings)
 	{
 		m_Data.title = settings.title;
@@ -36,8 +37,8 @@ namespace Core
 		m_Data.height = settings.height;
 		//m_Data.windowFlags = settings.windowFlags;
 		m_Data.windowFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN;
-
-		if (!s_SDLInitialized)
+		
+		if (s_SDLWindowCount == 0)
 		{
 			u32 result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMEPAD);
 			COREASSERT_MESSAGE(!result, SDL_GetError());
@@ -51,17 +52,16 @@ namespace Core
 			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 			SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 			SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-			
-			s_SDLInitialized = true;
 		}
 		
 		m_Window = SDL_CreateWindow(m_Data.title, m_Data.width, m_Data.height, m_Data.windowFlags);
+		s_SDLWindowCount++;
 		
 		COREASSERT_MESSAGE(m_Window, SDL_GetError());
 		
 		m_Data.windowID = SDL_GetWindowID(m_Window);
 		
-		m_RendererContext = new RendererContext(m_Window, SDL_RENDERER_PRESENTVSYNC);
+		m_RendererContext = RendererContext::Create(m_Window, SDL_RENDERER_PRESENTVSYNC);
 		
 		SDL_SetWindowPosition(m_Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 		//SDL_ShowWindow(m_Window);
@@ -74,13 +74,18 @@ namespace Core
 		SDL_AddEventWatch(HandleMouseScrollEvent, &m_Data);
 		SDL_AddEventWatch(HandleMouseMoveEvent, &m_Data);
 	}
-
+	
 	void Window::Shutdown()
 	{
 		SDL_DestroyWindow(m_Window);
-		SDL_Quit();
+		s_SDLWindowCount--;
+		
+		if (s_SDLWindowCount == 0)
+		{
+			SDL_Quit();
+		}
 	}
-
+	
 	void Window::OnUpdate()
 	{
 		SDL_Event m_Event;
@@ -89,7 +94,7 @@ namespace Core
 			GenericSDL_Event event(&m_Event);
 			m_Data.eventCallback(event);
 		}
-
+		
 		m_RendererContext->SwapBuffers();
 	}
 	
@@ -137,7 +142,7 @@ namespace Core
 		
 		return 0;
 	}
-
+	
 	i32 Window::HandleKeyboardEvent(void* data, SDL_Event* e)
 	{
 		WindowData& windowData = *(WindowData*)data;
@@ -159,7 +164,7 @@ namespace Core
 		
 		return 0;
 	}
-
+	
 	i32 Window::HandleMouseButtonEvent(void* data, SDL_Event* e)
 	{
 		WindowData& windowData = *(WindowData*)data;
@@ -181,7 +186,7 @@ namespace Core
 		
 		return 0;
 	}
-
+	
 	i32 Window::HandleMouseScrollEvent(void* data, SDL_Event* e)
 	{
 		WindowData& windowData = *(WindowData*)data;
@@ -196,7 +201,7 @@ namespace Core
 		
 		return 0;
 	}
-
+	
 	i32 Window::HandleMouseMoveEvent(void* data, SDL_Event* e)
 	{
 		if (e->type == SDL_EVENT_MOUSE_MOTION)

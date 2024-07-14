@@ -5,7 +5,7 @@
 
 namespace Core
 {
-	void BufferLayout::CalctulateOffsetAndStride()
+	void BufferLayout::CalculateOffsetAndStride()
 	{
 		u32 offset = 0;
 		m_Stride = 0;
@@ -18,6 +18,8 @@ namespace Core
 		}
 	}
 	
+	// Vertex Buffer
+	
 	VertexBuffer::VertexBuffer(f32* vertices, u32 size)
 	{
 		glCreateBuffers(1, &m_RendererID);
@@ -28,6 +30,11 @@ namespace Core
 	VertexBuffer::~VertexBuffer()
 	{
 		glDeleteBuffers(1, &m_RendererID);
+	}
+	
+	Ref<VertexBuffer> VertexBuffer::Create(f32* vertices, u32 size)
+	{
+		return MakeRef<VertexBuffer>(vertices, size);
 	}
 	
 	void VertexBuffer::Bind() const
@@ -50,6 +57,8 @@ namespace Core
 		m_Layout = layout;
 	}
 	
+	// Index Buffer
+	
 	IndexBuffer::IndexBuffer(u32* indices, u32 count)
 		: m_Count(count)
 	{
@@ -61,6 +70,11 @@ namespace Core
 	IndexBuffer::~IndexBuffer()
 	{
 		glDeleteBuffers(1, &m_RendererID);
+	}
+	
+	Ref<IndexBuffer> IndexBuffer::Create(u32* indices, u32 count)
+	{
+		return MakeRef<IndexBuffer>(indices, count);
 	}
 	
 	void IndexBuffer::Bind() const

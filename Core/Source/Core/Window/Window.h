@@ -19,7 +19,7 @@ namespace Core
 		inline u32 GetWidth() const override { return m_Data.width; }
 		inline u32 GetHeight() const override { return m_Data.height; }
 		
-		virtual void* GetRendererContext()	const override { return m_RendererContext; };
+		virtual void* GetRendererContext()	const override { return m_RendererContext.get(); };
 		
 		inline virtual void* GetNativeWindow() const override { return m_Window; }
 		
@@ -39,7 +39,7 @@ namespace Core
 		
 	private:
 		SDL_Window* m_Window;
-		RendererContext* m_RendererContext;
+		Scope<RendererContext> m_RendererContext;
 		
 		struct WindowData
 		{

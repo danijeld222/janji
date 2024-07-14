@@ -34,6 +34,6 @@ namespace Core
 		virtual void* GetNativeWindow() const = 0;
 		
 		virtual void SetEventCallback(const EventCallbackFunction& callback) = 0;
-		static WindowBase* Create(const WindowSettings& settings = WindowSettings());
+		static Scope<WindowBase> Create(const WindowSettings& settings = WindowSettings());
 	};
 }

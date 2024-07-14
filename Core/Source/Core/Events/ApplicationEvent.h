@@ -60,7 +60,7 @@ namespace Core
 	class WindowCloseEvent : public Event
 	{
 	public:
-		WindowCloseEvent() {}
+		WindowCloseEvent() = default;
 	
 		static EventType GetStaticType() { return EventType::WindowClose; }
 		virtual EventType GetEventType() const override { return GetStaticType(); }
@@ -72,7 +72,7 @@ namespace Core
 	class AppTickEvent : public Event
 	{
 	public:
-		AppTickEvent() {}
+		AppTickEvent() = default;
 	
 		static EventType GetStaticType() { return EventType::AppTick; }
 		virtual EventType GetEventType() const override { return GetStaticType(); }
@@ -84,7 +84,7 @@ namespace Core
 	class AppUpdateEvent : public Event
 	{
 	public:
-		AppUpdateEvent() {}
+		AppUpdateEvent() = default;
 	
 		static EventType GetStaticType() { return EventType::AppUpdate; }
 		virtual EventType GetEventType() const override { return GetStaticType(); }
@@ -96,7 +96,7 @@ namespace Core
 	class AppRenderEvent : public Event
 	{
 	public:
-		AppRenderEvent() {}
+		AppRenderEvent() = default;
 	
 		static EventType GetStaticType() { return EventType::AppRender; }
 		virtual EventType GetEventType() const override { return GetStaticType(); }

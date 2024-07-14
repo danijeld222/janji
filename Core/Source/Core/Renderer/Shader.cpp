@@ -76,21 +76,26 @@ namespace Core
 	{
 		std::string result;
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
+		
 		if (in)
 		{
 			in.seekg(0, std::ios::end);
-			result.resize(in.tellg());
-			in.seekg(0, std::ios::beg);
-			in.read(&result[0], result.size());
-			in.close();
+			size_t size = in.tellg();
+			if (size != -1)
+			{
+				result.resize(size);
+				in.seekg(0, std::ios::beg);
+				in.read(&result[0], size);
+				in.close();
+			}
+			else
+			{
+				COREERROR("Could not read from file '{0}'", filepath);
+			}
 		}
 		else
 		{
-			char result[200];
-			const char* one = "Could not open file ";
-			strcpy_s(result, one);
-			strcat_s(result, filepath.c_str());
-			COREASSERT_MESSAGE(false, result);
+			COREERROR("Could not open file '{0}'", filepath);
 		}
 		
 		return result;

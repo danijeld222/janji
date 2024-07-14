@@ -6,8 +6,4 @@ namespace Core
 		: m_DebugName(debugName)
 	{
 	}
-	
-	Layer::~Layer()
-	{
-	}
 }

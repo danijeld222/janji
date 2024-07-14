@@ -2,5 +2,5 @@
 
 namespace Core 
 {
-	RendererAPI* RendererCommands::s_RendererAPI = new RendererAPI;
+	Scope<RendererAPI> RendererCommands::s_RendererAPI = RendererAPI::Create();
 }

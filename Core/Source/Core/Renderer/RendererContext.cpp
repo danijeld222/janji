@@ -41,10 +41,14 @@ namespace Core
     
     RendererContext::~RendererContext()
     {
-        SDL_DestroySurface(m_WindowSurface);
         SDL_GL_DeleteContext(m_Context);
         
         IMG_Quit();
+    }
+    
+    Scope<RendererContext> RendererContext::Create(SDL_Window* window, u32 rendererFlags)
+    {
+        return MakeScope<RendererContext>(window, rendererFlags);
     }
     
     void RendererContext::SwapBuffers()

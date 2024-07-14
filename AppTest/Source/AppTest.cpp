@@ -22,9 +22,8 @@ public:
              0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
              0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f
         };
-
-        Core::Ref<Core::VertexBuffer> vertexBuffer;
-        vertexBuffer.reset(new Core::VertexBuffer(vertices, sizeof(vertices)));
+        
+        Core::Ref<Core::VertexBuffer> vertexBuffer = Core::VertexBuffer::Create(vertices, sizeof(vertices));
         vertexBuffer->SetLayout({
             { Core::ShaderDataType::Float3, "a_Position" },
             { Core::ShaderDataType::Float4, "a_Color" }
@@ -32,8 +31,7 @@ public:
         m_VertexArray->AddVertexBuffer(vertexBuffer);
         
         u32 indices[3] = { 0, 1, 2 };
-        Core::Ref<Core::IndexBuffer> indexBuffer;
-        indexBuffer.reset(new Core::IndexBuffer(indices, sizeof(indices) / sizeof(u32)));
+        Core::Ref<Core::IndexBuffer> indexBuffer = Core::IndexBuffer::Create(indices, sizeof(indices) / sizeof(u32));
         m_VertexArray->SetIndexBuffer(indexBuffer);
         
         m_SquareVertexArray = Core::VertexArray::Create();
@@ -45,8 +43,7 @@ public:
              -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
         };
         
-        Core::Ref<Core::VertexBuffer> squareVB;
-        squareVB.reset(new Core::VertexBuffer(squareVertices, sizeof(squareVertices)));
+        Core::Ref<Core::VertexBuffer> squareVB = Core::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
         squareVB->SetLayout({
             { Core::ShaderDataType::Float3, "a_Position" },
             { Core::ShaderDataType::Float2, "a_TexCoord" }
@@ -54,8 +51,7 @@ public:
         m_SquareVertexArray->AddVertexBuffer(squareVB);
         
         u32 squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-        Core::Ref<Core::IndexBuffer> squareIB;
-        squareIB.reset(new Core::IndexBuffer(squareIndices, sizeof(squareIndices) / sizeof(u32)));
+        Core::Ref<Core::IndexBuffer> squareIB = Core::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(u32));
         m_SquareVertexArray->SetIndexBuffer(squareIB);
         
         std::string vertexSrc = R"(
@@ -133,7 +129,7 @@ public:
         m_TextureWolf = std::make_shared<Core::Texture2D>("Assets/Texture/Wolf.png");
         
         m_ShaderLibrary.Get("Texture")->Bind();
-        m_ShaderLibrary.Get("Texture")->UploadUniformInt("u_Texture", 0);
+        m_ShaderLibrary.Get("Texture")->SetInt("u_Texture", 0);
     }
     
     void OnUpdate(Core::Timestep timestep) override
@@ -148,7 +144,7 @@ public:
         glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
         
         m_SolidColorShader->Bind();
-        m_SolidColorShader->UploadUniformFloat3("u_Color", m_SolidColor);
+        m_SolidColorShader->SetFloat3("u_Color", m_SolidColor);
         
         for (int y = -10; y < 10; y++)
         {
