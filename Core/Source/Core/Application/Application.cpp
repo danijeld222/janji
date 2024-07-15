@@ -6,6 +6,8 @@
 #include "Core/Renderer/Renderer.h"
 #include "Core/Renderer/RendererCommands.h"
 
+#include "Core/Debug/Instrumentor.h"
+
 #include <functional>
 
 namespace Core 
@@ -14,6 +16,8 @@ namespace Core
     
     Application::Application()
     {
+        CORE_PROFILE_FUNCTION();
+        
         COREASSERT_MESSAGE(!s_Instance, "We already have instance, Application should be singleton");
         s_Instance = this;
         
@@ -33,6 +37,8 @@ namespace Core
     
     Application::~Application()
     {
+        CORE_PROFILE_FUNCTION();
+        
         Renderer::Shutdown();
         
         ShutdownMemoryStats();
@@ -41,16 +47,24 @@ namespace Core
     
     void Application::PushLayer(Layer* layer)
     {
+        CORE_PROFILE_FUNCTION();
+        
         m_LayerStack.PushLayer(layer);
+        layer->OnAttach();
     }
     
     void Application::PushOverlay(Layer* layer)
     {
+        CORE_PROFILE_FUNCTION();
+        
         m_LayerStack.PushOverlay(layer);
+        layer->OnAttach();
     }
     
     void Application::OnEvent(Event& e)
     {
+        CORE_PROFILE_FUNCTION();
+        
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<WindowCloseEvent>(CORE_BIND_EVENT_FN(Application::OnWindowClose));
         dispatcher.Dispatch<WindowResizeEvent>(CORE_BIND_EVENT_FN(Application::OnWindowResize));
@@ -70,8 +84,12 @@ namespace Core
     {
         //COREINFO(GetMemoryUsage());
         
+        CORE_PROFILE_FUNCTION();
+        
         while (m_Running)
         {
+            CORE_PROFILE_SCOPE("RunLoop");
+            
             f32 time = (f32)SDL_GetTicks(); // NOTE: Dani - This will wrap if program runs more then 49 days https://wiki.libsdl.org/SDL2/SDL_GetTicks
             time *= 0.001f;                 // NOTE: Dani - Convert to seconds
             Timestep timestep = time - m_LastFrameTime;
@@ -79,18 +97,26 @@ namespace Core
             
             if (!m_Minimized)
             {
-                for (Layer* layer : m_LayerStack)
                 {
-                    layer->OnUpdate(timestep);
+                    CORE_PROFILE_SCOPE("LayerStack OnUpdate");
+                    
+                    for (Layer* layer : m_LayerStack)
+                    {
+                        layer->OnUpdate(timestep);
+                    }
                 }
+                
+                m_ImGuiLayer->Begin();
+                {
+                    CORE_PROFILE_SCOPE("LayerStack OnImGuiRender");
+                    
+                    for (Layer* layer : m_LayerStack)
+                    {
+                        layer->OnImGuiRender();
+                    }
+                }
+                m_ImGuiLayer->End();
             }
-            
-            m_ImGuiLayer->Begin();
-            for (Layer* layer : m_LayerStack)
-            {
-                layer->OnImGuiRender();
-            }
-            m_ImGuiLayer->End();
             
             // NOTE: Dani - We should probably not swap buffer if window is minimized
             m_Window->OnUpdate();
@@ -106,6 +132,8 @@ namespace Core
     
     b8 Application::OnWindowResize(WindowResizeEvent& e)
     {
+        CORE_PROFILE_FUNCTION();
+        
         Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
         
         return false;
@@ -113,6 +141,8 @@ namespace Core
     
     b8 Application::OnWindowMinimized(WindowMinimizedEvent& e)
     {
+        CORE_PROFILE_FUNCTION();
+        
         m_Minimized = e.GetIsMinimized();
         
         return false;

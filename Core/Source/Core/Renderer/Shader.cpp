@@ -3,6 +3,8 @@
 #include "Core/Logger/Logger.h"
 #include "Core/Asserts.h"
 
+#include "Core/Debug/Instrumentor.h"
+
 #include <vector>
 #include <array>
 
@@ -44,6 +46,8 @@ namespace Core
 	Shader::Shader(const std::string& name, const std::string& filepath)
 		: m_Name(name)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		std::string source = ReadFile(filepath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
@@ -52,6 +56,8 @@ namespace Core
 	Shader::Shader(const std::string& name, const std::string& vertexFilepath, const std::string& fragmentFilepath, b8 _)
 		: m_Name(name)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = ReadFile(vertexFilepath);
 		sources[GL_FRAGMENT_SHADER] = ReadFile(fragmentFilepath);
@@ -61,6 +67,8 @@ namespace Core
 	Shader::Shader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
 		: m_Name(name)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -69,11 +77,15 @@ namespace Core
 	
 	Shader::~Shader()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glDeleteProgram(m_RendererID);
 	}
 	
 	std::string Shader::ReadFile(const std::string& filepath)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		std::string result;
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		
@@ -103,8 +115,10 @@ namespace Core
 	
 	std::unordered_map<GLenum, std::string> Shader::PreProcess(const std::string& source)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		std::unordered_map<GLenum, std::string> shaderSources;
-
+		
 		const char* typeToken = "#type";
 		size_t typeTokenLength = strlen(typeToken);
 		size_t pos = source.find(typeToken, 0);
@@ -127,6 +141,8 @@ namespace Core
 	
 	void Shader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		GLuint program = glCreateProgram();
 		COREASSERT_MESSAGE(shaderSources.size() <= 2, "We only support two shaders for now");
 		std::array<GLenum, 2> glShaderIDs;
@@ -204,11 +220,15 @@ namespace Core
 	
 	void Shader::Bind() const
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glUseProgram(m_RendererID);
 	}
 	
 	void Shader::Unbind() const
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glUseProgram(0);
 	}
 	
@@ -219,21 +239,29 @@ namespace Core
 	
 	void Shader::SetInt(const std::string& name, i32 value)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		UploadUniformInt(name, value);
 	}
 	
 	void Shader::SetFloat3(const std::string& name, const glm::vec3& value)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		UploadUniformFloat3(name, value);
 	}
 	
 	void Shader::SetFloat4(const std::string& name, const glm::vec4& value)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		UploadUniformFloat4(name, value);
 	}
 	
 	void Shader::SetMat4(const std::string& name, const glm::mat4& value)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		UploadUniformMat4(name, value);
 	}
 	

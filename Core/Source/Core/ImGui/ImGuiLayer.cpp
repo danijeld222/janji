@@ -6,6 +6,8 @@
 #include "Core/Defines.h"
 #include "Core/Logger/Logger.h"
 
+#include "Core/Debug/Instrumentor.h"
+
 #include "imgui.h"
 #include "imgui_impl_sdl3.h"
 #include "imgui_impl_opengl3.h"
@@ -26,6 +28,8 @@ namespace Core
 
 	void ImGuiLayer::OnAttach()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		
@@ -54,6 +58,8 @@ namespace Core
 
 	void ImGuiLayer::OnDetach()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplSDL3_Shutdown();
 		ImGui::DestroyContext();
@@ -61,6 +67,8 @@ namespace Core
 
 	void ImGuiLayer::Begin()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplSDL3_NewFrame();
 		ImGui::NewFrame();
@@ -68,6 +76,8 @@ namespace Core
 
 	void ImGuiLayer::End()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		ImGuiIO& io = ImGui::GetIO();
 		
 		// Rendering
@@ -87,8 +97,10 @@ namespace Core
 
 	void ImGuiLayer::OnImGuiRender()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		ImGuiIO& io = ImGui::GetIO();
-
+		
 		ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x - 3.0f, 3.0f), 0, ImVec2(1.0f, 0.0f));
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 5.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(0, 0));

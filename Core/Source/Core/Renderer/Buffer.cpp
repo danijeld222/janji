@@ -1,6 +1,8 @@
 #include "Buffer.h"
 #include "Renderer.h"
 
+#include "Core/Debug/Instrumentor.h"
+
 #include <glad/gl.h>
 
 namespace Core
@@ -22,6 +24,8 @@ namespace Core
 	
 	VertexBuffer::VertexBuffer(f32* vertices, u32 size)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
@@ -29,6 +33,8 @@ namespace Core
 	
 	VertexBuffer::~VertexBuffer()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glDeleteBuffers(1, &m_RendererID);
 	}
 	
@@ -39,11 +45,15 @@ namespace Core
 	
 	void VertexBuffer::Bind() const
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 	}
 	
 	void VertexBuffer::Unbind() const
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
@@ -62,6 +72,8 @@ namespace Core
 	IndexBuffer::IndexBuffer(u32* indices, u32 count)
 		: m_Count(count)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(u32), indices, GL_STATIC_DRAW);
@@ -69,6 +81,8 @@ namespace Core
 	
 	IndexBuffer::~IndexBuffer()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glDeleteBuffers(1, &m_RendererID);
 	}
 	
@@ -79,11 +93,15 @@ namespace Core
 	
 	void IndexBuffer::Bind() const
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 	}
 	
 	void IndexBuffer::Unbind() const
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	

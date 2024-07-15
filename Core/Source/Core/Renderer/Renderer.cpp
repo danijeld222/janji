@@ -1,5 +1,7 @@
 #include "Renderer.h"
 
+#include "Core/Debug/Instrumentor.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Core
@@ -8,6 +10,8 @@ namespace Core
 	
 	void Renderer::Init()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		RendererCommands::Init();
 		Renderer2D::Init();
 	}
@@ -54,6 +58,8 @@ namespace Core
 	
 	void Renderer2D::Init()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		s_Data = new Renderer2DStorage();
 		s_Data->QuadVertexArray = VertexArray::Create();
 		
@@ -88,18 +94,22 @@ namespace Core
 	
 	void Renderer2D::Shutdown()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		delete s_Data;
 	}
 	
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		s_Data->TextureShader->Bind();
 		s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
 	
 	void Renderer2D::EndScene()
 	{
-		
+		CORE_PROFILE_FUNCTION();
 	}
 	
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -109,6 +119,8 @@ namespace Core
 	
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		s_Data->TextureShader->SetFloat4("u_Color", color);
 		s_Data->WhiteTexture->Bind();
 		
@@ -125,6 +137,8 @@ namespace Core
 	
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		s_Data->TextureShader->SetFloat4("u_Color", glm::vec4(1.0f));
 		texture->Bind();
 		
@@ -134,14 +148,16 @@ namespace Core
 		s_Data->QuadVertexArray->Bind();
 		RendererCommands::DrawIndexed(s_Data->QuadVertexArray);
 	}
-
+	
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, const Ref<Texture2D>& texture)
 	{
 		DrawQuad({position.x, position.y, 0.0f}, size, color, texture);
 	}
-
+	
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, const Ref<Texture2D>& texture)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		s_Data->TextureShader->SetFloat4("u_Color", color);
 		texture->Bind();
 		

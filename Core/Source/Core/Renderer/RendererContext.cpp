@@ -3,6 +3,8 @@
 #include "Core/Asserts.h"
 #include "Core/Logger/Logger.h"
 
+#include "Core/Debug/Instrumentor.h"
+
 #include <vector>
 #include <cmath>
 #include <glad/gl.h>
@@ -16,6 +18,8 @@ namespace Core
     RendererContext::RendererContext(SDL_Window* window, u32 rendererFlags)
         : m_Window(window)
     {
+        CORE_PROFILE_FUNCTION();
+        
         COREASSERT_MESSAGE(window, "Window is nullptr!");
         
         COREASSERT_MESSAGE(IMG_Init(IMG_INIT_PNG), "SDL Image faled to initialize");
@@ -41,6 +45,8 @@ namespace Core
     
     RendererContext::~RendererContext()
     {
+        CORE_PROFILE_FUNCTION();
+        
         SDL_GL_DeleteContext(m_Context);
         
         IMG_Quit();
@@ -53,6 +59,8 @@ namespace Core
     
     void RendererContext::SwapBuffers()
     {
+        CORE_PROFILE_FUNCTION();
+        
         SDL_GL_SwapWindow(SDL_GL_GetCurrentWindow());
     }
     

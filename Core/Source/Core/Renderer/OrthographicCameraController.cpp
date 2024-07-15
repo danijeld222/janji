@@ -2,6 +2,8 @@
 
 #include "Core/Input/InputBase.h"
 
+#include "Core/Debug/Instrumentor.h"
+
 namespace Core
 {
 	OrthographicCameraController::OrthographicCameraController(f32 aspectRatio, b8 rotation)
@@ -11,6 +13,8 @@ namespace Core
 	
 	void OrthographicCameraController::OnUpdate(Timestep timestep)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		if (InputBase::IsKeyPressed(SDL_SCANCODE_LEFT) || InputBase::IsKeyPressed(SDL_SCANCODE_A))
 		{
 			m_CameraPosition.x -= m_CameraMoveSpeed * timestep;
@@ -37,7 +41,7 @@ namespace Core
 		{
 			m_CameraPosition.y -= m_CameraMoveSpeed * timestep;
 		}
-
+		
 		if (m_CameraRotation)
 		{
 			if (InputBase::IsKeyPressed(SDL_SCANCODE_Q))
@@ -49,14 +53,16 @@ namespace Core
 				m_CameraRotation -= m_CameraRotationSpeed * timestep;
 			}
 		}
-
+		
 		m_Camera.SetPosition(m_CameraPosition);
-
+		
 		m_CameraMoveSpeed = m_ZoomLevel;
 	}
 
 	void OrthographicCameraController::OnEvent(Event& e)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(CORE_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
 		dispatcher.Dispatch<WindowResizeEvent>(CORE_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
@@ -64,6 +70,8 @@ namespace Core
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -73,6 +81,8 @@ namespace Core
 
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		m_AspectRatio = (f32)e.GetWidth() / (f32)e.GetHeight();
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		

@@ -6,6 +6,8 @@
 #include "Core/Events/MouseEvent.h"
 #include "Core/Events/KeyEvent.h"
 
+#include "Core/Debug/Instrumentor.h"
+
 #include <stdio.h>
 
 #include <SDL3/SDL_events.h>
@@ -22,16 +24,22 @@ namespace Core
 	
 	Window::Window(const WindowSettings& settings)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		Initialize(settings);
 	}
 	
 	Window::~Window()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		Shutdown();
 	}
 	
 	void Window::Initialize(const WindowSettings& settings)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		m_Data.title = settings.title;
 		m_Data.width = settings.width;
 		m_Data.height = settings.height;
@@ -40,6 +48,8 @@ namespace Core
 		
 		if (s_SDLWindowCount == 0)
 		{
+			CORE_PROFILE_SCOPE("SDL - Init");
+			
 			u32 result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMEPAD);
 			COREASSERT_MESSAGE(!result, SDL_GetError());
 			
@@ -54,8 +64,11 @@ namespace Core
 			SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 		}
 		
-		m_Window = SDL_CreateWindow(m_Data.title, m_Data.width, m_Data.height, m_Data.windowFlags);
-		s_SDLWindowCount++;
+		{
+			CORE_PROFILE_SCOPE("SDL - Create Window");
+			m_Window = SDL_CreateWindow(m_Data.title, m_Data.width, m_Data.height, m_Data.windowFlags);
+			s_SDLWindowCount++;
+		}
 		
 		COREASSERT_MESSAGE(m_Window, SDL_GetError());
 		
@@ -77,6 +90,8 @@ namespace Core
 	
 	void Window::Shutdown()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		SDL_DestroyWindow(m_Window);
 		s_SDLWindowCount--;
 		
@@ -88,6 +103,8 @@ namespace Core
 	
 	void Window::OnUpdate()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		SDL_Event m_Event;
 		while (SDL_PollEvent(&m_Event))
 		{

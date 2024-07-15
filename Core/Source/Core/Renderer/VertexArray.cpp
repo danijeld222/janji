@@ -4,6 +4,8 @@
 #include "Core/Logger/Logger.h"
 #include "Core/Asserts.h"
 
+#include "Core/Debug/Instrumentor.h"
+
 #include <glad/gl.h>
 
 namespace Core
@@ -43,11 +45,15 @@ namespace Core
 	
 	VertexArray::VertexArray()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glCreateVertexArrays(1, &m_RendererID);
 	}
 	
 	VertexArray::~VertexArray()
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glDeleteVertexArrays(1, &m_RendererID);
 	}
 	
@@ -58,16 +64,22 @@ namespace Core
 	
 	void VertexArray::Bind() const
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glBindVertexArray(m_RendererID);
 	}
 	
 	void VertexArray::Unbind() const
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glBindVertexArray(0);
 	}
 	
 	void VertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		COREASSERT_MESSAGE(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
 		
 		glBindVertexArray(m_RendererID);
@@ -90,6 +102,8 @@ namespace Core
 	
 	void VertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 	{
+		CORE_PROFILE_FUNCTION();
+		
 		glBindVertexArray(m_RendererID);
 		indexBuffer->Bind();
 		
