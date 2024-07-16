@@ -25,14 +25,19 @@ namespace Core
 	public:
 		Texture2D(u32 width, u32 height);
 		Texture2D(const std::string& path);
-		virtual ~Texture2D();
+		~Texture2D();
 		
-		virtual u32 GetWidth() const override { return m_Width; }
-		virtual u32 GetHeight() const override { return m_Height; }
+		u32 GetWidth() const override { return m_Width; }
+		u32 GetHeight() const override { return m_Height; }
 		
-		virtual void SetData(void* data, u32 size) override;
+		void SetData(void* data, u32 size) override;
 		
-		virtual void Bind(u32 slot = 0) const override;
+		void Bind(u32 slot = 0) const override;
+		
+		bool operator==(const Texture2D& other) const
+		{
+			return m_RendererID == other.m_RendererID;
+		}
 		
 	private:
 		std::string m_Path;

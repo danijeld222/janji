@@ -241,77 +241,64 @@ namespace Core
 	{
 		CORE_PROFILE_FUNCTION();
 		
-		UploadUniformInt(name, value);
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform1i(location, value);
 	}
-
+	
+	void Shader::SetIntArray(const std::string& name, i32* values, u32 count)
+	{
+		CORE_PROFILE_FUNCTION();
+		
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform1iv(location, count, values);
+	}
+	
 	void Shader::SetFloat(const std::string& name, f32 value)
 	{
 		CORE_PROFILE_FUNCTION();
 		
-		UploadUniformFloat(name, value);
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform1f(location, value);
+	}
+	
+	void Shader::SetFloat2(const std::string& name, const glm::vec2& value)
+	{
+		CORE_PROFILE_FUNCTION();
+		
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform2f(location, value.x, value.y);
 	}
 	
 	void Shader::SetFloat3(const std::string& name, const glm::vec3& value)
 	{
 		CORE_PROFILE_FUNCTION();
 		
-		UploadUniformFloat3(name, value);
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform3f(location, value.x, value.y, value.z);
 	}
 	
 	void Shader::SetFloat4(const std::string& name, const glm::vec4& value)
 	{
 		CORE_PROFILE_FUNCTION();
 		
-		UploadUniformFloat4(name, value);
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform4f(location, value.x, value.y, value.z, value.w);
+	}
+	
+	void Shader::SetMat3(const std::string& name, const glm::mat3& value)
+	{
+		CORE_PROFILE_FUNCTION();
+		
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(value));
 	}
 	
 	void Shader::SetMat4(const std::string& name, const glm::mat4& value)
 	{
 		CORE_PROFILE_FUNCTION();
 		
-		UploadUniformMat4(name, value);
-	}
-	
-	void Shader::UploadUniformInt(const std::string& name, i32 value)
-	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform1i(location, value);
-	}
-	
-	void Shader::UploadUniformFloat(const std::string& name, f32 value)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform1f(location, value);
-	}
-	
-	void Shader::UploadUniformFloat2(const std::string& name, const glm::vec2& value)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform2f(location, value.x, value.y);
-	}
-	
-	void Shader::UploadUniformFloat3(const std::string& name, const glm::vec3& value)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform3f(location, value.x, value.y, value.z);
-	}
-	
-	void Shader::UploadUniformFloat4(const std::string& name, const glm::vec4& value)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform4f(location, value.x, value.y, value.z, value.w);
-	}
-	
-	void Shader::UploadUniformMat3(const std::string& name, const glm::mat3& matrix)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
-	}
-	
-	void Shader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 	}
 	
 	void ShaderLibrary::Add(const Ref<Shader>& shader)

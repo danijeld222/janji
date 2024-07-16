@@ -22,6 +22,15 @@ namespace Core
 	
 	// Vertex Buffer
 	
+	VertexBuffer::VertexBuffer(u32 size)
+	{
+		CORE_PROFILE_FUNCTION();
+		
+		glCreateBuffers(1, &m_RendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+	}
+	
 	VertexBuffer::VertexBuffer(f32* vertices, u32 size)
 	{
 		CORE_PROFILE_FUNCTION();
@@ -36,6 +45,17 @@ namespace Core
 		CORE_PROFILE_FUNCTION();
 		
 		glDeleteBuffers(1, &m_RendererID);
+	}
+	
+	void VertexBuffer::SetData(const void* data, u32 size)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+	}
+	
+	Ref<VertexBuffer> VertexBuffer::Create(u32 size)
+	{
+		return MakeRef<VertexBuffer>(size);
 	}
 	
 	Ref<VertexBuffer> VertexBuffer::Create(f32* vertices, u32 size)

@@ -20,6 +20,6 @@ namespace Core
 		void SetClearColor(const glm::vec4& color);
 		void Clear();
 		
-		void DrawIndexed(const Ref<VertexArray>& vertexArray);
+		void DrawIndexed(const Ref<VertexArray>& vertexArray, u32 indexCount = 0);
 	};
 }

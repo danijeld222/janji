@@ -136,9 +136,13 @@ namespace Core
 	class VertexBuffer
 	{
 	public:
+		VertexBuffer(u32 size);
 		VertexBuffer(f32* vertices, u32 size);
 		virtual ~VertexBuffer();
 		
+		void SetData(const void* data, u32 size);
+		
+		static Ref<VertexBuffer> Create(u32 size);
 		static Ref<VertexBuffer> Create(f32* vertices, u32 size);
 		
 		void Bind() const;
