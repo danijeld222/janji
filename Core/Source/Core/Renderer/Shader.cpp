@@ -243,6 +243,13 @@ namespace Core
 		
 		UploadUniformInt(name, value);
 	}
+
+	void Shader::SetFloat(const std::string& name, f32 value)
+	{
+		CORE_PROFILE_FUNCTION();
+		
+		UploadUniformFloat(name, value);
+	}
 	
 	void Shader::SetFloat3(const std::string& name, const glm::vec3& value)
 	{

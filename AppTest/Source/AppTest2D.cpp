@@ -45,7 +45,7 @@ void AppTest2D::OnUpdate(Core::Timestep timestep)
 		Core::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
 		Core::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
 		Core::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
-		Core::Renderer2D::DrawQuad({ 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f }, m_SolidColor, m_WhatHappenedTexture);
+		Core::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f }, 3.14f * 0.25f, m_WhatHappenedTexture, 3.0f, m_SolidColor);
 		Core::Renderer2D::EndScene();
 	}
 }

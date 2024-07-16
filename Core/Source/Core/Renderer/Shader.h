@@ -24,6 +24,7 @@ namespace Core
 		const std::string& GetName() const;
 		
 		void SetInt(const std::string& name, i32 value);
+		void SetFloat(const std::string& name, f32 value);
 		void SetFloat3(const std::string& name, const glm::vec3& value);
 		void SetFloat4(const std::string& name, const glm::vec4& value);
 		void SetMat4(const std::string& name, const glm::mat4& value);
