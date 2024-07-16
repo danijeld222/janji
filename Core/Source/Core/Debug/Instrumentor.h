@@ -72,7 +72,8 @@ namespace Core
 		
 		void WriteHeader()
 		{
-			m_OutputStream << "{\"otherData\": {},\"traceEvents\":[";
+			//m_OutputStream << "{\"otherData\": {},\"traceEvents\":[";
+			m_OutputStream << "{\"displayTimeUnit\": \"ns\", \"otherData\": {},\"traceEvents\":[";
 			m_OutputStream.flush();
 		}
 		
@@ -126,7 +127,7 @@ namespace Core
 	};
 }
 
-#define CORE_PROFILE 1
+#define CORE_PROFILE 0
 #if CORE_PROFILE
 	#define CORE_PROFILE_BEGIN_SESSION(name, filepath) ::Core::Instrumentor::Get().BeginSession(name, filepath)
 	#define CORE_PROFILE_END_SESSION() ::Core::Instrumentor::Get().EndSession()
