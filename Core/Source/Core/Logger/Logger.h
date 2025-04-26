@@ -23,7 +23,7 @@ namespace Core
 		static void Initialize();
 		static void Shutdown();
 		
-		inline static Ref <spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
+		static Ref <spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
 		
 	private:
 		static Ref<spdlog::logger> s_CoreLogger;

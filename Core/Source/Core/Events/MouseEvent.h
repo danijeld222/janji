@@ -12,8 +12,8 @@ namespace Core
 		MouseMovedEvent(f32 x, f32 y)
 			: m_MouseX(x), m_MouseY(y) {}
 
-		inline f32 GetX() const { return m_MouseX; }
-		inline f32 GetY() const { return m_MouseY; }
+		f32 GetX() const { return m_MouseX; }
+		f32 GetY() const { return m_MouseY; }
 
 		std::string ToString() const override
 		{
@@ -38,8 +38,8 @@ namespace Core
 		MouseScrolledEvent(f32 xOffset, f32 yOffset)
 			: m_XOffset(xOffset), m_YOffset(yOffset) {}
 
-		inline f32 GetXOffset() const { return m_XOffset; }
-		inline f32 GetYOffset() const { return m_YOffset; }
+		f32 GetXOffset() const { return m_XOffset; }
+		f32 GetYOffset() const { return m_YOffset; }
 
 		std::string ToString() const override
 		{
@@ -61,7 +61,7 @@ namespace Core
 	class MouseButtonEvent : public Event
 	{
 	public:
-		inline i32 GetMouseButton() const { return m_Button; }
+		i32 GetMouseButton() const { return m_Button; }
 
 		virtual i32 GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; }
 

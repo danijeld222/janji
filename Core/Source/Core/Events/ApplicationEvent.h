@@ -12,8 +12,8 @@ namespace Core
 		WindowResizeEvent(u32 width, u32 height)
 			: m_Width(width), m_Height(height) {}
 	
-		inline u32 GetWidth() const { return m_Width; }
-		inline u32 GetHeight() const { return m_Height; }
+		u32 GetWidth() const { return m_Width; }
+		u32 GetHeight() const { return m_Height; }
 	
 		std::string ToString() const override
 		{
@@ -38,7 +38,7 @@ namespace Core
 		WindowMinimizedEvent(b8 minimized)
 			: m_Minimized(minimized) {}
 		
-		inline b8 GetIsMinimized() const { return m_Minimized; }
+		b8 GetIsMinimized() const { return m_Minimized; }
 		
 		std::string ToString() const override
 		{

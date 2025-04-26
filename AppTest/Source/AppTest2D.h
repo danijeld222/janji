@@ -22,6 +22,7 @@ private:
 	
 	Core::Ref<Core::Texture2D> m_CheckerboardTexture;
 	Core::Ref<Core::Texture2D> m_WhatHappenedTexture;
+	Core::Ref<Core::Texture2D> m_DarkDungeonSpritesheet;
 	
 	struct ProfileResult
 	{

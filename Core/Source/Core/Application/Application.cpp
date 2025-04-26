@@ -50,7 +50,6 @@ namespace Core
         CORE_PROFILE_FUNCTION();
         
         m_LayerStack.PushLayer(layer);
-        layer->OnAttach();
     }
     
     void Application::PushOverlay(Layer* layer)
@@ -58,7 +57,6 @@ namespace Core
         CORE_PROFILE_FUNCTION();
         
         m_LayerStack.PushOverlay(layer);
-        layer->OnAttach();
     }
     
     void Application::OnEvent(Event& e)
@@ -72,11 +70,11 @@ namespace Core
         
         for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
         {
-            (*it)->OnEvent(e);
             if (e.Handled)
             {
                 break;
             }
+            (*it)->OnEvent(e);
         }
     }
     

@@ -17,32 +17,27 @@ namespace Core
 		
 		if (InputBase::IsKeyPressed(SDL_SCANCODE_LEFT) || InputBase::IsKeyPressed(SDL_SCANCODE_A))
 		{
-			m_CameraPosition.x -= m_CameraMoveSpeed * timestep;
+			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * timestep;
+			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * timestep;
 		}
 		else if (InputBase::IsKeyPressed(SDL_SCANCODE_RIGHT) || InputBase::IsKeyPressed(SDL_SCANCODE_D))
 		{
-			m_CameraPosition.x += m_CameraMoveSpeed * timestep;
+			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * timestep;
+			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * timestep;
 		}
 		
 		if (InputBase::IsKeyPressed(SDL_SCANCODE_UP) || InputBase::IsKeyPressed(SDL_SCANCODE_W))
 		{
-			m_CameraPosition.y += m_CameraMoveSpeed * timestep;
+			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * timestep;
+			m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * timestep;
 		}
 		else if (InputBase::IsKeyPressed(SDL_SCANCODE_DOWN) || InputBase::IsKeyPressed(SDL_SCANCODE_S))
 		{
-			m_CameraPosition.y -= m_CameraMoveSpeed * timestep;
+			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * timestep;
+			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * timestep;
 		}
 		
-		if (InputBase::IsKeyPressed(SDL_SCANCODE_UP) || InputBase::IsKeyPressed(SDL_SCANCODE_W))
-		{
-			m_CameraPosition.y += m_CameraMoveSpeed * timestep;
-		}
-		else if (InputBase::IsKeyPressed(SDL_SCANCODE_DOWN) || InputBase::IsKeyPressed(SDL_SCANCODE_S))
-		{
-			m_CameraPosition.y -= m_CameraMoveSpeed * timestep;
-		}
-		
-		if (m_CameraRotation)
+		if (m_Rotation)
 		{
 			if (InputBase::IsKeyPressed(SDL_SCANCODE_Q))
 			{
@@ -52,11 +47,22 @@ namespace Core
 			{
 				m_CameraRotation -= m_CameraRotationSpeed * timestep;
 			}
+
+			if (m_CameraRotation > 180.0f)
+			{
+				m_CameraRotation -= 360.0f;
+			}
+			else if (m_CameraRotation <= -180.0f)
+			{
+				m_CameraRotation += 360.0f;
+			}
+
+			m_Camera.SetRotation(m_CameraRotation);
 		}
 		
 		m_Camera.SetPosition(m_CameraPosition);
 		
-		m_CameraMoveSpeed = m_ZoomLevel;
+		m_CameraTranslationSpeed = m_ZoomLevel;
 	}
 
 	void OrthographicCameraController::OnEvent(Event& e)

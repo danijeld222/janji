@@ -7,6 +7,8 @@
 #include "Core/ImGui/ImGuiLayer.h"
 #include "Core/Time/Timestep.h"
 
+int main(int argc, char** argv);
+
 namespace Core 
 {
     class Application
@@ -15,17 +17,18 @@ namespace Core
         Application();
         virtual ~Application();  // https://stackoverflow.com/questions/461203/when-to-use-virtual-destructors
         
-        void ApplicationRun();
         void OnEvent(Event& e);
         
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* layer);
         
-        inline WindowBase& GetWindow() { return *m_Window; }
+        WindowBase& GetWindow() { return *m_Window; }
         
-        inline static Application& Get() { return *s_Instance; }
+        static Application& Get() { return *s_Instance; }
         
     private:
+        void ApplicationRun();
+        
         b8 OnWindowClose(WindowCloseEvent& e);
         b8 OnWindowResize(WindowResizeEvent& e);
         b8 OnWindowMinimized(WindowMinimizedEvent& e);
@@ -39,6 +42,7 @@ namespace Core
         f32 m_LastFrameTime = 0.0f;
         
         static Application* s_Instance;
+        friend int ::main(int argc, char** argv);
     };
     
     Application* CreateApplication();

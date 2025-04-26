@@ -121,6 +121,8 @@ namespace Core
 		{
 			WindowData& windowData = *(WindowData*)data;
 			
+			COREINFO("RESIZE WINDOW ID {0}", e->window.windowID);
+			
 			WindowResizeEvent event(e->window.data1, e->window.data2);
 			windowData.eventCallback(event);
 			

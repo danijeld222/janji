@@ -34,7 +34,7 @@ namespace Core
 		
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 		f32 m_CameraRotation = 0.0f;
-		f32 m_CameraMoveSpeed = 5.0f;
+		f32 m_CameraTranslationSpeed = 5.0f;
 		f32 m_CameraRotationSpeed = 180.0f;
 	};
 }

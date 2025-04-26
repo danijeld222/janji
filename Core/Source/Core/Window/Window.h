@@ -16,14 +16,14 @@ namespace Core
 		
 		void OnUpdate() override;
 		
-		inline u32 GetWidth() const override { return m_Data.width; }
-		inline u32 GetHeight() const override { return m_Data.height; }
+		u32 GetWidth() const override { return m_Data.width; }
+		u32 GetHeight() const override { return m_Data.height; }
 		
 		virtual void* GetRendererContext()	const override { return m_RendererContext.get(); };
 		
-		inline virtual void* GetNativeWindow() const override { return m_Window; }
+		virtual void* GetNativeWindow() const override { return m_Window; }
 		
-		inline void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.eventCallback = callback; }
+		void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.eventCallback = callback; }
 		
 		static i32 HandleWindowResizeEvent(void* data, SDL_Event* e);
 		static i32 HandleWindowMinimizedEvent(void* data, SDL_Event* e);

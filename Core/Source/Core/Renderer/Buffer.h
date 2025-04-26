@@ -85,9 +85,9 @@ namespace Core
 			case Core::ShaderDataType::Float4:
 				return 4;
 			case Core::ShaderDataType::Mat3:
-				return 3 * 3;
+				return 3;
 			case Core::ShaderDataType::Mat4:
-				return 4 * 4;
+				return 4;
 			case Core::ShaderDataType::Int:
 				return 1;
 			case Core::ShaderDataType::Int2:
@@ -117,8 +117,8 @@ namespace Core
 			CalculateOffsetAndStride();
 		}
 		
-		inline u32 GetStride() const { return m_Stride; }
-		inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
+		u32 GetStride() const { return m_Stride; }
+		const std::vector<BufferElement>& GetElements() const { return m_Elements; }
 		
 		std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
 		std::vector<BufferElement>::iterator end() { return m_Elements.end(); }

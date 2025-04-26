@@ -9,7 +9,7 @@ namespace Core
 	class KeyEvent : public Event
 	{
 	public:
-		inline i32 GetKeyCode() const { return m_KeyCode; }
+		i32 GetKeyCode() const { return m_KeyCode; }
 
 		virtual i32 GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
 
@@ -26,7 +26,7 @@ namespace Core
 		KeyPressedEvent(i32 keycode, i32 repeatCount)
 			: KeyEvent(keycode), m_RepeatCount(repeatCount) {}
 
-		inline i32 GetRepeatCount() const { return m_RepeatCount; }
+		i32 GetRepeatCount() const { return m_RepeatCount; }
 
 		std::string ToString() const override
 		{

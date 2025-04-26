@@ -47,7 +47,7 @@ namespace Core
 	{
 		CORE_PROFILE_FUNCTION();
 		
-		u32 count = indexCount <= 0 ? vertexArray->GetIndexBuffer()->GetCount() : indexCount;
+		u32 count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
 		glDrawElements(GL_TRIANGLES, indexCount , GL_UNSIGNED_INT, nullptr);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
