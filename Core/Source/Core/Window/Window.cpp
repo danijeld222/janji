@@ -117,10 +117,10 @@ namespace Core
 	
 	i32 Window::HandleWindowResizeEvent(void* data, SDL_Event* e)
 	{
-		if (e->type == SDL_EVENT_WINDOW_RESIZED || e->type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)
+		WindowData& windowData = *(WindowData*)data;
+		
+		if (e->type == SDL_EVENT_WINDOW_RESIZED || e->type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED && e->window.windowID == windowData.windowID)
 		{
-			WindowData& windowData = *(WindowData*)data;
-			
 			COREINFO("RESIZE WINDOW ID {0}", e->window.windowID);
 			
 			WindowResizeEvent event(e->window.data1, e->window.data2);
@@ -134,10 +134,10 @@ namespace Core
 	
 	i32 Window::HandleWindowMinimizedEvent(void* data, SDL_Event* e)
 	{
-		if (e->type == SDL_EVENT_WINDOW_MINIMIZED || e->type == SDL_EVENT_WINDOW_RESTORED)
+		WindowData& windowData = *(WindowData*)data;
+
+		if (e->type == SDL_EVENT_WINDOW_MINIMIZED || e->type == SDL_EVENT_WINDOW_RESTORED && e->window.windowID == windowData.windowID)
 		{
-			WindowData& windowData = *(WindowData*)data;
-			
 			WindowMinimizedEvent event((e->type == SDL_EVENT_WINDOW_MINIMIZED));
 			windowData.eventCallback(event);
 			
@@ -166,19 +166,19 @@ namespace Core
 	{
 		WindowData& windowData = *(WindowData*)data;
 		
-		if (e->type == SDL_EVENT_KEY_DOWN)
+		if (e->type == SDL_EVENT_KEY_DOWN && e->key.windowID == windowData.windowID)
 		{
 			KeyPressedEvent event(e->key.keysym.sym, e->key.repeat);
 			windowData.eventCallback(event);
 			
-			return 0;
+			return 1;
 		}
-		else if (e->type == SDL_EVENT_KEY_UP)
+		else if (e->type == SDL_EVENT_KEY_UP && e->key.windowID == windowData.windowID)
 		{
 			KeyReleasedEvent event(e->key.keysym.sym);
 			windowData.eventCallback(event);
 			
-			return 0;
+			return 1;
 		}
 		
 		return 0;
@@ -188,14 +188,14 @@ namespace Core
 	{
 		WindowData& windowData = *(WindowData*)data;
 		
-		if (e->type == SDL_EVENT_MOUSE_BUTTON_DOWN)
+		if (e->type == SDL_EVENT_MOUSE_BUTTON_DOWN && e->button.windowID == windowData.windowID)
 		{
 			MouseButtonPressedEvent event(e->button.button);
 			windowData.eventCallback(event);
 			
 			return 1;
 		}
-		else if (e->type == SDL_EVENT_MOUSE_BUTTON_UP)
+		else if (e->type == SDL_EVENT_MOUSE_BUTTON_UP && e->button.windowID == windowData.windowID)
 		{
 			MouseButtonReleasedEvent event(e->button.button);
 			windowData.eventCallback(event);
@@ -210,7 +210,7 @@ namespace Core
 	{
 		WindowData& windowData = *(WindowData*)data;
 		
-		if (e->type == SDL_EVENT_MOUSE_WHEEL)
+		if (e->type == SDL_EVENT_MOUSE_WHEEL && e->wheel.windowID == windowData.windowID)
 		{
 			MouseScrolledEvent event(e->wheel.x, e->wheel.y);
 			windowData.eventCallback(event);
@@ -223,14 +223,14 @@ namespace Core
 	
 	i32 Window::HandleMouseMoveEvent(void* data, SDL_Event* e)
 	{
-		if (e->type == SDL_EVENT_MOUSE_MOTION)
+		WindowData& windowData = *(WindowData*)data;
+		
+		if (e->type == SDL_EVENT_MOUSE_MOTION && e->motion.windowID == windowData.windowID)
 		{
-			WindowData& windowData = *(WindowData*)data;
-			
 			MouseMovedEvent event(e->motion.x, e->motion.y);
 			windowData.eventCallback(event);
 			
-			return 0;
+			return 1;
 		}
 		
 		return 0;

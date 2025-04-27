@@ -100,11 +100,14 @@ void AppTest2D::OnImGuiRender()
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SolidColor));
 	
 	ImGui::End();
+
+	static bool show = true;
+	ImGui::ShowDemoWindow(&show);
 }
 
 void AppTest2D::OnEvent(Core::Event& event)
 {
 	m_CameraController.OnEvent(event);
 
-	//COREINFO(event.ToString());
+	COREINFO(event.ToString());
 }
