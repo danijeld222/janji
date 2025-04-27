@@ -33,15 +33,15 @@ namespace Core
 	class Event
 	{
 	public:
-		b8 Handled = false;
+		bool Handled = false;
 
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;
 		virtual i32 GetCategoryFlags() const = 0;
 		virtual std::string ToString() const { return GetName(); }
-		virtual b8 ShouldLog() const { return true; }
+		virtual bool ShouldLog() const { return true; }
 
-		b8 IsInCategory(EventCategory category)
+		bool IsInCategory(EventCategory category)
 		{
 			return GetCategoryFlags() & category;
 		}
@@ -66,7 +66,7 @@ namespace Core
 		static EventType GetStaticType() { return EventType::Test; }
 		virtual EventType GetEventType() const override { return GetStaticType(); }
 		virtual const char* GetName() const override { return "Test"; }
-		virtual b8 ShouldLog() const override
+		virtual bool ShouldLog() const override
 		{
 			return (event->type != SDL_EVENT_POLL_SENTINEL);
 		}
@@ -296,7 +296,7 @@ namespace Core
 	class EventDispatcher
 	{
 		template<typename T>
-		using EventFn = std::function<b8(T&)>;
+		using EventFn = std::function<bool(T&)>;
 
 	public:
 		EventDispatcher(Event& event)
@@ -305,7 +305,7 @@ namespace Core
 		}
 
 		template<typename T, typename F>
-		b8 Dispatch(const F& func)
+		bool Dispatch(const F& func)
 		{
 			if (m_Event.GetEventType() == T::GetStaticType())
 			{

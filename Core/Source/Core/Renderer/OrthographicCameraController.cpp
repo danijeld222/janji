@@ -6,7 +6,7 @@
 
 namespace Core
 {
-	OrthographicCameraController::OrthographicCameraController(f32 aspectRatio, b8 rotation)
+	OrthographicCameraController::OrthographicCameraController(f32 aspectRatio, bool rotation)
 		: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
 	{
 	}

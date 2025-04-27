@@ -63,11 +63,11 @@ namespace Core
 		std::string name;
 		u32 size;
 		size_t offset;
-		b8 normalized;
+		bool normalized;
 		
 		BufferElement() = default;
 		
-		BufferElement(ShaderDataType _type, const std::string& _name, b8 _normalized = false)
+		BufferElement(ShaderDataType _type, const std::string& _name, bool _normalized = false)
 			: type(_type), name(_name), size(ShaderDataTypeSize(_type)), offset(0), normalized(_normalized)
 		{
 		}

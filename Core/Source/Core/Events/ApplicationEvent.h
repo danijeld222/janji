@@ -35,10 +35,10 @@ namespace Core
 	class WindowMinimizedEvent : public Event
 	{
 	public:
-		WindowMinimizedEvent(b8 minimized)
+		WindowMinimizedEvent(bool minimized)
 			: m_Minimized(minimized) {}
 		
-		b8 GetIsMinimized() const { return m_Minimized; }
+		bool GetIsMinimized() const { return m_Minimized; }
 		
 		std::string ToString() const override
 		{
@@ -54,7 +54,7 @@ namespace Core
 		virtual i32 GetCategoryFlags() const override { return EventCategoryApplication; }
 		
 	private:
-		b8 m_Minimized;
+		bool m_Minimized;
 	};
 
 	class WindowCloseEvent : public Event

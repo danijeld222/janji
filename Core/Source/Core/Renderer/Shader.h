@@ -37,7 +37,7 @@ namespace Core
 		//				Idea is that we dont want to create instance without it being shared_ptr
 	public:
 		Shader(const std::string& name, const std::string& filepath);
-		Shader(const std::string& name, const std::string& vertexFilepath, const std::string& fragmentFilepath, b8 _);
+		Shader(const std::string& name, const std::string& vertexFilepath, const std::string& fragmentFilepath, bool _);
 		Shader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 	
 	private:

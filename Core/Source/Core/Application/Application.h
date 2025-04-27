@@ -29,12 +29,12 @@ namespace Core
     private:
         void ApplicationRun();
         
-        b8 OnWindowClose(WindowCloseEvent& e);
-        b8 OnWindowResize(WindowResizeEvent& e);
-        b8 OnWindowMinimized(WindowMinimizedEvent& e);
+        bool OnWindowClose(WindowCloseEvent& e);
+        bool OnWindowResize(WindowResizeEvent& e);
+        bool OnWindowMinimized(WindowMinimizedEvent& e);
         
-        b8 m_Running = false;
-        b8 m_Minimized = false;
+        bool m_Running = false;
+        bool m_Minimized = false;
         Scope<WindowBase> m_Window;
         LayerStack m_LayerStack;
         ImGuiLayer* m_ImGuiLayer;

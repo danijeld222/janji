@@ -10,7 +10,7 @@ namespace Core
 	bool Input::IsKeyPressedImpl(i32 keycode)
 	{
 		const u8* state = SDL_GetKeyboardState(NULL);
-		b8 keystate = state[keycode];
+		bool keystate = state[keycode];
 		return keystate;
 	}
 

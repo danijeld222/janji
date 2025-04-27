@@ -53,7 +53,7 @@ namespace Core
 		Compile(shaderSources);
 	}
 	
-	Shader::Shader(const std::string& name, const std::string& vertexFilepath, const std::string& fragmentFilepath, b8 _)
+	Shader::Shader(const std::string& name, const std::string& vertexFilepath, const std::string& fragmentFilepath, bool _)
 		: m_Name(name)
 	{
 		CORE_PROFILE_FUNCTION();

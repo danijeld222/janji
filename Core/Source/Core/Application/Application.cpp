@@ -121,14 +121,14 @@ namespace Core
         }
     }
     
-    b8 Application::OnWindowClose(WindowCloseEvent& e)
+    bool Application::OnWindowClose(WindowCloseEvent& e)
     {
         m_Running = false;
         
         return true;
     }
     
-    b8 Application::OnWindowResize(WindowResizeEvent& e)
+    bool Application::OnWindowResize(WindowResizeEvent& e)
     {
         CORE_PROFILE_FUNCTION();
         
@@ -144,7 +144,7 @@ namespace Core
         return false;
     }
     
-    b8 Application::OnWindowMinimized(WindowMinimizedEvent& e)
+    bool Application::OnWindowMinimized(WindowMinimizedEvent& e)
     {
         CORE_PROFILE_FUNCTION();
         

@@ -13,7 +13,7 @@ namespace Core
 	class OrthographicCameraController
 	{
 	public:
-		OrthographicCameraController(f32 aspectRatio, b8 rotation = false);
+		OrthographicCameraController(f32 aspectRatio, bool rotation = false);
 		
 		void OnUpdate(Timestep timestep);
 		void OnEvent(Event& e);
@@ -30,7 +30,7 @@ namespace Core
 		f32 m_ZoomLevel = 1.0f;
 		OrthographicCamera m_Camera;
 		
-		b8 m_Rotation;
+		bool m_Rotation;
 		
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 		f32 m_CameraRotation = 0.0f;

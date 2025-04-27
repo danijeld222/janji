@@ -37,7 +37,7 @@ namespace Core
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 		
 		ImGui::StyleColorsDark();
 		ImGuiStyle& style = ImGui::GetStyle();
@@ -112,8 +112,15 @@ namespace Core
 
 	void ImGuiLayer::OnEvent(Event& event)
 	{
-		EventDispatcher dispatcher(event);
-		dispatcher.Dispatch<GenericSDL_Event>(CORE_BIND_EVENT_FN(ImGuiLayer::OnGenericSDLEvent));
+		ImGuiIO& io = ImGui::GetIO();
+		event.Handled |= event.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+		event.Handled |= event.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
+		
+		if (!event.Handled)
+		{
+			EventDispatcher dispatcher(event);
+			dispatcher.Dispatch<GenericSDL_Event>(CORE_BIND_EVENT_FN(ImGuiLayer::OnGenericSDLEvent));
+		}
 	}
 
 	bool ImGuiLayer::OnGenericSDLEvent(GenericSDL_Event& e)
